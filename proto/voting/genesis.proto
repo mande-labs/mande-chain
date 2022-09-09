@@ -1,0 +1,14 @@
+syntax = "proto3";
+package mandechain.voting;
+
+import "gogoproto/gogo.proto";
+import "voting/params.proto";
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "mande-chain/x/voting/types";
+
+// GenesisState defines the voting module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+  // this line is used by starport scaffolding # genesis/proto/state
+}

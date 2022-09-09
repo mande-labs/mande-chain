@@ -7,7 +7,18 @@ option go_package = "mande-chain/x/voting/types";
 
 // Msg defines the Msg service.
 service Msg {
-    // this line is used by starport scaffolding # proto/tx/rpc
+      rpc CreateVote(MsgCreateVote) returns (MsgCreateVoteResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgCreateVote {
+  string creator = 1;
+  string receiver = 2;
+  int32 count = 3;
+  uint64 mode = 4;
+}
+
+message MsgCreateVoteResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

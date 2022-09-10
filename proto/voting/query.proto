@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "voting/params.proto";
+import "voting/vote_book.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "mande-chain/x/voting/types";
@@ -15,7 +16,17 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/mande-chain/voting/params";
   }
-  // this line is used by starport scaffolding # 2
+  // Queries a VoteBook by index.
+	rpc VoteBook(QueryGetVoteBookRequest) returns (QueryGetVoteBookResponse) {
+		option (google.api.http).get = "/mande-chain/voting/vote_book/{index}";
+	}
+
+	// Queries a list of VoteBook items.
+	rpc VoteBookAll(QueryAllVoteBookRequest) returns (QueryAllVoteBookResponse) {
+		option (google.api.http).get = "/mande-chain/voting/vote_book";
+	}
+
+// this line is used by starport scaffolding # 2
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -25,6 +36,24 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetVoteBookRequest {
+	  string index = 1;
+
+}
+
+message QueryGetVoteBookResponse {
+	VoteBook voteBook = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllVoteBookRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllVoteBookResponse {
+	repeated VoteBook voteBook = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3

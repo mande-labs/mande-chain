@@ -1,0 +1,14 @@
+syntax = "proto3";
+package mandechain.voting;
+
+option go_package = "mande-chain/x/voting/types";
+
+message VoteBook {
+  string index = 1; 
+  string caster = 2; 
+  string receiver = 3; 
+  uint64 positive = 4; 
+  uint64 negative = 5; 
+  
+}
+

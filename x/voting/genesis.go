@@ -13,6 +13,10 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.VoteBookList {
 		k.SetVoteBook(ctx, elem)
 	}
+	// Set all the aggregateVoteCount
+	for _, elem := range genState.AggregateVoteCountList {
+		k.SetAggregateVoteCount(ctx, elem)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -23,6 +27,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.Params = k.GetParams(ctx)
 
 	genesis.VoteBookList = k.GetAllVoteBook(ctx)
+	genesis.AggregateVoteCountList = k.GetAllAggregateVoteCount(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

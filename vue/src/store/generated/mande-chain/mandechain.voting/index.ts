@@ -1,10 +1,11 @@
 import { txClient, queryClient, MissingWalletError , registry} from './module'
 
+import { AggregateVoteCount } from "./module/types/voting/aggregate_vote_count"
 import { Params } from "./module/types/voting/params"
 import { VoteBook } from "./module/types/voting/vote_book"
 
 
-export { Params, VoteBook };
+export { AggregateVoteCount, Params, VoteBook };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -45,8 +46,11 @@ const getDefaultState = () => {
 				Params: {},
 				VoteBook: {},
 				VoteBookAll: {},
+				AggregateVoteCount: {},
+				AggregateVoteCountAll: {},
 				
 				_Structure: {
+						AggregateVoteCount: getStructure(AggregateVoteCount.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						VoteBook: getStructure(VoteBook.fromPartial({})),
 						
@@ -94,6 +98,18 @@ export default {
 						(<any> params).query=null
 					}
 			return state.VoteBookAll[JSON.stringify(params)] ?? {}
+		},
+				getAggregateVoteCount: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.AggregateVoteCount[JSON.stringify(params)] ?? {}
+		},
+				getAggregateVoteCountAll: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.AggregateVoteCountAll[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -194,6 +210,54 @@ export default {
 				return getters['getVoteBookAll']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QueryVoteBookAll API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryAggregateVoteCount({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryAggregateVoteCount( key.index)).data
+				
+					
+				commit('QUERY', { query: 'AggregateVoteCount', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryAggregateVoteCount', payload: { options: { all }, params: {...key},query }})
+				return getters['getAggregateVoteCount']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryAggregateVoteCount API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryAggregateVoteCountAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryAggregateVoteCountAll(query)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await queryClient.queryAggregateVoteCountAll({...query, 'pagination.key':(<any> value).pagination.next_key})).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'AggregateVoteCountAll', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryAggregateVoteCountAll', payload: { options: { all }, params: {...key},query }})
+				return getters['getAggregateVoteCountAll']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryAggregateVoteCountAll API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},

@@ -57,13 +57,6 @@ export interface V1Beta1PageRequest {
    * is set.
    */
   count_total?: boolean;
-
-  /**
-   * reverse is set to true if results are to be returned in the descending order.
-   *
-   * Since: cosmos-sdk 0.43
-   */
-  reverse?: boolean;
 }
 
 /**
@@ -83,12 +76,41 @@ export interface V1Beta1PageResponse {
   total?: string;
 }
 
+export interface VotingAggregateVoteCount {
+  index?: string;
+  voter?: string;
+
+  /** @format uint64 */
+  casted?: string;
+
+  /** @format uint64 */
+  positiveReceived?: string;
+
+  /** @format uint64 */
+  negativeReceived?: string;
+}
+
 export type VotingMsgCreateVoteResponse = object;
 
 /**
  * Params defines the parameters for the module.
  */
 export type VotingParams = object;
+
+export interface VotingQueryAllAggregateVoteCountResponse {
+  aggregateVoteCount?: VotingAggregateVoteCount[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
 
 export interface VotingQueryAllVoteBookResponse {
   voteBook?: VotingVoteBook[];
@@ -103,6 +125,10 @@ export interface VotingQueryAllVoteBookResponse {
    *  }
    */
   pagination?: V1Beta1PageResponse;
+}
+
+export interface VotingQueryGetAggregateVoteCountResponse {
+  aggregateVoteCount?: VotingAggregateVoteCount;
 }
 
 export interface VotingQueryGetVoteBookResponse {
@@ -321,10 +347,51 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title voting/genesis.proto
+ * @title voting/aggregate_vote_count.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryAggregateVoteCountAll
+   * @summary Queries a list of AggregateVoteCount items.
+   * @request GET:/mande-chain/voting/aggregate_vote_count
+   */
+  queryAggregateVoteCountAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<VotingQueryAllAggregateVoteCountResponse, RpcStatus>({
+      path: `/mande-chain/voting/aggregate_vote_count`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryAggregateVoteCount
+   * @summary Queries a AggregateVoteCount by index.
+   * @request GET:/mande-chain/voting/aggregate_vote_count/{index}
+   */
+  queryAggregateVoteCount = (index: string, params: RequestParams = {}) =>
+    this.request<VotingQueryGetAggregateVoteCountResponse, RpcStatus>({
+      path: `/mande-chain/voting/aggregate_vote_count/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
   /**
    * No description
    *
@@ -355,7 +422,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>

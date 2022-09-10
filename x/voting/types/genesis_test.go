@@ -30,6 +30,14 @@ func TestGenesisState_Validate(t *testing.T) {
 						Index: "1",
 					},
 				},
+				AggregateVoteCountList: []types.AggregateVoteCount{
+					{
+						Index: "0",
+					},
+					{
+						Index: "1",
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -38,6 +46,20 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "duplicated voteBook",
 			genState: &types.GenesisState{
 				VoteBookList: []types.VoteBook{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated aggregateVoteCount",
+			genState: &types.GenesisState{
+				AggregateVoteCountList: []types.AggregateVoteCount{
 					{
 						Index: "0",
 					},

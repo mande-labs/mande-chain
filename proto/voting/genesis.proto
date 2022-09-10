@@ -4,6 +4,7 @@ package mandechain.voting;
 import "gogoproto/gogo.proto";
 import "voting/params.proto";
 import "voting/vote_book.proto";
+import "voting/aggregate_vote_count.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "mande-chain/x/voting/types";
@@ -12,5 +13,6 @@ option go_package = "mande-chain/x/voting/types";
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
   repeated VoteBook voteBookList = 2 [(gogoproto.nullable) = false];
+  repeated AggregateVoteCount aggregateVoteCountList = 3 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

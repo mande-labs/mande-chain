@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { Params } from "../voting/params";
 import { VoteBook } from "../voting/vote_book";
+import { AggregateVoteCount } from "../voting/aggregate_vote_count";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "mandechain.voting";
@@ -8,8 +9,9 @@ export const protobufPackage = "mandechain.voting";
 /** GenesisState defines the voting module's genesis state. */
 export interface GenesisState {
   params: Params | undefined;
-  /** this line is used by starport scaffolding # genesis/proto/state */
   voteBookList: VoteBook[];
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  aggregateVoteCountList: AggregateVoteCount[];
 }
 
 const baseGenesisState: object = {};
@@ -22,6 +24,9 @@ export const GenesisState = {
     for (const v of message.voteBookList) {
       VoteBook.encode(v!, writer.uint32(18).fork()).ldelim();
     }
+    for (const v of message.aggregateVoteCountList) {
+      AggregateVoteCount.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -30,6 +35,7 @@ export const GenesisState = {
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseGenesisState } as GenesisState;
     message.voteBookList = [];
+    message.aggregateVoteCountList = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -38,6 +44,11 @@ export const GenesisState = {
           break;
         case 2:
           message.voteBookList.push(VoteBook.decode(reader, reader.uint32()));
+          break;
+        case 3:
+          message.aggregateVoteCountList.push(
+            AggregateVoteCount.decode(reader, reader.uint32())
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -50,6 +61,7 @@ export const GenesisState = {
   fromJSON(object: any): GenesisState {
     const message = { ...baseGenesisState } as GenesisState;
     message.voteBookList = [];
+    message.aggregateVoteCountList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromJSON(object.params);
     } else {
@@ -58,6 +70,14 @@ export const GenesisState = {
     if (object.voteBookList !== undefined && object.voteBookList !== null) {
       for (const e of object.voteBookList) {
         message.voteBookList.push(VoteBook.fromJSON(e));
+      }
+    }
+    if (
+      object.aggregateVoteCountList !== undefined &&
+      object.aggregateVoteCountList !== null
+    ) {
+      for (const e of object.aggregateVoteCountList) {
+        message.aggregateVoteCountList.push(AggregateVoteCount.fromJSON(e));
       }
     }
     return message;
@@ -74,12 +94,20 @@ export const GenesisState = {
     } else {
       obj.voteBookList = [];
     }
+    if (message.aggregateVoteCountList) {
+      obj.aggregateVoteCountList = message.aggregateVoteCountList.map((e) =>
+        e ? AggregateVoteCount.toJSON(e) : undefined
+      );
+    } else {
+      obj.aggregateVoteCountList = [];
+    }
     return obj;
   },
 
   fromPartial(object: DeepPartial<GenesisState>): GenesisState {
     const message = { ...baseGenesisState } as GenesisState;
     message.voteBookList = [];
+    message.aggregateVoteCountList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     } else {
@@ -88,6 +116,14 @@ export const GenesisState = {
     if (object.voteBookList !== undefined && object.voteBookList !== null) {
       for (const e of object.voteBookList) {
         message.voteBookList.push(VoteBook.fromPartial(e));
+      }
+    }
+    if (
+      object.aggregateVoteCountList !== undefined &&
+      object.aggregateVoteCountList !== null
+    ) {
+      for (const e of object.aggregateVoteCountList) {
+        message.aggregateVoteCountList.push(AggregateVoteCount.fromPartial(e));
       }
     }
     return message;

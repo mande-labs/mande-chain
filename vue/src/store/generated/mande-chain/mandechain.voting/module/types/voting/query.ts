@@ -6,6 +6,7 @@ import {
   PageRequest,
   PageResponse,
 } from "../cosmos/base/query/v1beta1/pagination";
+import { AggregateVoteCount } from "../voting/aggregate_vote_count";
 
 export const protobufPackage = "mandechain.voting";
 
@@ -32,6 +33,23 @@ export interface QueryAllVoteBookRequest {
 
 export interface QueryAllVoteBookResponse {
   voteBook: VoteBook[];
+  pagination: PageResponse | undefined;
+}
+
+export interface QueryGetAggregateVoteCountRequest {
+  index: string;
+}
+
+export interface QueryGetAggregateVoteCountResponse {
+  aggregateVoteCount: AggregateVoteCount | undefined;
+}
+
+export interface QueryAllAggregateVoteCountRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllAggregateVoteCountResponse {
+  aggregateVoteCount: AggregateVoteCount[];
   pagination: PageResponse | undefined;
 }
 
@@ -440,6 +458,344 @@ export const QueryAllVoteBookResponse = {
   },
 };
 
+const baseQueryGetAggregateVoteCountRequest: object = { index: "" };
+
+export const QueryGetAggregateVoteCountRequest = {
+  encode(
+    message: QueryGetAggregateVoteCountRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.index !== "") {
+      writer.uint32(10).string(message.index);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetAggregateVoteCountRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetAggregateVoteCountRequest,
+    } as QueryGetAggregateVoteCountRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.index = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetAggregateVoteCountRequest {
+    const message = {
+      ...baseQueryGetAggregateVoteCountRequest,
+    } as QueryGetAggregateVoteCountRequest;
+    if (object.index !== undefined && object.index !== null) {
+      message.index = String(object.index);
+    } else {
+      message.index = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetAggregateVoteCountRequest): unknown {
+    const obj: any = {};
+    message.index !== undefined && (obj.index = message.index);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetAggregateVoteCountRequest>
+  ): QueryGetAggregateVoteCountRequest {
+    const message = {
+      ...baseQueryGetAggregateVoteCountRequest,
+    } as QueryGetAggregateVoteCountRequest;
+    if (object.index !== undefined && object.index !== null) {
+      message.index = object.index;
+    } else {
+      message.index = "";
+    }
+    return message;
+  },
+};
+
+const baseQueryGetAggregateVoteCountResponse: object = {};
+
+export const QueryGetAggregateVoteCountResponse = {
+  encode(
+    message: QueryGetAggregateVoteCountResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.aggregateVoteCount !== undefined) {
+      AggregateVoteCount.encode(
+        message.aggregateVoteCount,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetAggregateVoteCountResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetAggregateVoteCountResponse,
+    } as QueryGetAggregateVoteCountResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.aggregateVoteCount = AggregateVoteCount.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetAggregateVoteCountResponse {
+    const message = {
+      ...baseQueryGetAggregateVoteCountResponse,
+    } as QueryGetAggregateVoteCountResponse;
+    if (
+      object.aggregateVoteCount !== undefined &&
+      object.aggregateVoteCount !== null
+    ) {
+      message.aggregateVoteCount = AggregateVoteCount.fromJSON(
+        object.aggregateVoteCount
+      );
+    } else {
+      message.aggregateVoteCount = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetAggregateVoteCountResponse): unknown {
+    const obj: any = {};
+    message.aggregateVoteCount !== undefined &&
+      (obj.aggregateVoteCount = message.aggregateVoteCount
+        ? AggregateVoteCount.toJSON(message.aggregateVoteCount)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetAggregateVoteCountResponse>
+  ): QueryGetAggregateVoteCountResponse {
+    const message = {
+      ...baseQueryGetAggregateVoteCountResponse,
+    } as QueryGetAggregateVoteCountResponse;
+    if (
+      object.aggregateVoteCount !== undefined &&
+      object.aggregateVoteCount !== null
+    ) {
+      message.aggregateVoteCount = AggregateVoteCount.fromPartial(
+        object.aggregateVoteCount
+      );
+    } else {
+      message.aggregateVoteCount = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllAggregateVoteCountRequest: object = {};
+
+export const QueryAllAggregateVoteCountRequest = {
+  encode(
+    message: QueryAllAggregateVoteCountRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllAggregateVoteCountRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllAggregateVoteCountRequest,
+    } as QueryAllAggregateVoteCountRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllAggregateVoteCountRequest {
+    const message = {
+      ...baseQueryAllAggregateVoteCountRequest,
+    } as QueryAllAggregateVoteCountRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllAggregateVoteCountRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllAggregateVoteCountRequest>
+  ): QueryAllAggregateVoteCountRequest {
+    const message = {
+      ...baseQueryAllAggregateVoteCountRequest,
+    } as QueryAllAggregateVoteCountRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllAggregateVoteCountResponse: object = {};
+
+export const QueryAllAggregateVoteCountResponse = {
+  encode(
+    message: QueryAllAggregateVoteCountResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.aggregateVoteCount) {
+      AggregateVoteCount.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllAggregateVoteCountResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllAggregateVoteCountResponse,
+    } as QueryAllAggregateVoteCountResponse;
+    message.aggregateVoteCount = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.aggregateVoteCount.push(
+            AggregateVoteCount.decode(reader, reader.uint32())
+          );
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllAggregateVoteCountResponse {
+    const message = {
+      ...baseQueryAllAggregateVoteCountResponse,
+    } as QueryAllAggregateVoteCountResponse;
+    message.aggregateVoteCount = [];
+    if (
+      object.aggregateVoteCount !== undefined &&
+      object.aggregateVoteCount !== null
+    ) {
+      for (const e of object.aggregateVoteCount) {
+        message.aggregateVoteCount.push(AggregateVoteCount.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllAggregateVoteCountResponse): unknown {
+    const obj: any = {};
+    if (message.aggregateVoteCount) {
+      obj.aggregateVoteCount = message.aggregateVoteCount.map((e) =>
+        e ? AggregateVoteCount.toJSON(e) : undefined
+      );
+    } else {
+      obj.aggregateVoteCount = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllAggregateVoteCountResponse>
+  ): QueryAllAggregateVoteCountResponse {
+    const message = {
+      ...baseQueryAllAggregateVoteCountResponse,
+    } as QueryAllAggregateVoteCountResponse;
+    message.aggregateVoteCount = [];
+    if (
+      object.aggregateVoteCount !== undefined &&
+      object.aggregateVoteCount !== null
+    ) {
+      for (const e of object.aggregateVoteCount) {
+        message.aggregateVoteCount.push(AggregateVoteCount.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -450,6 +806,14 @@ export interface Query {
   VoteBookAll(
     request: QueryAllVoteBookRequest
   ): Promise<QueryAllVoteBookResponse>;
+  /** Queries a AggregateVoteCount by index. */
+  AggregateVoteCount(
+    request: QueryGetAggregateVoteCountRequest
+  ): Promise<QueryGetAggregateVoteCountResponse>;
+  /** Queries a list of AggregateVoteCount items. */
+  AggregateVoteCountAll(
+    request: QueryAllAggregateVoteCountRequest
+  ): Promise<QueryAllAggregateVoteCountResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -488,6 +852,34 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryAllVoteBookResponse.decode(new Reader(data))
+    );
+  }
+
+  AggregateVoteCount(
+    request: QueryGetAggregateVoteCountRequest
+  ): Promise<QueryGetAggregateVoteCountResponse> {
+    const data = QueryGetAggregateVoteCountRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "mandechain.voting.Query",
+      "AggregateVoteCount",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetAggregateVoteCountResponse.decode(new Reader(data))
+    );
+  }
+
+  AggregateVoteCountAll(
+    request: QueryAllAggregateVoteCountRequest
+  ): Promise<QueryAllAggregateVoteCountResponse> {
+    const data = QueryAllAggregateVoteCountRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "mandechain.voting.Query",
+      "AggregateVoteCountAll",
+      data
+    );
+    return promise.then((data) =>
+      QueryAllAggregateVoteCountResponse.decode(new Reader(data))
     );
   }
 }

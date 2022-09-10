@@ -25,7 +25,7 @@ func (k Keeper) CreateVote(ctx sdk.Context, msg *types.MsgCreateVote) error {
 			return err
 		}
 	default:
-		return sdkerrors.Wrapf(types.ErrInvalidVotingMode, "mode - (%s)", msg.Mode)
+		return sdkerrors.Wrapf(types.ErrInvalidVotingMode, "mode - (%d)", msg.Mode)
 	}
 
 	return nil
@@ -48,13 +48,13 @@ func (k Keeper) uncastVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateV
 		if voteBookEntry.Negative >= voteCount {
 			voteBookEntry.Negative -= voteCount
 		} else {
-			return sdkerrors.Wrapf(types.ErrNegativeVotesCastedLimit, "count - (%s)", msg.Count)
+			return sdkerrors.Wrapf(types.ErrNegativeVotesCastedLimit, "count - (%d)", msg.Count)
 		}
 	} else {
 		if voteBookEntry.Positive >= voteCount {
 			voteBookEntry.Positive -= voteCount
 		} else {
-			return sdkerrors.Wrapf(types.ErrPositiveVotesCastedLimit, "count = (%s)", msg.Count)
+			return sdkerrors.Wrapf(types.ErrPositiveVotesCastedLimit, "count = (%d)", msg.Count)
 		}
 	}
 
@@ -72,7 +72,7 @@ func (k Keeper) castVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateVot
 	voteCastCount := aggregateVoteCreatorCount.Casted + intAbs(msg.Count)
 
 	if mandBalance < voteCastCount {
-		return sdkerrors.Wrapf(types.ErrNotEnoughMand, "count - (%s)", msg.Count)
+		return sdkerrors.Wrapf(types.ErrNotEnoughMand, "count - (%d)", msg.Count)
 	}
 
 	voteBookIndex := types.VoteBookIndex(msg.Creator, msg.Receiver)

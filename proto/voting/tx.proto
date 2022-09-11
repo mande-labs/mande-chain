@@ -1,0 +1,24 @@
+syntax = "proto3";
+package mandechain.voting;
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "mande-chain/x/voting/types";
+
+// Msg defines the Msg service.
+service Msg {
+      rpc CreateVote(MsgCreateVote) returns (MsgCreateVoteResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgCreateVote {
+  string creator = 1;
+  string receiver = 2;
+  int32 count = 3;
+  uint64 mode = 4;
+}
+
+message MsgCreateVoteResponse {
+}
+
+// this line is used by starport scaffolding # proto/tx/message

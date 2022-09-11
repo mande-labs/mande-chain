@@ -1,0 +1,14 @@
+syntax = "proto3";
+package mandechain.voting;
+
+option go_package = "mande-chain/x/voting/types";
+
+message AggregateVoteCount {
+  string index = 1; 
+  string voter = 2; 
+  uint64 casted = 3; 
+  uint64 positiveReceived = 4; 
+  uint64 negativeReceived = 5; 
+  
+}
+

@@ -1,0 +1,88 @@
+syntax = "proto3";
+package mandechain.voting;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "voting/params.proto";
+import "voting/vote_book.proto";
+import "voting/aggregate_vote_count.proto";
+// this line is used by starport scaffolding # 1
+
+option go_package = "mande-chain/x/voting/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/mande-chain/voting/params";
+  }
+  // Queries a VoteBook by index.
+	rpc VoteBook(QueryGetVoteBookRequest) returns (QueryGetVoteBookResponse) {
+		option (google.api.http).get = "/mande-chain/voting/vote_book/{index}";
+	}
+
+	// Queries a list of VoteBook items.
+	rpc VoteBookAll(QueryAllVoteBookRequest) returns (QueryAllVoteBookResponse) {
+		option (google.api.http).get = "/mande-chain/voting/vote_book";
+	}
+
+// Queries a AggregateVoteCount by index.
+	rpc AggregateVoteCount(QueryGetAggregateVoteCountRequest) returns (QueryGetAggregateVoteCountResponse) {
+		option (google.api.http).get = "/mande-chain/voting/aggregate_vote_count/{index}";
+	}
+
+	// Queries a list of AggregateVoteCount items.
+	rpc AggregateVoteCountAll(QueryAllAggregateVoteCountRequest) returns (QueryAllAggregateVoteCountResponse) {
+		option (google.api.http).get = "/mande-chain/voting/aggregate_vote_count";
+	}
+
+// this line is used by starport scaffolding # 2
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetVoteBookRequest {
+	  string index = 1;
+
+}
+
+message QueryGetVoteBookResponse {
+	VoteBook voteBook = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllVoteBookRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllVoteBookResponse {
+	repeated VoteBook voteBook = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetAggregateVoteCountRequest {
+	  string index = 1;
+
+}
+
+message QueryGetAggregateVoteCountResponse {
+	AggregateVoteCount aggregateVoteCount = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllAggregateVoteCountRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllAggregateVoteCountResponse {
+	repeated AggregateVoteCount aggregateVoteCount = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// this line is used by starport scaffolding # 3

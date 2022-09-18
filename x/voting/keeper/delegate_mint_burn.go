@@ -1,7 +1,6 @@
 package keeper
 
 import (
-	"cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
@@ -43,7 +42,7 @@ func (k Keeper) lockMandAndDelegateStake(ctx sdk.Context, msg *types.MsgCreateVo
 		return sdkerrors.Wrapf(types.ErrNoValidatorFound, valAddr.String())
 	}
 
-	_, err = k.stakingKeeper.Delegate(ctx, votingModuleAcct, math.NewInt(int64(msg.Count)), stakingtypes.Unbonded, recipientValidator, true)
+	_, err = k.stakingKeeper.Delegate(ctx, votingModuleAcct, sdk.NewInt(int64(msg.Count)), stakingtypes.Unbonded, recipientValidator, true)
 	if err != nil {
 		return err
 	}

@@ -7,6 +7,11 @@ import (
 )
 
 func (k Keeper) CreateVote(ctx sdk.Context, msg *types.MsgCreateVote) error {
+	err := k.validateBasicCreateVote(ctx, msg)
+	if err != nil {
+		return err
+	}
+
 	aggregateVoteCreatorCount, found := k.GetAggregateVoteCount(ctx, msg.Creator)
 	if !found {
 		aggregateVoteCreatorCount.Index = msg.Creator
@@ -42,6 +47,11 @@ func (k Keeper) uncastVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateV
 	if !found {
 		return sdkerrors.Wrap(types.ErrNoVotesCasted, msg.Receiver)
 	}
+
+	//err := k.undelegateStakeAndUnlockMand(ctx, msg)
+	//if err != nil {
+	//	return err
+	//}
 
 	voteCount := intAbs(msg.Count)
 	if msg.Count < 0 {
@@ -90,6 +100,11 @@ func (k Keeper) castVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateVot
 		voteBookEntry.Positive += voteCount
 	}
 
+	//err := k.lockMandAndDelegateStake(ctx, msg)
+	//if err != nil {
+	//	return err
+	//}
+
 	k.SetVoteBook(ctx, voteBookEntry)
 
 	aggregateVoteReceiverCount, found := k.GetAggregateVoteCount(ctx, msg.Receiver)
@@ -103,6 +118,21 @@ func (k Keeper) castVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateVot
 	k.ReconcileAggregatedVotes(msg, aggregateVoteCreatorCount, &aggregateVoteReceiverCount)
 	k.SetAggregateVoteCount(ctx, aggregateVoteReceiverCount)
 	k.SetAggregateVoteCount(ctx, *aggregateVoteCreatorCount)
+
+	return nil
+}
+
+func (k Keeper) validateBasicCreateVote(ctx sdk.Context, msg *types.MsgCreateVote) error {
+	// receiver must be in validator set
+	//valAddr, err := sdk.ValAddressFromBech32(msg.Receiver)
+	//if err != nil {
+	//	return sdkerrors.Wrapf(types.ErrReceiverIsNotAValidator, msg.Receiver)
+	//}
+	//
+	//_, found := k.stakingKeeper.GetValidator(ctx, valAddr)
+	//if !found {
+	//	return sdkerrors.Wrapf(types.ErrNoValidatorFound, valAddr.String())
+	//}
 
 	return nil
 }

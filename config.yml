@@ -1,16 +1,34 @@
 accounts:
   - name: alice
-    coins: ["20000token", "200000000stake"]
+    coins: ["200000000stake","10000000mand"]
   - name: bob
-    coins: ["10000token", "100000000stake"]
+    coins: ["100000000stake", "10000000mand"]
+  - name: potato
+    coins: ["10000000stake", "3000000mand"]
+  - name: carrot
+    coins: ["30000000stake", "9000000mand"]
+  - name: pumpkin
+    coins: ["50000000stake", "7000000mand"]
+
 validator:
-  name: alice
-  staked: "100000000stake"
+  name: potato
+  staked: "9000000stake"
+
 client:
   openapi:
     path: "docs/static/openapi.yml"
   vuex:
     path: "vue/src/store"
+
 faucet:
   name: bob
-  coins: ["5token", "100000stake"]
+  coins: ["10000000stake", "1000000mand"]
+
+genesis:
+  app_state:
+    staking:
+      params:
+        unbonding_time: "0.001s"
+    bank:
+      params:
+        send_enabled: [{"denom": "stake","enabled": false}]

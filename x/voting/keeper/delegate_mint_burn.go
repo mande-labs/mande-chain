@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"encoding/hex"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
@@ -32,14 +33,15 @@ func (k Keeper) lockMandAndDelegateStake(ctx sdk.Context, msg *types.MsgCreateVo
 	// delegate minted stake tokens to receiver
 	votingModuleAcct := sdk.AccAddress(crypto.AddressHash([]byte(types.ModuleName)))
 
-	valAddr, err := sdk.ValAddressFromBech32(msg.Receiver)
+	receiverAccAddress, _ := sdk.AccAddressFromBech32(msg.Receiver)
+	receiverValAddr, err := sdk.ValAddressFromHex(hex.EncodeToString(receiverAccAddress.Bytes()))
 	if err != nil {
 		return sdkerrors.Wrapf(types.ErrReceiverIsNotAValidator, msg.Receiver)
 	}
 
-	recipientValidator, found := k.stakingKeeper.GetValidator(ctx, valAddr)
+	recipientValidator, found := k.stakingKeeper.GetValidator(ctx, receiverValAddr)
 	if !found {
-		return sdkerrors.Wrapf(types.ErrNoValidatorFound, valAddr.String())
+		return sdkerrors.Wrapf(types.ErrNoValidatorFound, receiverValAddr.String())
 	}
 
 	_, err = k.stakingKeeper.Delegate(ctx, votingModuleAcct, sdk.NewInt(int64(msg.Count)), stakingtypes.Unbonded, recipientValidator, true)
@@ -60,12 +62,13 @@ func (k Keeper) undelegateStakeAndUnlockMand(ctx sdk.Context, msg *types.MsgCrea
 	// undelegate the stake tokens
 	votingModuleAcct := sdk.AccAddress(crypto.AddressHash([]byte(types.ModuleName)))
 
-	validatorAddr, err := sdk.ValAddressFromBech32(msg.Receiver)
+	receiverAccAddress, _ := sdk.AccAddressFromBech32(msg.Receiver)
+	receiverValAddr, err := sdk.ValAddressFromHex(hex.EncodeToString(receiverAccAddress.Bytes()))
 	if err != nil {
 		return sdkerrors.Wrapf(types.ErrReceiverIsNotAValidator, msg.Receiver)
 	}
 
-	_, err = k.stakingKeeper.Undelegate(ctx, votingModuleAcct, validatorAddr, sdk.NewDec(int64(msg.Count)))
+	_, err = k.stakingKeeper.Undelegate(ctx, votingModuleAcct, receiverValAddr, sdk.NewDec(int64(msg.Count)))
 	if err != nil {
 		return err
 	}

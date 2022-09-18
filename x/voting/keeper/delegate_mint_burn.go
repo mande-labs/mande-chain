@@ -74,11 +74,11 @@ func (k Keeper) undelegateStakeAndUnlockMand(ctx sdk.Context, msg *types.MsgCrea
 	}
 
 	// burn the stake tokens from voting module
-	voteCountEquivalentStake := sdk.Coins{sdk.NewInt64Coin("stake", int64(msg.Count))}
-	err = k.bankKeeper.BurnCoins(ctx, types.ModuleName, voteCountEquivalentStake)
-	if err != nil {
-		return err
-	}
+	//voteCountEquivalentStake := sdk.Coins{sdk.NewInt64Coin("stake", int64(msg.Count))}
+	//err = k.bankKeeper.BurnCoins(ctx, types.ModuleName, voteCountEquivalentStake)
+	//if err != nil {
+	//	return err
+	//}
 
 	// send mand tokens back to creator
 	voteCountEquivalentMand := sdk.Coins{sdk.NewInt64Coin("mand", int64(msg.Count))}

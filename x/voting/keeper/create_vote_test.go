@@ -1,6 +1,7 @@
 package keeper_test
 
 import (
+	"encoding/hex"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/suite"
 	"mande-chain/testutil"
@@ -29,9 +30,9 @@ func (suite *VotingKeeperTestSuite) TestCreateVote_Cast_Positive_Valid() {
 	app.AccountKeeper.SetAccount(suite.Ctx, acc1)
 	suite.Require().NoError(testutil.FundAccount(app.BankKeeper, suite.Ctx, addr1, balances))
 
-	addr2 := sdk.AccAddress("addr2_______________")
-	acc2 := app.AccountKeeper.NewAccountWithAddress(suite.Ctx, addr2)
-	app.AccountKeeper.SetAccount(suite.Ctx, acc2)
+	validator := app.StakingKeeper.GetAllValidators(suite.Ctx)[0]
+	valAddr, _ := sdk.ValAddressFromBech32(validator.OperatorAddress)
+	addr2, _ := sdk.AccAddressFromHex(hex.EncodeToString(valAddr.Bytes()))
 
 	// ============= addr1 votes addr2 ===============
 	msgCreateVote := &types.MsgCreateVote{
@@ -63,9 +64,9 @@ func (suite *VotingKeeperTestSuite) TestCreateVote_Cast_Negative_Valid() {
 	app.AccountKeeper.SetAccount(suite.Ctx, acc1)
 	suite.Require().NoError(testutil.FundAccount(app.BankKeeper, suite.Ctx, addr1, balances))
 
-	addr2 := sdk.AccAddress("addr2_______________")
-	acc2 := app.AccountKeeper.NewAccountWithAddress(suite.Ctx, addr2)
-	app.AccountKeeper.SetAccount(suite.Ctx, acc2)
+	validator := app.StakingKeeper.GetAllValidators(suite.Ctx)[0]
+	valAddr, _ := sdk.ValAddressFromBech32(validator.OperatorAddress)
+	addr2, _ := sdk.AccAddressFromHex(hex.EncodeToString(valAddr.Bytes()))
 
 	// ============= addr1 votes addr2 ===============
 	msgCreateVote := &types.MsgCreateVote{
@@ -97,9 +98,9 @@ func (suite *VotingKeeperTestSuite) TestCreateVote_UnCast_Positive_Valid() {
 	app.AccountKeeper.SetAccount(suite.Ctx, acc1)
 	suite.Require().NoError(testutil.FundAccount(app.BankKeeper, suite.Ctx, addr1, balances))
 
-	addr2 := sdk.AccAddress("addr2_______________")
-	acc2 := app.AccountKeeper.NewAccountWithAddress(suite.Ctx, addr2)
-	app.AccountKeeper.SetAccount(suite.Ctx, acc2)
+	validator := app.StakingKeeper.GetAllValidators(suite.Ctx)[0]
+	valAddr, _ := sdk.ValAddressFromBech32(validator.OperatorAddress)
+	addr2, _ := sdk.AccAddressFromHex(hex.EncodeToString(valAddr.Bytes()))
 
 	// ============= addr1 votes addr2 ===============
 	msgCreateVote := &types.MsgCreateVote{
@@ -147,9 +148,9 @@ func (suite *VotingKeeperTestSuite) TestCreateVote_UnCast_Negative_Valid() {
 	app.AccountKeeper.SetAccount(suite.Ctx, acc1)
 	suite.Require().NoError(testutil.FundAccount(app.BankKeeper, suite.Ctx, addr1, balances))
 
-	addr2 := sdk.AccAddress("addr2_______________")
-	acc2 := app.AccountKeeper.NewAccountWithAddress(suite.Ctx, addr2)
-	app.AccountKeeper.SetAccount(suite.Ctx, acc2)
+	validator := app.StakingKeeper.GetAllValidators(suite.Ctx)[0]
+	valAddr, _ := sdk.ValAddressFromBech32(validator.OperatorAddress)
+	addr2, _ := sdk.AccAddressFromHex(hex.EncodeToString(valAddr.Bytes()))
 
 	// ============= addr1 votes addr2 ===============
 	msgCreateVote := &types.MsgCreateVote{

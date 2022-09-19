@@ -2,13 +2,13 @@ accounts:
   - name: alice
     coins: ["10000000mand", "200000000stake"]
   - name: bob
-    coins: ["100000000stake", "10000000mand"]
+    coins: ["10000000mand", "100000000stake"]
   - name: potato
-    coins: ["10000000stake", "3000000mand"]
+    coins: ["3000000mand", "10000000stake"]
   - name: carrot
-    coins: ["30000000stake", "9000000mand"]
+    coins: ["9000000mand", "30000000stake"]
   - name: pumpkin
-    coins: ["50000000stake", "7000000mand"]
+    coins: ["7000000mand", "50000000stake"]
 
 validator:
   name: potato
@@ -22,7 +22,7 @@ client:
 
 faucet:
   name: bob
-  coins: ["10000000stake", "1000000mand"]
+  coins: ["1000000mand", "10000000stake"]
 
 genesis:
   app_state:

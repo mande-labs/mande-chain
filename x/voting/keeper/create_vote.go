@@ -43,11 +43,6 @@ func (k Keeper) uncastVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateV
 		return sdkerrors.Wrap(types.ErrNoVotesCasted, msg.Receiver)
 	}
 
-	err := k.undelegateStakeAndUnlockMand(ctx, msg)
-	if err != nil {
-		return err
-	}
-
 	voteCount := intAbs(msg.Count)
 	if msg.Count < 0 {
 		if voteBookEntry.Negative >= voteCount {
@@ -61,6 +56,11 @@ func (k Keeper) uncastVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateV
 		} else {
 			return sdkerrors.Wrapf(types.ErrPositiveVotesCastedLimit, "count = (%d)", msg.Count)
 		}
+	}
+
+	err := k.undelegateStakeAndUnlockMand(ctx, msg)
+	if err != nil {
+		return err
 	}
 
 	k.SetVoteBook(ctx, voteBookEntry)

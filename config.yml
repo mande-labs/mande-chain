@@ -22,3 +22,6 @@ genesis:
     bank:
       params:
         send_enabled: [{"denom": "stake","enabled": false}]
+    mint:
+      params:
+        mint_denom: "mand"

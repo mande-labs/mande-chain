@@ -15,16 +15,17 @@ import (
 */
 func (k Keeper) lockMandAndDelegateStake(ctx sdk.Context, msg *types.MsgCreateVote) error {
 	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
+	voteCountAbs := int64(Abs(msg.Count))
 
 	// send tokens from the vote creator to the voting module account
-	voteCountEquivalentMand := sdk.Coins{sdk.NewInt64Coin("mand", int64(msg.Count))}
+	voteCountEquivalentMand := sdk.Coins{sdk.NewInt64Coin("mand", voteCountAbs)}
 	err := k.bankKeeper.SendCoinsFromAccountToModule(ctx, creator, types.ModuleName, voteCountEquivalentMand)
 	if err != nil {
 		return err
 	}
 
 	// mint stake token to voting module account
-	voteCountEquivalentStake := sdk.Coins{sdk.NewInt64Coin("stake", int64(msg.Count))}
+	voteCountEquivalentStake := sdk.Coins{sdk.NewInt64Coin("stake", voteCountAbs)}
 	err = k.bankKeeper.MintCoins(ctx, types.ModuleName, voteCountEquivalentStake)
 	if err != nil {
 		return err
@@ -44,7 +45,7 @@ func (k Keeper) lockMandAndDelegateStake(ctx sdk.Context, msg *types.MsgCreateVo
 		return sdkerrors.Wrapf(types.ErrNoValidatorFound, receiverValAddr.String())
 	}
 
-	_, err = k.stakingKeeper.Delegate(ctx, votingModuleAcct, sdk.NewInt(int64(msg.Count)), stakingtypes.Unbonded, recipientValidator, true)
+	_, err = k.stakingKeeper.Delegate(ctx, votingModuleAcct, sdk.NewInt(voteCountAbs), stakingtypes.Unbonded, recipientValidator, true)
 	if err != nil {
 		return err
 	}
@@ -58,6 +59,7 @@ func (k Keeper) lockMandAndDelegateStake(ctx sdk.Context, msg *types.MsgCreateVo
 */
 func (k Keeper) undelegateStakeAndUnlockMand(ctx sdk.Context, msg *types.MsgCreateVote) error {
 	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
+	voteCountAbs := int64(Abs(msg.Count))
 
 	// undelegate the stake tokens
 	votingModuleAcct := sdk.AccAddress(crypto.AddressHash([]byte(types.ModuleName)))
@@ -68,20 +70,30 @@ func (k Keeper) undelegateStakeAndUnlockMand(ctx sdk.Context, msg *types.MsgCrea
 		return sdkerrors.Wrapf(types.ErrReceiverIsNotAValidator, msg.Receiver)
 	}
 
-	_, err = k.stakingKeeper.Undelegate(ctx, votingModuleAcct, receiverValAddr, sdk.NewDec(int64(msg.Count)))
+	recipientValidator, found := k.stakingKeeper.GetValidator(ctx, receiverValAddr)
+	if !found {
+		return sdkerrors.Wrapf(types.ErrNoValidatorFound, receiverValAddr.String())
+	}
+
+	sharesToUnDelegate, err := recipientValidator.SharesFromTokens(sdk.NewInt(voteCountAbs))
+	if err != nil {
+		return err
+	}
+
+	_, err = k.stakingKeeper.Undelegate(ctx, votingModuleAcct, receiverValAddr, sharesToUnDelegate)
 	if err != nil {
 		return err
 	}
 
 	// burn the stake tokens from voting module
-	//voteCountEquivalentStake := sdk.Coins{sdk.NewInt64Coin("stake", int64(msg.Count))}
+	//voteCountEquivalentStake := sdk.Coins{sdk.NewInt64Coin("stake", voteCountAbs)}
 	//err = k.bankKeeper.BurnCoins(ctx, types.ModuleName, voteCountEquivalentStake)
 	//if err != nil {
 	//	return err
 	//}
 
 	// send mand tokens back to creator
-	voteCountEquivalentMand := sdk.Coins{sdk.NewInt64Coin("mand", int64(msg.Count))}
+	voteCountEquivalentMand := sdk.Coins{sdk.NewInt64Coin("mand", voteCountAbs)}
 	err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, creator, voteCountEquivalentMand)
 	if err != nil {
 		return err

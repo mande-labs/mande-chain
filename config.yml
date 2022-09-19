@@ -1,6 +1,6 @@
 accounts:
   - name: alice
-    coins: ["200000000stake","10000000mand"]
+    coins: ["10000000mand", "200000000stake"]
   - name: bob
     coins: ["100000000stake", "10000000mand"]
   - name: potato

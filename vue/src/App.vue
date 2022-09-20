@@ -27,10 +27,7 @@ export default {
     let router = useRouter()
 
     // state
-    let navbarLinks = [
-      { name: 'Vote', url: '/vote' },
-      { name: 'Portfolio', url: '/portfolio' }
-    ]
+    let navbarLinks = []
 
     // computed
     let address = computed(() => $s.getters['common/wallet/address'])
@@ -39,7 +36,7 @@ export default {
     onBeforeMount(async () => {
       await $s.dispatch('common/env/init')
 
-      router.push('vote')
+      router.push('portfolio')
     })
 
     return {

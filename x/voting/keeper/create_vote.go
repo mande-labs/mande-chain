@@ -4,6 +4,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"mande-chain/x/voting/types"
+	"strconv"
 )
 
 func (k Keeper) CreateVote(ctx sdk.Context, msg *types.MsgCreateVote) error {
@@ -63,6 +64,15 @@ func (k Keeper) uncastVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateV
 	k.SetAggregateVoteCount(ctx, aggregateVoteReceiverCount)
 	k.SetAggregateVoteCount(ctx, *aggregateVoteCreatorCount)
 
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeVoteUncasted,
+			sdk.NewAttribute(types.AttributeKeyCaster, msg.Creator),
+			sdk.NewAttribute(types.AttributeKeyReceiver, msg.Receiver),
+			sdk.NewAttribute(sdk.AttributeKeyAmount, strconv.Itoa(int(msg.Count))),
+		),
+	)
+
 	return nil
 }
 
@@ -103,6 +113,15 @@ func (k Keeper) castVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateVot
 	k.ReconcileAggregatedVotes(msg, aggregateVoteCreatorCount, &aggregateVoteReceiverCount)
 	k.SetAggregateVoteCount(ctx, aggregateVoteReceiverCount)
 	k.SetAggregateVoteCount(ctx, *aggregateVoteCreatorCount)
+
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypeVoteCasted,
+			sdk.NewAttribute(types.AttributeKeyCaster, msg.Creator),
+			sdk.NewAttribute(types.AttributeKeyReceiver, msg.Receiver),
+			sdk.NewAttribute(sdk.AttributeKeyAmount, strconv.Itoa(int(msg.Count))),
+		),
+	)
 
 	return nil
 }

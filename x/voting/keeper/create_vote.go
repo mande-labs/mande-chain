@@ -43,6 +43,8 @@ func (k Keeper) uncastVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateV
 		return sdkerrors.Wrap(types.ErrNoVotesCasted, msg.Receiver)
 	}
 
+	ballotBefore := calculateBallot(&aggregateVoteReceiverCount)
+
 	voteCount := intAbs(msg.Count)
 	if msg.Count < 0 {
 		if voteBookEntry.Negative >= voteCount {
@@ -58,15 +60,16 @@ func (k Keeper) uncastVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateV
 		}
 	}
 
-	err := k.undelegateStakeAndUnlockMand(ctx, msg)
-	if err != nil {
-		return err
-	}
-
 	k.SetVoteBook(ctx, voteBookEntry)
 	k.ReconcileAggregatedVotes(msg, aggregateVoteCreatorCount, &aggregateVoteReceiverCount)
 	k.SetAggregateVoteCount(ctx, aggregateVoteReceiverCount)
 	k.SetAggregateVoteCount(ctx, *aggregateVoteCreatorCount)
+
+	ballotAfter := calculateBallot(&aggregateVoteReceiverCount)
+	err := k.undelegateStakeAndUnlockMand(ctx, msg, ballotBefore, ballotAfter)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -95,13 +98,6 @@ func (k Keeper) castVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateVot
 		voteBookEntry.Positive += voteCount
 	}
 
-	err := k.lockMandAndDelegateStake(ctx, msg)
-	if err != nil {
-		return err
-	}
-
-	k.SetVoteBook(ctx, voteBookEntry)
-
 	aggregateVoteReceiverCount, found := k.GetAggregateVoteCount(ctx, msg.Receiver)
 	if !found {
 		aggregateVoteReceiverCount.Index = msg.Receiver
@@ -110,9 +106,18 @@ func (k Keeper) castVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateVot
 		aggregateVoteReceiverCount.NegativeReceived = 0
 	}
 
+	ballotBefore := calculateBallot(&aggregateVoteReceiverCount)
+
+	k.SetVoteBook(ctx, voteBookEntry)
 	k.ReconcileAggregatedVotes(msg, aggregateVoteCreatorCount, &aggregateVoteReceiverCount)
 	k.SetAggregateVoteCount(ctx, aggregateVoteReceiverCount)
 	k.SetAggregateVoteCount(ctx, *aggregateVoteCreatorCount)
+
+	ballotAfter := calculateBallot(&aggregateVoteReceiverCount)
+	err := k.lockMandAndDelegateStake(ctx, msg, ballotBefore, ballotAfter)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

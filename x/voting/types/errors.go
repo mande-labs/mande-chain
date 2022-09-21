@@ -9,11 +9,11 @@ import (
 // x/voting module sentinel errors
 var (
 	ErrInvalidVotingMode        = sdkerrors.Register(ModuleName, 1, "invalid voting mode")
-	ErrInvalidVotingOperation   = sdkerrors.Register(ModuleName, 2, "invalid voting operation")
 	ErrNoVotesCasted            = sdkerrors.Register(ModuleName, 3, "no votes casted")
 	ErrNoVoteRecord             = sdkerrors.Register(ModuleName, 4, "voting record not found")
 	ErrPositiveVotesCastedLimit = sdkerrors.Register(ModuleName, 5, "you have not casted this many positive votes")
 	ErrNegativeVotesCastedLimit = sdkerrors.Register(ModuleName, 6, "you have not casted this many negative votes")
 	ErrNotEnoughMand            = sdkerrors.Register(ModuleName, 7, "not enough MAND to use for voting")
-	ErrCastingZeroVotes         = sdkerrors.Register(ModuleName, 8, "invalid vote amount")
+	ErrZeroVoteCount            = sdkerrors.Register(ModuleName, 8, "invalid vote count, cannot be zero")
+	ErrReceiverIsNotAValidator  = sdkerrors.Register(ModuleName, 9, "validator not found, receiver is not a validator")
 )

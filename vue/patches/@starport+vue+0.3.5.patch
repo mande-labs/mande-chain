@@ -1,8 +1,8 @@
 diff --git a/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue b/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
-index 4a5c024..7b3f39a 100644
+index 4a5c024..8dacd88 100644
 --- a/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
 +++ b/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
-@@ -10,112 +10,7 @@
+@@ -10,112 +10,27 @@
            :title="'Home'"
          >
            <div style="display: flex; align-items: center">
@@ -112,7 +112,40 @@ index 4a5c024..7b3f39a 100644
 -            >
 -              Beta
 -            </span>
++<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
++ width="81.000000pt" height="81.000000pt" viewBox="0 0 81.000000 81.000000"
++ preserveAspectRatio="xMidYMid meet" style="height:35pt">
 +
++<g transform="translate(0.000000,81.000000) scale(0.100000,-0.100000)"
++fill="#000000" stroke="none">
++<path d="M307 799 c-109 -26 -218 -116 -268 -223 -93 -200 -4 -439 199 -534
++50 -24 69 -27 162 -27 97 0 110 2 172 32 85 40 151 106 191 191 30 62 32 75
++32 172 0 93 -3 112 -27 162 -81 174 -277 270 -461 227z m221 -109 c67 -29 140
++-108 166 -179 14 -40 17 -70 14 -124 -8 -114 -60 -197 -160 -253 -48 -26 -62
++-29 -143 -29 -75 0 -98 4 -139 24 -132 65 -203 223 -162 362 53 184 247 275
++424 199z"/>
++<path d="M254 541 c-42 -26 -64 -85 -64 -171 0 -55 4 -71 17 -79 11 -6 24 -6
++35 0 15 8 18 23 18 77 0 73 17 112 49 112 35 0 51 -32 51 -103 0 -46 5 -70 16
++-81 40 -40 74 1 74 89 0 63 11 85 42 85 26 0 38 -32 38 -105 0 -60 2 -66 25
++-77 42 -19 55 3 55 89 0 40 -6 88 -14 107 -29 70 -107 97 -171 58 -29 -18 -31
++-18 -60 0 -38 23 -72 23 -111 -1z m298 -30 c33 -29 33 -31 33 -118 0 -72 -3
++-88 -15 -88 -11 0 -16 14 -18 55 -1 30 -4 65 -7 77 -12 51 -71 71 -98 33 -13
++-19 -14 -19 -26 7 -11 24 -10 29 9 45 34 28 84 23 122 -11z"/>
++</g>
++</svg>
            </div>
          </router-link>
        </slot>
+diff --git a/node_modules/@starport/vue/src/components/SpTokenTransferListItem/SpTokenTransferListItem.vue b/node_modules/@starport/vue/src/components/SpTokenTransferListItem/SpTokenTransferListItem.vue
+index 69f7957..621a0c3 100644
+--- a/node_modules/@starport/vue/src/components/SpTokenTransferListItem/SpTokenTransferListItem.vue
++++ b/node_modules/@starport/vue/src/components/SpTokenTransferListItem/SpTokenTransferListItem.vue
+@@ -137,7 +137,7 @@ export default defineComponent({
+     content: '';
+     display: none;
+     width: calc(100% + 32px);
+-    height: 60px;
++    height: 80px;
+     background: rgba(0, 0, 0, 0.03);
+     border-radius: 8px;
+     position: absolute;

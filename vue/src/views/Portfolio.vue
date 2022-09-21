@@ -12,11 +12,14 @@
       </div>
     </div>
     <div class="row row-sm-revers">
-      <div class="col-lg-6">
+      <div class="col-lg-3">
         <SpTokenTransferList />
       </div>
-      <div class="col-md-5 col-lg-offset-1">
+      <div class="col-lg-3 col-lg-offset-1">
         <VoteTransactionList />
+      </div>
+      <div class="col-lg-3 col-lg-offset-1">
+        <ValidatorsList />
       </div>
     </div>
   </div>
@@ -26,13 +29,14 @@
 import { SpAssets, SpTokenTransfer, SpTokenTransferList } from '@starport/vue'
 import Voting from './Voting.vue'
 import VoteTransactionList from './VoteTransactionList.vue'
+import ValidatorsList from './ValidatorsList.vue'
 import { computed, defineComponent } from 'vue'
 import { useStore } from 'vuex'
 
 export default defineComponent ({
   name: 'Portfolio',
 
-  components: { SpTokenTransfer, SpAssets, SpTokenTransferList, Voting, VoteTransactionList },
+  components: { SpTokenTransfer, SpAssets, SpTokenTransferList, Voting, VoteTransactionList, ValidatorsList },
 
   setup() {
     // store

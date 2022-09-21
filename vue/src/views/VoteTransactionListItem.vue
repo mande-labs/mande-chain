@@ -122,7 +122,7 @@ export default defineComponent ({
     content: '';
     display: none;
     width: calc(100% + 32px);
-    height: 60px;
+    height: 80px;
     background: rgba(0, 0, 0, 0.03);
     border-radius: 8px;
     position: absolute;

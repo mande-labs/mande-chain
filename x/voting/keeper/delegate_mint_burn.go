@@ -134,12 +134,5 @@ func (k Keeper) undelegate(ctx sdk.Context, msg *types.MsgCreateVote, amount int
 		return err
 	}
 
-	// burn the stake tokens from voting module
-	//voteCountEquivalentStake := sdk.Coins{sdk.NewInt64Coin("stake", voteCountAbs)}
-	//err = k.bankKeeper.BurnCoins(ctx, types.ModuleName, voteCountEquivalentStake)
-	//if err != nil {
-	//	return err
-	//}
-
 	return nil
 }

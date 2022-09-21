@@ -100,13 +100,6 @@ export default defineComponent ({
       const groupByYear = groupBy('timestamp')
       return groupByYear(list.value)
     })
-
-    console.log('check state size')
-    console.log(state.listSize)
-
-    console.log('check pager size')
-    console.log(pager.value.page.value.length)
-
     let leftToShowMore = computed<boolean>(
       () =>
         state.listSize < state.listMaxSize &&

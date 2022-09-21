@@ -2,14 +2,20 @@
   <div class="container">
     <div class="row row-sm-revers">
       <div class="col-lg-3">
-        <SpAssets />
-        <SpTokenTransferList />
-      </div>
-      <div class="col-lg-3 col-lg-offset-1">
         <SpTokenTransfer />
       </div>
-      <div class="col-md-3 col-lg-offset-1">
+      <div class="col-lg-3 col-lg-offset-1">
         <Voting />
+      </div>
+      <div class="col-md-3 col-lg-offset-1">
+        <SpAssets />
+      </div>
+    </div>
+    <div class="row row-sm-revers">
+      <div class="col-lg-6">
+        <SpTokenTransferList />
+      </div>
+      <div class="col-md-5 col-lg-offset-1">
         <VoteTransactionList />
       </div>
     </div>

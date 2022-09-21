@@ -85,10 +85,10 @@ export default defineComponent ({
     // computed
     let dirDescription = computed<string>(() => MODE_DESC[props.tx.mode])
     let addr = computed<string>(() =>
-      props.tx.dir === 'in' ? props.tx.sender : props.tx.receiver
+      props.tx.receiver
     )
     let shortAddr = computed<string>(
-      () => addr.value.substring(0, 10) + '...' + addr.value.slice(-4)
+      () => props.tx.receiver.substring(0, 10) + '...' + props.tx.receiver.slice(-4)
     )
     let txDate = computed<string>(() => {
       let date = new Date(props.tx.timestamp)
@@ -201,6 +201,23 @@ export default defineComponent ({
   /* light/text */
 
   color: #000000;
+}
+
+.tx-denom {
+  /* Body/S */
+
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 153.8%;
+  /* identical to box height, or 20px */
+
+  text-align: right;
+
+  /* light/muted */
+
+  color: rgba(0, 0, 0, 0.667);
 }
 
 .tx-icon {

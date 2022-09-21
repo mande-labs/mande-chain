@@ -94,12 +94,12 @@ func (k Keeper) delegate(ctx sdk.Context, msg *types.MsgCreateVote, amount int64
 	receiverAccAddress, _ := sdk.AccAddressFromBech32(msg.Receiver)
 	receiverValAddr, err := sdk.ValAddressFromHex(hex.EncodeToString(receiverAccAddress.Bytes()))
 	if err != nil {
-		return sdkerrors.Wrapf(types.ErrReceiverIsNotAValidator, msg.Receiver)
+		return err
 	}
 
 	recipientValidator, found := k.stakingKeeper.GetValidator(ctx, receiverValAddr)
 	if !found {
-		return sdkerrors.Wrapf(types.ErrNoValidatorFound, receiverValAddr.String())
+		return sdkerrors.Wrapf(types.ErrReceiverIsNotAValidator, receiverValAddr.String())
 	}
 
 	_, err = k.stakingKeeper.Delegate(ctx, votingModuleAcct, sdk.NewInt(amount), stakingtypes.Unbonded, recipientValidator, true)
@@ -116,12 +116,12 @@ func (k Keeper) undelegate(ctx sdk.Context, msg *types.MsgCreateVote, amount int
 	receiverAccAddress, _ := sdk.AccAddressFromBech32(msg.Receiver)
 	receiverValAddr, err := sdk.ValAddressFromHex(hex.EncodeToString(receiverAccAddress.Bytes()))
 	if err != nil {
-		return sdkerrors.Wrapf(types.ErrReceiverIsNotAValidator, msg.Receiver)
+		return err
 	}
 
 	recipientValidator, found := k.stakingKeeper.GetValidator(ctx, receiverValAddr)
 	if !found {
-		return sdkerrors.Wrapf(types.ErrNoValidatorFound, receiverValAddr.String())
+		return sdkerrors.Wrapf(types.ErrReceiverIsNotAValidator, receiverValAddr.String())
 	}
 
 	sharesToUnDelegate, err := recipientValidator.SharesFromTokens(sdk.NewInt(amount))

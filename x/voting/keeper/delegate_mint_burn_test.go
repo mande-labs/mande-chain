@@ -307,5 +307,5 @@ func (suite *VotingKeeperTestSuite) TestValidation_ReceiverIsNotAValidator() {
 		Mode:     1, // cast
 	}
 	_, err := msgServer.CreateVote(ctx, msgCreateVote)
-	suite.Require().ErrorIs(err, types.ErrNoValidatorFound)
+	suite.Require().ErrorIs(err, types.ErrReceiverIsNotAValidator)
 }

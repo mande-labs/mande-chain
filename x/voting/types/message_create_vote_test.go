@@ -18,12 +18,16 @@ func TestMsgCreateVote_ValidateBasic(t *testing.T) {
 			name: "invalid address",
 			msg: MsgCreateVote{
 				Creator: "invalid_address",
+				Mode:    1,
+				Count:   1,
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgCreateVote{
 				Creator: sample.AccAddress(),
+				Mode:    1,
+				Count:   1,
 			},
 		},
 	}

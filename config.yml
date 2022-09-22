@@ -1,18 +1,18 @@
 accounts:
   - name: alice
-    coins: ["10000000mand", "200000000stake"]
+    coins: ["10000000mand", "200000000cred"]
   - name: bob
-    coins: ["10000000mand", "100000000stake"]
+    coins: ["10000000mand", "100000000cred"]
   - name: potato
-    coins: ["3000000mand", "10000000stake"]
+    coins: ["3000000mand", "10000000cred"]
   - name: carrot
-    coins: ["9000000mand", "30000000stake"]
+    coins: ["9000000mand", "30000000cred"]
   - name: pumpkin
-    coins: ["7000000mand", "50000000stake"]
+    coins: ["7000000mand", "50000000cred"]
 
 validator:
   name: potato
-  staked: "9000000stake"
+  staked: "9000000cred"
 
 client:
   openapi:
@@ -22,13 +22,23 @@ client:
 
 faucet:
   name: bob
-  coins: ["1000000mand", "10000000stake"]
+  coins: ["1000000mand", "10000000cred"]
 
 genesis:
   app_state:
     staking:
       params:
+        bond_denom: "cred"
         unbonding_time: "0.001s"
+    gov:
+      deposit_params:
+        min_deposit: [{ "amount": "10000000", "denom": "cred" }]
+    mint:
+      params:
+        mint_denom: "cred"
+    crisis:
+      constant_fee:
+        denom: "cred"
     bank:
       params:
-        send_enabled: [{"denom": "stake","enabled": false}]
+        send_enabled: [{"denom": "cred","enabled": false}]

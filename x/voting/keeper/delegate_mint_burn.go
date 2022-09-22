@@ -81,14 +81,14 @@ func (k Keeper) delegationHandler(ctx sdk.Context, msg *types.MsgCreateVote, bal
 }
 
 func (k Keeper) delegate(ctx sdk.Context, msg *types.MsgCreateVote, amount int64) error {
-	// mint stake token to voting module account
-	coinsToMint := sdk.Coins{sdk.NewInt64Coin("stake", amount)}
+	// mint staking token to voting module account
+	coinsToMint := sdk.Coins{sdk.NewInt64Coin("cred", amount)}
 	err := k.bankKeeper.MintCoins(ctx, types.ModuleName, coinsToMint)
 	if err != nil {
 		return err
 	}
 
-	// delegate minted stake tokens to receiver
+	// delegate minted staking tokens to receiver
 	votingModuleAcct := sdk.AccAddress(crypto.AddressHash([]byte(types.ModuleName)))
 
 	receiverAccAddress, _ := sdk.AccAddressFromBech32(msg.Receiver)
@@ -111,7 +111,7 @@ func (k Keeper) delegate(ctx sdk.Context, msg *types.MsgCreateVote, amount int64
 }
 
 func (k Keeper) undelegate(ctx sdk.Context, msg *types.MsgCreateVote, amount int64) error {
-	// undelegate the stake tokens
+	// undelegate the staking tokens
 	votingModuleAcct := sdk.AccAddress(crypto.AddressHash([]byte(types.ModuleName)))
 	receiverAccAddress, _ := sdk.AccAddressFromBech32(msg.Receiver)
 	receiverValAddr, err := sdk.ValAddressFromHex(hex.EncodeToString(receiverAccAddress.Bytes()))

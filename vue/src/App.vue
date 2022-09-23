@@ -27,10 +27,7 @@ export default {
     let router = useRouter()
 
     // state
-    let navbarLinks = [
-      { name: 'Portfolio', url: '/portfolio' },
-      { name: 'Data', url: '/data' }
-    ]
+    let navbarLinks = []
 
     // computed
     let address = computed(() => $s.getters['common/wallet/address'])

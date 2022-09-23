@@ -1,0 +1,39 @@
+version: "3.7"
+services:
+  testnet:
+    container_name: testnet
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # user: root
+    # ports: [26657:26657, 1317:1317]
+    entrypoint: [/bin/bash]
+    command:
+      - -cx
+      - |
+        mandeNode init test-node --chain-id mande-1
+        mandeNode keys add test-node --keyring-backend test
+        mandeNode add-genesis-account $$(mandeNode keys show test-node -a --keyring-backend test) "100000000000000mand"
+        sed -i 's/stake/cred/g' /mandechain/.mandeNode/config/genesis.json
+        mandeNode gentx test-node "1000000000000mand" \
+          --chain-id mande-1 \
+          --moniker="test-node-1" \
+          --commission-rate="0.02" \
+          --commission-max-rate="0.5" \
+          --commission-max-change-rate="0.02" \
+          --keyring-backend test
+        mandeNode validate-genesis
+        mandeNode collect-gentxs
+        mandeNode validate-genesis
+        if [[ -z "$$(grep '\[api\]' -A 5 $${APP_TOML} | grep true)" ]]; then
+          sed -i '1,/enable = false/{s/enable = false/enable = true/g}' $${APP_TOML}
+        fi
+        sed -i 's/cors_allowed_origins.*/cors_allowed_origins = ["*"]/g' $${CONFIG_TOML}
+        sed -i 's/cors_allowed_methods.*/cors_allowed_methods = ["*"]/g' $${CONFIG_TOML}
+        sed -i 's/cors_allowed_headers.*/cors_allowed_headers = ["*"]/g' $${CONFIG_TOML}
+        mandeNode start \
+          --pruning=nothing \
+          --rpc.laddr=tcp://0.0.0.0:26657
+    environment:
+      - CONFIG_TOML=/mandechain/.mandeNode/config/config.toml
+      - APP_TOML=/mandechain/.mandeNode/config/app.toml

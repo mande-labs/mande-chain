@@ -28,15 +28,15 @@ client:
 
 faucet:
   name: pumpkin
-  coins: ["1000000mand", "10000000cred"]
+  coins: ["1000000mand"]
   name: carrot
-  coins: ["1000000mand", "10000000cred"]
+  coins: ["1000000mand"]
   name: lemon
-  coins: ["1000000mand", "10000000cred"]
+  coins: ["1000000mand"]
   name: melon
-  coins: ["1000000mand", "10000000cred"]
+  coins: ["1000000mand"]
   name: frooti
-  coins: ["1000000mand", "10000000cred"]
+  coins: ["1000000mand"]
 
 genesis:
   app_state:

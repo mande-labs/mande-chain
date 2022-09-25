@@ -3,10 +3,16 @@ accounts:
     coins: ["10000000mand", "200000000cred"]
   - name: bob
     coins: ["10000000mand", "100000000cred"]
-  - name: potato
-    coins: ["3000000mand", "10000000cred"]
   - name: carrot
     coins: ["9000000mand", "30000000cred"]
+  - name: frooti
+    coins: ["7000000mand", "50000000cred"]
+  - name: lemon
+    coins: ["9000000mand", "50000000cred"]
+  - name: melon
+    coins: ["8000000mand", "50000000cred"]
+  - name: potato
+    coins: ["3000000mand", "10000000cred"]
   - name: pumpkin
     coins: ["7000000mand", "50000000cred"]
 
@@ -21,7 +27,15 @@ client:
     path: "vue/src/store"
 
 faucet:
-  name: bob
+  name: pumpkin
+  coins: ["1000000mand", "10000000cred"]
+  name: carrot
+  coins: ["1000000mand", "10000000cred"]
+  name: lemon
+  coins: ["1000000mand", "10000000cred"]
+  name: melon
+  coins: ["1000000mand", "10000000cred"]
+  name: frooti
   coins: ["1000000mand", "10000000cred"]
 
 genesis:
@@ -35,10 +49,10 @@ genesis:
         min_deposit: [{ "amount": "10000000", "denom": "cred" }]
     mint:
       params:
-        mint_denom: "cred"
+        mint_denom: "mand"
     crisis:
       constant_fee:
-        denom: "cred"
+        denom: "mand"
     bank:
       params:
         send_enabled: [{"denom": "cred","enabled": false}]

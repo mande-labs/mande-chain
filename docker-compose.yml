@@ -13,9 +13,9 @@ services:
       - |
         mandeNode init test-node --chain-id mande-1
         mandeNode keys add test-node --keyring-backend test
-        mandeNode add-genesis-account $$(mandeNode keys show test-node -a --keyring-backend test) "100000000000000mand"
-        sed -i 's/stake/cred/g' /mandechain/.mandeNode/config/genesis.json
-        mandeNode gentx test-node "1000000000000mand" \
+        mandeNode add-genesis-account $$(mandeNode keys show test-node -a --keyring-backend test) "100000000000000cred"
+        sed -i 's/stake/cred/g' /root/.mande-chain/config/genesis.json
+        mandeNode gentx test-node "1000000cred" \
           --chain-id mande-1 \
           --moniker="test-node-1" \
           --commission-rate="0.02" \
@@ -35,5 +35,5 @@ services:
           --pruning=nothing \
           --rpc.laddr=tcp://0.0.0.0:26657
     environment:
-      - CONFIG_TOML=/mandechain/.mandeNode/config/config.toml
-      - APP_TOML=/mandechain/.mandeNode/config/app.toml
+      - CONFIG_TOML=/root/.mande-chain/config/config.toml
+      - APP_TOML=/root/.mande-chain/config/app.toml

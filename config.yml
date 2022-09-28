@@ -1,20 +1,20 @@
 accounts:
   - name: alice
-    coins: ["10000000mand", "200000000cred"]
+    coins: ["10000000mand"]
   - name: bob
-    coins: ["10000000mand", "100000000cred"]
+    coins: ["10000000mand"]
   - name: carrot
-    coins: ["9000000mand", "30000000cred"]
+    coins: ["9000000mand"]
   - name: frooti
-    coins: ["7000000mand", "50000000cred"]
+    coins: ["7000000mand"]
   - name: lemon
-    coins: ["9000000mand", "50000000cred"]
+    coins: ["9000000mand"]
   - name: melon
-    coins: ["8000000mand", "50000000cred"]
+    coins: ["8000000mand"]
   - name: potato
     coins: ["3000000mand", "10000000cred"]
   - name: pumpkin
-    coins: ["7000000mand", "50000000cred"]
+    coins: ["7000000mand"]
 
 validator:
   name: potato

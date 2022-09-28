@@ -39,7 +39,7 @@
 import { computed, defineComponent, reactive, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useAddress } from '@starport/vue/src/composables'
-import { Bech32 } from '@cosmjs/encoding'
+import { Bech32, toHex, fromHex } from '@cosmjs/encoding'
 import { useToast } from "vue-toastification";
 
 export interface Validator {
@@ -69,7 +69,7 @@ export default defineComponent ({
 
     let loadNewItems = async () => {
       let res = await $s.dispatch('cosmos.staking.v1beta1/QueryValidators', {
-          subscribe: true
+        options: { subscribe: true },
       })
 
       let validatorsList = computed(() => $s.getters['cosmos.staking.v1beta1/getValidators']())
@@ -83,7 +83,7 @@ export default defineComponent ({
       }
 
       for (let i=0; i<validatorsList.value.validators.length; i++) {
-        val.operatorAddress = validatorsList.value.validators[i].operator_address
+        val.operatorAddress = Bech32.encode("cosmos", fromHex(toHex(Bech32.decode(validatorsList.value.validators[i].operator_address).data)))
         val.status = validatorsList.value.validators[i].status
         val.tokens = validatorsList.value.validators[i].tokens
         val.moniker = validatorsList.value.validators[i].description.moniker

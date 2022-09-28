@@ -1,5 +1,5 @@
 diff --git a/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue b/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
-index 4a5c024..8dacd88 100644
+index 4a5c024..50c6643 100644
 --- a/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
 +++ b/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
 @@ -10,112 +10,27 @@
@@ -136,6 +136,79 @@ index 4a5c024..8dacd88 100644
            </div>
          </router-link>
        </slot>
+@@ -133,6 +48,7 @@
+       </router-link>
+     </div>
+     <div class="navbar-section">
++      <SpButton v-if="address" style="margin-right: 20px" @click="claimTokens">Faucet</SpButton>
+       <SpAcc />
+     </div>
+   </div>
+@@ -145,6 +61,10 @@ import SpAcc from '../SpAcc'
+ import SpButton from '../SpButton'
+ import SpModal from '../SpModal'
+ import SpSystemBar from '../SpSystemBar'
++import { useStore } from 'vuex'
++import { useToast } from "vue-toastification";
++import { useAddress } from '../../composables';
++import axios from 'axios'
+ 
+ export interface NavbarLink {
+   name: string
+@@ -170,6 +90,45 @@ export default defineComponent({
+       type: String,
+       required: false
+     }
++  },
++
++  setup() {
++    let $s = useStore()
++    let { address } = useAddress({ $s })
++    let toast = useToast();
++
++    let claimTokens = async (): Promise<void> => {
++      toast.info("Claiming!", {
++        timeout: 1500
++      });
++
++      let payload: any = {
++        address: address.value,
++        coins: ["100mand"]
++      }
++
++      let headers = { 
++        "mode": "no-cors",
++        "Content-Type": "text/plain"
++      };
++
++      axios.post("http://0.0.0.0:4500/", payload, {headers: headers})
++        .then(response => {
++          toast.success("Coins sent!", {
++            timeout: 1500
++          });
++        })
++        .catch(error => {
++          toast.error(error, {
++            timeout: 1500
++          });
++        });
++    }
++
++    return {
++      claimTokens,
++      address
++    }
+   }
+ })
+ </script>
+@@ -238,4 +197,7 @@ export default defineComponent({
+     display: none;
+   }
+ }
++.faucet-btn {
++  margin-right: 20px;
++}
+ </style>
 diff --git a/node_modules/@starport/vue/src/components/SpTokenTransferListItem/SpTokenTransferListItem.vue b/node_modules/@starport/vue/src/components/SpTokenTransferListItem/SpTokenTransferListItem.vue
 index 69f7957..621a0c3 100644
 --- a/node_modules/@starport/vue/src/components/SpTokenTransferListItem/SpTokenTransferListItem.vue
@@ -149,3 +222,30 @@ index 69f7957..621a0c3 100644
      background: rgba(0, 0, 0, 0.03);
      border-radius: 8px;
      position: absolute;
+diff --git a/node_modules/@starport/vue/src/composables/useKeplr.ts b/node_modules/@starport/vue/src/composables/useKeplr.ts
+index 4fd0968..9a7de1f 100644
+--- a/node_modules/@starport/vue/src/composables/useKeplr.ts
++++ b/node_modules/@starport/vue/src/composables/useKeplr.ts
+@@ -67,7 +67,12 @@ export default function ({ $s }: Params): Response {
+         return y
+       })
+ 
+-      let feeCurrencies = tokens.supply.map((x: Amount) => {
++      let feeCurrencies = tokens.supply.filter((x: Amount) => {
++        if (x.denom == 'mand') {
++          return true
++        }
++        return false
++      }).map((x: Amount) => {
+         const y: AmountWithMeta = {
+           amount: '0',
+           denom: '',
+@@ -90,7 +95,7 @@ export default function ({ $s }: Params): Response {
+       }
+ 
+       if (chainId) {
+-        await window.keplr.experimentalSuggestChain({
++        let temp = await window.keplr.experimentalSuggestChain({
+           features,
+           chainId,
+           chainName,

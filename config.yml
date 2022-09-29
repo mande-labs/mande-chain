@@ -1,28 +1,30 @@
 accounts:
   - name: alice
-    coins: ["10000000mand", "200000000cred"]
+    coins: ["10000000mand"]
   - name: bob
-    coins: ["10000000mand", "100000000cred"]
+    coins: ["10000000mand"]
+  - name: carrot
+    coins: ["9000000mand"]
+  - name: frooti
+    coins: ["7000000mand"]
+  - name: lemon
+    coins: ["9000000mand"]
+  - name: melon
+    coins: ["8000000mand"]
   - name: potato
     coins: ["3000000mand", "10000000cred"]
-  - name: carrot
-    coins: ["9000000mand", "30000000cred"]
-  - name: pumpkin
-    coins: ["7000000mand", "50000000cred"]
+  - name: mandfaucet
+    coins: ["1000000000000mand"]
 
 validator:
   name: potato
-  staked: "9000000cred"
+  staked: "10000000cred"
 
 client:
   openapi:
     path: "docs/static/openapi.yml"
   vuex:
     path: "vue/src/store"
-
-faucet:
-  name: bob
-  coins: ["1000000mand", "10000000cred"]
 
 genesis:
   app_state:
@@ -35,10 +37,10 @@ genesis:
         min_deposit: [{ "amount": "10000000", "denom": "cred" }]
     mint:
       params:
-        mint_denom: "cred"
+        mint_denom: "mand"
     crisis:
       constant_fee:
-        denom: "cred"
+        denom: "mand"
     bank:
       params:
         send_enabled: [{"denom": "cred","enabled": false}]

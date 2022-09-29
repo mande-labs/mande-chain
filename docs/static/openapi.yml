@@ -12909,11 +12909,6 @@ paths:
                           description: >-
                             update_time is the last time the commission rate was
                             changed.
-                    min_self_delegation:
-                      type: string
-                      description: >-
-                        min_self_delegation is the validator's self declared
-                        minimum self delegation.
                   description: >-
                     Validator defines a validator, together with the total
                     amount of the
@@ -13497,11 +13492,6 @@ paths:
                         description: >-
                           update_time is the last time the commission rate was
                           changed.
-                  min_self_delegation:
-                    type: string
-                    description: >-
-                      min_self_delegation is the validator's self declared
-                      minimum self delegation.
                 description: >-
                   Validator defines a validator, together with the total amount
                   of the
@@ -14101,11 +14091,6 @@ paths:
                               description: >-
                                 update_time is the last time the commission rate
                                 was changed.
-                        min_self_delegation:
-                          type: string
-                          description: >-
-                            min_self_delegation is the validator's self declared
-                            minimum self delegation.
                       description: >-
                         Validator defines a validator, together with the total
                         amount of the
@@ -15052,11 +15037,6 @@ paths:
                           description: >-
                             update_time is the last time the commission rate was
                             changed.
-                    min_self_delegation:
-                      type: string
-                      description: >-
-                        min_self_delegation is the validator's self declared
-                        minimum self delegation.
                   description: >-
                     Validator defines a validator, together with the total
                     amount of the
@@ -15638,11 +15618,6 @@ paths:
                         description: >-
                           update_time is the last time the commission rate was
                           changed.
-                  min_self_delegation:
-                    type: string
-                    description: >-
-                      min_self_delegation is the validator's self declared
-                      minimum self delegation.
                 description: >-
                   Validator defines a validator, together with the total amount
                   of the
@@ -40055,11 +40030,6 @@ definitions:
                   description: >-
                     update_time is the last time the commission rate was
                     changed.
-            min_self_delegation:
-              type: string
-              description: >-
-                min_self_delegation is the validator's self declared minimum
-                self delegation.
           description: >-
             Validator defines a validator, together with the total amount of the
 
@@ -40601,11 +40571,6 @@ definitions:
                 type: string
                 format: date-time
                 description: update_time is the last time the commission rate was changed.
-          min_self_delegation:
-            type: string
-            description: >-
-              min_self_delegation is the validator's self declared minimum self
-              delegation.
         description: >-
           Validator defines a validator, together with the total amount of the
 
@@ -40898,11 +40863,6 @@ definitions:
                   description: >-
                     update_time is the last time the commission rate was
                     changed.
-            min_self_delegation:
-              type: string
-              description: >-
-                min_self_delegation is the validator's self declared minimum
-                self delegation.
           description: >-
             Validator defines a validator, together with the total amount of the
 
@@ -41301,11 +41261,6 @@ definitions:
                       description: >-
                         update_time is the last time the commission rate was
                         changed.
-                min_self_delegation:
-                  type: string
-                  description: >-
-                    min_self_delegation is the validator's self declared minimum
-                    self delegation.
               description: >-
                 Validator defines a validator, together with the total amount of
                 the
@@ -41753,11 +41708,6 @@ definitions:
                 type: string
                 format: date-time
                 description: update_time is the last time the commission rate was changed.
-          min_self_delegation:
-            type: string
-            description: >-
-              min_self_delegation is the validator's self declared minimum self
-              delegation.
         description: >-
           Validator defines a validator, together with the total amount of the
 
@@ -42119,11 +42069,6 @@ definitions:
                   description: >-
                     update_time is the last time the commission rate was
                     changed.
-            min_self_delegation:
-              type: string
-              description: >-
-                min_self_delegation is the validator's self declared minimum
-                self delegation.
           description: >-
             Validator defines a validator, together with the total amount of the
 
@@ -42475,11 +42420,6 @@ definitions:
             type: string
             format: date-time
             description: update_time is the last time the commission rate was changed.
-      min_self_delegation:
-        type: string
-        description: >-
-          min_self_delegation is the validator's self declared minimum self
-          delegation.
     description: >-
       Validator defines a validator, together with the total amount of the
 

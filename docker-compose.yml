@@ -1,26 +1,25 @@
 version: "3.7"
+
 services:
-  testnet:
-    container_name: testnet
-    build:
-      context: .
-      dockerfile: Dockerfile
+
+  test-node-1:
+    image: ${IMAGE}:${BUILD_NUMBER}
+    stdin_open: true
+    tty: true
+    container_name: test-node-1
     # user: root
     # ports: [26657:26657, 1317:1317]
     entrypoint: [/bin/bash]
     command:
       - -cx
       - |
-        mandeNode init test-node --chain-id mande-1
-        mandeNode keys add test-node --keyring-backend test
-        mandeNode add-genesis-account $$(mandeNode keys show test-node -a --keyring-backend test) "100000000000000cred"
+        mandeNode init $${MONIKER} --chain-id ${CHAIN_ID}
+        mandeNode keys add $${VALIDATOR_NAME} --keyring-backend test
+        mandeNode add-genesis-account $$(mandeNode keys show $${VALIDATOR_NAME} -a --keyring-backend test) "100000000000000cred"
         sed -i 's/stake/cred/g' /root/.mande-chain/config/genesis.json
-        mandeNode gentx test-node "1000000cred" \
-          --chain-id mande-1 \
-          --moniker="test-node-1" \
-          --commission-rate="0.02" \
-          --commission-max-rate="0.5" \
-          --commission-max-change-rate="0.02" \
+        mandeNode gentx $${VALIDATOR_NAME} "1000000cred" \
+          --chain-id ${CHAIN_ID} \
+          --moniker="$${MONIKER}" \
           --keyring-backend test
         mandeNode validate-genesis
         mandeNode collect-gentxs
@@ -37,3 +36,41 @@ services:
     environment:
       - CONFIG_TOML=/root/.mande-chain/config/config.toml
       - APP_TOML=/root/.mande-chain/config/app.toml
+      - MONIKER=test-node-1
+      - VALIDATOR_NAME=validator_main
+
+  test-node-2:
+    image: ${IMAGE}:${BUILD_NUMBER}
+    stdin_open: true
+    tty: true
+    container_name: test-node-2
+    entrypoint: [/bin/bash]
+    command:
+      - -cx
+      - |
+        mandeNode init $${MONIKER} --chain-id ${CHAIN_ID}
+    environment:
+      - CONFIG_TOML=/root/.mande-chain/config/config.toml
+      - APP_TOML=/root/.mande-chain/config/app.toml
+      - MONIKER=test-node-2
+      - VALIDATOR_NAME=validator_2
+    depends_on:
+      - test-node-1
+
+#  frontend:
+#    build:
+#      -
+#
+#    depends_on:
+#      - test-node-1
+#      - test-node-2
+
+  redis:
+    image: redis
+
+#  faucet:
+#    build:
+#      -
+#    depends_on:
+#      - redis
+

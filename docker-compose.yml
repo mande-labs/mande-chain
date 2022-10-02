@@ -4,6 +4,7 @@ services:
 
   test-node-1:
     image: ${IMAGE}:${BUILD_NUMBER}
+    restart: always
     stdin_open: true
     tty: true
     container_name: test-node-1
@@ -39,6 +40,7 @@ services:
 
   test-node-2:
     image: ${IMAGE}:${BUILD_NUMBER}
+    restart: always
     stdin_open: true
     tty: true
     container_name: test-node-2
@@ -58,6 +60,7 @@ services:
   frontend:
     build: ./vue
     command: npm run dev -- --host
+    restart: always
     volumes:
       - /usr/app/node_modules
     ports:

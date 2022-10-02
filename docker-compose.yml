@@ -7,8 +7,6 @@ services:
     stdin_open: true
     tty: true
     container_name: test-node-1
-    # user: root
-    # ports: [26657:26657, 1317:1317]
     entrypoint: [/bin/bash]
     command:
       - -cx
@@ -57,20 +55,29 @@ services:
     depends_on:
       - test-node-1
 
-#  frontend:
-#    build:
-#      -
-#
-#    depends_on:
-#      - test-node-1
-#      - test-node-2
+  frontend:
+    build: ./vue
+    command: npm run dev -- --host
+    volumes:
+      - /usr/app/node_modules
+    ports:
+      - "3000:3000"
+    depends_on:
+      - test-node-1
+      - test-node-2
 
   redis:
-    image: redis
+    image: redis:latest
+    restart: always
+    command: [ "redis-server", "--bind", "redis", "--port", "6379" ]
 
-#  faucet:
-#    build:
-#      -
-#    depends_on:
-#      - redis
-
+  faucet:
+    build:
+      context: .
+      dockerfile: Dockerfile_faucet
+    command: npm start
+    restart: always
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis

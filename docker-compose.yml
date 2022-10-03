@@ -37,6 +37,9 @@ services:
       - APP_TOML=/root/.mande-chain/config/app.toml
       - MONIKER=test-node-1
       - VALIDATOR_NAME=validator_main
+    networks:
+      localnet:
+        ipv4_address: 192.168.10.1
 
   test-node-2:
     image: ${IMAGE}:${BUILD_NUMBER}
@@ -45,10 +48,6 @@ services:
     tty: true
     container_name: test-node-2
     entrypoint: [/bin/bash]
-    command:
-      - -cx
-      - |
-        mandeNode init $${MONIKER} --chain-id ${CHAIN_ID}
     environment:
       - CONFIG_TOML=/root/.mande-chain/config/config.toml
       - APP_TOML=/root/.mande-chain/config/app.toml
@@ -56,6 +55,9 @@ services:
       - VALIDATOR_NAME=validator_2
     depends_on:
       - test-node-1
+    networks:
+      localnet:
+        ipv4_address: 192.168.10.2
 
   frontend:
     build: ./vue
@@ -68,11 +70,17 @@ services:
     depends_on:
       - test-node-1
       - test-node-2
+    networks:
+      localnet:
+        ipv4_address: 192.168.10.3
 
   redis:
     image: redis:latest
     restart: always
     command: [ "redis-server", "--bind", "redis", "--port", "6379" ]
+    networks:
+      localnet:
+        ipv4_address: 192.168.10.4
 
   faucet:
     build:
@@ -84,3 +92,15 @@ services:
       - "8081:8081"
     depends_on:
       - redis
+    networks:
+      localnet:
+        ipv4_address: 192.168.10.5
+
+networks:
+  localnet:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        -
+          subnet: 192.168.10.0/16

@@ -12,13 +12,13 @@ accounts:
   - name: melon
     coins: ["8000000mand"]
   - name: potato
-    coins: ["3000000mand", "10000000cred"]
+    coins: ["3000000mand", "1000000000cred"]
   - name: mandfaucet
     coins: ["1000000000000mand"]
 
 validator:
   name: potato
-  staked: "10000000cred"
+  staked: "1000000000cred"
 
 client:
   openapi:
@@ -28,15 +28,32 @@ client:
 
 genesis:
   app_state:
+    distribution:
+      params:
+        base_proposer_reward: "0.010000000000000000"
+        bonus_proposer_reward: "0.040000000000000000"
+        community_tax: "0.020000000000000000"
+        withdraw_addr_enabled: true
     staking:
       params:
         bond_denom: "cred"
         unbonding_time: "0.001s"
+        max_validators: 175
+        max_entries: 7
+        historical_entries: 10000
     gov:
       deposit_params:
-        min_deposit: [{ "amount": "10000000", "denom": "cred" }]
+        min_deposit: [{ "amount": "10000000", "denom": "mand" }]
     mint:
+      minter:
+        inflation: "0.070000000000000000"
+        annual_provisions: "0.000000000000000000"
       params:
+        blocks_per_year: "4360000",
+        goal_bonded: "0.670000000000000000",
+        inflation_max: "0.200000000000000000",
+        inflation_min: "0.070000000000000000",
+        inflation_rate_change: "0.130000000000000000",
         mint_denom: "mand"
     crisis:
       constant_fee:
@@ -44,3 +61,10 @@ genesis:
     bank:
       params:
         send_enabled: [{"denom": "cred","enabled": false}]
+    slashing:
+      params:
+        downtime_jail_duration: "600s",
+        min_signed_per_window: "0.050000000000000000",
+        signed_blocks_window: "10000",
+        slash_fraction_double_sign: "0.050000000000000000",
+        slash_fraction_downtime: "0.000100000000000000"

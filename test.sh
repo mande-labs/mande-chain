@@ -33,7 +33,9 @@ docker exec test-node-1 sed -c -i "s/\(persistent_peers *= *\).*/\1$PEER_ID_NODE
 docker exec test-node-1 cat /root/.mande-chain/config/config.toml
 
 
+7d7e1953f5711048d09d1642a122ad9ff3d7e258@192.168.10.1:26656
 
+docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' test-node-1
 
 # Bring down the containers
 # docker compose down

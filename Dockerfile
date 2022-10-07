@@ -10,4 +10,7 @@ RUN apk update
 RUN apk add --no-cache bash
 RUN apk add jq
 COPY --from=build /go/bin/mandeNode /usr/local/bin/mandeNode
-ENTRYPOINT ["/usr/local/bin/mandeNode"]
+COPY run_genesis_node.sh /usr/local/bin/run_genesis_node.sh
+COPY run_validator_node.sh /usr/local/bin/run_validator_node.sh
+RUN chmod +x /usr/local/bin/run_genesis_node.sh
+RUN chmod +x /usr/local/bin/run_validator_node.sh

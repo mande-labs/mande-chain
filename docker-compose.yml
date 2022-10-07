@@ -3,51 +3,25 @@ version: "3.7"
 services:
 
   test-node-1:
-    image: ${IMAGE}:${BUILD_NUMBER}
+    image: mandechain/mande_chain:latest
     restart: always
     stdin_open: true
     tty: true
     container_name: test-node-1
-    entrypoint: [/bin/bash]
-    command:
-      - -cx
-      - |
-        mandeNode init $${MONIKER} --chain-id ${CHAIN_ID}
-        mandeNode keys add $${VALIDATOR_NAME} --keyring-backend test
-        mandeNode add-genesis-account $$(mandeNode keys show $${VALIDATOR_NAME} -a --keyring-backend test) "100000000000000cred"
-        sed -i 's/stake/cred/g' /root/.mande-chain/config/genesis.json
-        mandeNode gentx $${VALIDATOR_NAME} "1000000cred" \
-          --chain-id ${CHAIN_ID} \
-          --moniker="$${MONIKER}" \
-          --keyring-backend test
-        mandeNode validate-genesis
-        mandeNode collect-gentxs
-        mandeNode validate-genesis
-        if [[ -z "$$(grep '\[api\]' -A 5 $${APP_TOML} | grep true)" ]]; then
-          sed -i '1,/enable = false/{s/enable = false/enable = true/g}' $${APP_TOML}
-        fi
-        sed -i 's/cors_allowed_origins.*/cors_allowed_origins = ["*"]/g' $${CONFIG_TOML}
-        sed -i 's/cors_allowed_methods.*/cors_allowed_methods = ["*"]/g' $${CONFIG_TOML}
-        sed -i 's/cors_allowed_headers.*/cors_allowed_headers = ["*"]/g' $${CONFIG_TOML}
-        mandeNode start \
-          --pruning=nothing \
-          --rpc.laddr=tcp://0.0.0.0:26657
+    entrypoint: /usr/local/bin/run_genesis_node.sh
     environment:
       - CONFIG_TOML=/root/.mande-chain/config/config.toml
       - APP_TOML=/root/.mande-chain/config/app.toml
       - MONIKER=test-node-1
       - VALIDATOR_NAME=validator_main
-    networks:
-      localnet:
-        ipv4_address: 192.168.10.1
 
   test-node-2:
-    image: ${IMAGE}:${BUILD_NUMBER}
+    image: mandechain/mande_chain:latest
     restart: always
     stdin_open: true
     tty: true
     container_name: test-node-2
-    entrypoint: [/bin/bash]
+#    entrypoint: /usr/local/bin/run_validator_node.sh
     environment:
       - CONFIG_TOML=/root/.mande-chain/config/config.toml
       - APP_TOML=/root/.mande-chain/config/app.toml
@@ -55,9 +29,6 @@ services:
       - VALIDATOR_NAME=validator_2
     depends_on:
       - test-node-1
-    networks:
-      localnet:
-        ipv4_address: 192.168.10.2
 
   frontend:
     build: ./vue
@@ -70,17 +41,11 @@ services:
     depends_on:
       - test-node-1
       - test-node-2
-    networks:
-      localnet:
-        ipv4_address: 192.168.10.3
 
   redis:
     image: redis:latest
     restart: always
     command: [ "redis-server", "--bind", "redis", "--port", "6379" ]
-    networks:
-      localnet:
-        ipv4_address: 192.168.10.4
 
   faucet:
     build:
@@ -92,15 +57,3 @@ services:
       - "8081:8081"
     depends_on:
       - redis
-    networks:
-      localnet:
-        ipv4_address: 192.168.10.5
-
-networks:
-  localnet:
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        -
-          subnet: 192.168.10.0/16

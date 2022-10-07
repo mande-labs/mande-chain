@@ -18,11 +18,11 @@ mandeNode keys add faucet1 --keyring-backend test
 mandeNode keys add faucet2 --keyring-backend test
 mandeNode keys add faucet3 --keyring-backend test
 
-mandeNode add-genesis-account alice 10000000000cred > genesis_accounts.txt
-mandeNode add-genesis-account bob 10000000000cred > genesis_accounts.txt
-mandeNode add-genesis-account faucet1 10000000000000000cred > genesis_accounts.txt
-mandeNode add-genesis-account faucet2 10000000000000000cred > genesis_accounts.txt
-mandeNode add-genesis-account faucet3 10000000000000000cred > genesis_accounts.txt
+mandeNode add-genesis-account alice 10000000000mand > genesis_accounts.txt
+mandeNode add-genesis-account bob 10000000000mand > genesis_accounts.txt
+mandeNode add-genesis-account faucet1 10000000000000000mand > genesis_accounts.txt
+mandeNode add-genesis-account faucet2 10000000000000000mand > genesis_accounts.txt
+mandeNode add-genesis-account faucet3 10000000000000000mand > genesis_accounts.txt
 
 ## Modify genesis json file
 GENESIS_FILE=/root/.mande-chain/config/genesis.json

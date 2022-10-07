@@ -27,6 +27,7 @@ client:
     path: "vue/src/store"
 
 genesis:
+  chain_id: "mande-testnet-1"
   app_state:
     distribution:
       params:

@@ -242,7 +242,7 @@ export default defineComponent ({
       let payload: any = {
         creator: address.value,
         receiver: state.tx.receiver,
-        count: state.tx.count,
+        count: parseFloat(state.tx.count) * 10**6,
         mode: state.tx.mode
       }
 

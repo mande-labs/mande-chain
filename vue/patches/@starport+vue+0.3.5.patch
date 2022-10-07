@@ -1,5 +1,40 @@
+diff --git a/node_modules/@starport/vue/src/components/SpAmountSelect/SpAmountSelect.vue b/node_modules/@starport/vue/src/components/SpAmountSelect/SpAmountSelect.vue
+index b30d2c5..0912ab6 100644
+--- a/node_modules/@starport/vue/src/components/SpAmountSelect/SpAmountSelect.vue
++++ b/node_modules/@starport/vue/src/components/SpAmountSelect/SpAmountSelect.vue
+@@ -198,7 +198,7 @@ export default defineComponent({
+     let findAsset = (x: AssetForUI, y: AssetForUI): boolean =>
+       y.path === x.path && x.amount.denom === y.amount.denom
+     let parseAmount = (amount: string): number => {
+-      return amount == '' ? 0 : parseInt(amount)
++      return amount == '' ? 0 : parseFloat(amount / 10**6)
+     }
+     let handleAmountInput = (amount: string, x: AssetForUI) => {
+       let amountAsBigNumber = new BigNumber(amount)
+@@ -228,7 +228,7 @@ export default defineComponent({
+       state.modalOpen = false
+     }
+     let getBalanceAmount = (x: AssetForUI): string =>
+-      props.balances.find((y: AssetForUI) => findAsset(x, y))?.amount?.amount
++      props.balances.find((y: AssetForUI) => findAsset(x, y))?.amount?.amount / 10**6
+     let hasEnoughBalance = (x: AssetForUI, amountDesired: string) =>
+       parseAmount(getBalanceAmount(x)) >= parseAmount(amountDesired)
+ 
+diff --git a/node_modules/@starport/vue/src/components/SpAssets/SpAssets.vue b/node_modules/@starport/vue/src/components/SpAssets/SpAssets.vue
+index 738e112..08f8cf4 100644
+--- a/node_modules/@starport/vue/src/components/SpAssets/SpAssets.vue
++++ b/node_modules/@starport/vue/src/components/SpAssets/SpAssets.vue
+@@ -103,7 +103,7 @@
+             </ul>
+           </td>
+           <td class="assets-table__amount">
+-            {{ new Intl.NumberFormat('en-GB').format(balance.amount.amount) }}
++            {{ new Intl.NumberFormat('en-GB').format(balance.amount.amount / 10**6) }}
+           </td>
+         </tr>
+         <tr v-if="noSearchResults" class="assets-table__row">
 diff --git a/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue b/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
-index 4a5c024..b932924 100644
+index 4a5c024..6d933b9 100644
 --- a/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
 +++ b/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
 @@ -10,112 +10,27 @@
@@ -181,8 +216,8 @@ index 4a5c024..b932924 100644
 +
 +      axios.post("http://localhost:8080/request", payload, headers)
 +        .then(response => {
-+          if (response && response.status && response.status == "error") {
-+            toast.error(response.message, {
++          if (response.data && response.data.status && response.data.status == "error") {
++            toast.error(response.data.message, {
 +              timeout: 1500
 +            });
 +          } else {
@@ -213,3 +248,60 @@ index 4a5c024..b932924 100644
 +  margin-right: 20px;
 +}
  </style>
+diff --git a/node_modules/@starport/vue/src/components/SpTokenTransfer/SpTokenTransfer.vue b/node_modules/@starport/vue/src/components/SpTokenTransfer/SpTokenTransfer.vue
+index c306c07..0ddf01b 100644
+--- a/node_modules/@starport/vue/src/components/SpTokenTransfer/SpTokenTransfer.vue
++++ b/node_modules/@starport/vue/src/components/SpTokenTransfer/SpTokenTransfer.vue
+@@ -396,7 +396,7 @@ export default defineComponent({
+       }
+     }
+     let parseAmount = (amount: string): number => {
+-      return amount == '' ? 0 : parseInt(amount)
++      return amount == '' ? 0 : parseFloat(amount / 10**6)
+     }
+     let resetTx = (): void => {
+       state.tx.amount = []
+diff --git a/node_modules/@starport/vue/src/components/SpTokenTransferListItem/SpTokenTransferListItem.vue b/node_modules/@starport/vue/src/components/SpTokenTransferListItem/SpTokenTransferListItem.vue
+index 69f7957..074b60d 100644
+--- a/node_modules/@starport/vue/src/components/SpTokenTransferListItem/SpTokenTransferListItem.vue
++++ b/node_modules/@starport/vue/src/components/SpTokenTransferListItem/SpTokenTransferListItem.vue
+@@ -46,7 +46,7 @@
+             class="tx-amount"
+             :class="tx?.dir"
+           >
+-            {{ amountSign + ' ' + a.amount }}
++            {{ amountSign + ' ' + a.amount / 10**6 }}
+             <SpDenom :denom="a.denom" />
+           </span>
+         </template>
+diff --git a/node_modules/@starport/vue/src/composables/useKeplr.ts b/node_modules/@starport/vue/src/composables/useKeplr.ts
+index 4fd0968..c2f390b 100644
+--- a/node_modules/@starport/vue/src/composables/useKeplr.ts
++++ b/node_modules/@starport/vue/src/composables/useKeplr.ts
+@@ -37,7 +37,7 @@ export default function ({ $s }: Params): Response {
+       let stakeCurrency = {
+         coinDenom: staking.params.bond_denom.toUpperCase(),
+         coinMinimalDenom: staking.params.bond_denom,
+-        coinDecimals: 0
++        coinDecimals: 6
+       }
+ 
+       let bip44 = {
+@@ -63,7 +63,7 @@ export default function ({ $s }: Params): Response {
+         }
+         y.coinDenom = x.denom.toUpperCase()
+         y.coinMinimalDenom = x.denom
+-        y.coinDecimals = 0
++        y.coinDecimals = 6
+         return y
+       })
+ 
+@@ -77,7 +77,7 @@ export default function ({ $s }: Params): Response {
+         }
+         y.coinDenom = x.denom.toUpperCase()
+         y.coinMinimalDenom = x.denom
+-        y.coinDecimals = 0
++        y.coinDecimals = 6
+         return y
+       })
+ 

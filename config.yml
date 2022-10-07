@@ -18,7 +18,7 @@ accounts:
 
 validator:
   name: potato
-  staked: "1000000000cred"
+  staked: "5000000cred"
 
 client:
   openapi:
@@ -27,6 +27,7 @@ client:
     path: "vue/src/store"
 
 genesis:
+  chain_id: "mande-testnet-1"
   app_state:
     distribution:
       params:
@@ -49,11 +50,11 @@ genesis:
         inflation: "0.070000000000000000"
         annual_provisions: "0.000000000000000000"
       params:
-        blocks_per_year: "4360000",
-        goal_bonded: "0.670000000000000000",
-        inflation_max: "0.200000000000000000",
-        inflation_min: "0.070000000000000000",
-        inflation_rate_change: "0.130000000000000000",
+        blocks_per_year: "4360000"
+        goal_bonded: "0.670000000000000000"
+        inflation_max: "0.200000000000000000"
+        inflation_min: "0.070000000000000000"
+        inflation_rate_change: "0.130000000000000000"
         mint_denom: "mand"
     crisis:
       constant_fee:
@@ -63,8 +64,8 @@ genesis:
         send_enabled: [{"denom": "cred","enabled": false}]
     slashing:
       params:
-        downtime_jail_duration: "600s",
-        min_signed_per_window: "0.050000000000000000",
-        signed_blocks_window: "10000",
-        slash_fraction_double_sign: "0.050000000000000000",
+        downtime_jail_duration: "600s"
+        min_signed_per_window: "0.050000000000000000"
+        signed_blocks_window: "10000"
+        slash_fraction_double_sign: "0.050000000000000000"
         slash_fraction_downtime: "0.000100000000000000"

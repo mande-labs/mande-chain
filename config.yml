@@ -1,24 +1,24 @@
 accounts:
   - name: alice
     coins: ["10000000mand"]
-  - name: bob
-    coins: ["10000000mand"]
-  - name: carrot
-    coins: ["9000000mand"]
-  - name: frooti
-    coins: ["7000000mand"]
-  - name: lemon
-    coins: ["9000000mand"]
-  - name: melon
-    coins: ["8000000mand"]
-  - name: potato
-    coins: ["3000000mand", "1000000000cred"]
+  - name: validator
+    coins: ["5000000mand", "1000000000cred"]
   - name: mandfaucet
+    coins: ["1000000000000mand"]
+  - name: mandfaucet1
+    coins: ["1000000000000mand"]
+  - name: mandfaucet2
+    coins: ["1000000000000mand"]
+  - name: mandfaucet3
+    coins: ["1000000000000mand"]
+  - name: mandfaucet4
+    coins: ["1000000000000mand"]
+  - name: mandfaucet5
     coins: ["1000000000000mand"]
 
 validator:
-  name: potato
-  staked: "5000000cred"
+  name: validator
+  staked: "1000000000cred"
 
 client:
   openapi:

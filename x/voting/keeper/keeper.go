@@ -50,3 +50,11 @@ func NewKeeper(
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }
+
+func (k Keeper) BurnModuleCredCoins(ctx sdk.Context) {
+	acc := k.accountKeeper.GetModuleAddress(types.ModuleName)
+	coinsToBurn := k.bankKeeper.GetBalance(ctx, acc, "cred")
+	if !coinsToBurn.Amount.IsZero() {
+		k.bankKeeper.BurnCoins(ctx, types.ModuleName, sdk.Coins{sdk.NewCoin("cred", coinsToBurn.Amount)})
+	}
+}

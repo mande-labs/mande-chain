@@ -87,9 +87,8 @@ func (k Keeper) uncastVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateV
 func (k Keeper) castVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateVoteCreatorCount *types.AggregateVoteCount) error {
 	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
 	mandBalance := k.bankKeeper.GetBalance(ctx, creator, "mand").Amount.Uint64()
-	voteCastCount := aggregateVoteCreatorCount.Casted + intAbs(msg.Count)
 
-	if mandBalance < voteCastCount {
+	if mandBalance < intAbs(msg.Count) {
 		return sdkerrors.Wrapf(types.ErrNotEnoughMand, "count - (%d)", msg.Count)
 	}
 

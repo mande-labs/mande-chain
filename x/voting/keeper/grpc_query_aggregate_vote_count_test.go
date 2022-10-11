@@ -10,9 +10,9 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	keepertest "mande-chain/testutil/keeper"
-	"mande-chain/testutil/nullify"
-	"mande-chain/x/voting/types"
+	keepertest "github.com/mande-labs/mande-chain/testutil/keeper"
+	"github.com/mande-labs/mande-chain/testutil/nullify"
+	"github.com/mande-labs/mande-chain/x/voting/types"
 )
 
 // Prevent strconv unused error

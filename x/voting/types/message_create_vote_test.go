@@ -5,7 +5,7 @@ import (
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/stretchr/testify/require"
-	"mande-chain/testutil/sample"
+	"github.com/mande-labs/mande-chain/testutil/sample"
 )
 
 func TestMsgCreateVote_ValidateBasic(t *testing.T) {

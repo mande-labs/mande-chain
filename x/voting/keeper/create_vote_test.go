@@ -4,10 +4,10 @@ import (
 	"encoding/hex"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/suite"
-	"mande-chain/testutil"
-	votingkeeper "mande-chain/x/voting/keeper"
-	"mande-chain/x/voting/types"
-	votingtypes "mande-chain/x/voting/types"
+	"github.com/mande-labs/mande-chain/testutil"
+	votingkeeper "github.com/mande-labs/mande-chain/x/voting/keeper"
+	"github.com/mande-labs/mande-chain/x/voting/types"
+	votingtypes "github.com/mande-labs/mande-chain/x/voting/types"
 	"testing"
 )
 

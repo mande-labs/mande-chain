@@ -4,10 +4,10 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	keepertest "mande-chain/testutil/keeper"
-	"mande-chain/testutil/nullify"
-	"mande-chain/x/voting"
-	"mande-chain/x/voting/types"
+	keepertest "github.com/mande-labs/mande-chain/testutil/keeper"
+	"github.com/mande-labs/mande-chain/testutil/nullify"
+	"github.com/mande-labs/mande-chain/x/voting"
+	"github.com/mande-labs/mande-chain/x/voting/types"
 )
 
 func TestGenesis(t *testing.T) {

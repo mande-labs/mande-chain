@@ -3,7 +3,7 @@ package keeper
 import (
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"mande-chain/x/voting/types"
+	"github.com/mande-labs/mande-chain/x/voting/types"
 )
 
 // SetAggregateVoteCount set a specific aggregateVoteCount in the store from its index

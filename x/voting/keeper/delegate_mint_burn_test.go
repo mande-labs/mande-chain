@@ -4,8 +4,8 @@ import (
 	"encoding/hex"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/tendermint/tendermint/crypto"
-	"mande-chain/testutil"
-	"mande-chain/x/voting/types"
+	"github.com/mande-labs/mande-chain/testutil"
+	"github.com/mande-labs/mande-chain/x/voting/types"
 )
 
 func (suite *VotingKeeperTestSuite) TestLockMandAndDelegateStake_PositiveVote() {

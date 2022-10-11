@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	testkeeper "mande-chain/testutil/keeper"
-	"mande-chain/x/voting/types"
+	testkeeper "github.com/mande-labs/mande-chain/testutil/keeper"
+	"github.com/mande-labs/mande-chain/x/voting/types"
 )
 
 func TestGetParams(t *testing.T) {

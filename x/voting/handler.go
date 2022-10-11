@@ -5,8 +5,8 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"mande-chain/x/voting/keeper"
-	"mande-chain/x/voting/types"
+	"github.com/mande-labs/mande-chain/x/voting/keeper"
+	"github.com/mande-labs/mande-chain/x/voting/types"
 )
 
 // NewHandler ...

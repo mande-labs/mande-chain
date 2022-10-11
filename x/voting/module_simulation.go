@@ -9,9 +9,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
-	"mande-chain/testutil/sample"
-	votingsimulation "mande-chain/x/voting/simulation"
-	"mande-chain/x/voting/types"
+	"github.com/mande-labs/mande-chain/testutil/sample"
+	votingsimulation "github.com/mande-labs/mande-chain/x/voting/simulation"
+	"github.com/mande-labs/mande-chain/x/voting/types"
 )
 
 // avoid unused import issue

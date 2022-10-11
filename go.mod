@@ -1,4 +1,4 @@
-module mande-chain
+module github.com/mande-labs/mande-chain
 
 go 1.18
 

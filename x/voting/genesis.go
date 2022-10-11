@@ -2,8 +2,8 @@ package voting
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"mande-chain/x/voting/keeper"
-	"mande-chain/x/voting/types"
+	"github.com/mande-labs/mande-chain/x/voting/keeper"
+	"github.com/mande-labs/mande-chain/x/voting/types"
 )
 
 // InitGenesis initializes the capability module's state from a provided genesis

@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	"mande-chain/x/voting/types"
+	"github.com/mande-labs/mande-chain/x/voting/types"
 )
 
 func TestGenesisState_Validate(t *testing.T) {

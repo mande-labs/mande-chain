@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"mande-chain/x/voting/types"
+	"github.com/mande-labs/mande-chain/x/voting/types"
 )
 
 var _ types.QueryServer = Keeper{}

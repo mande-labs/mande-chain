@@ -8,7 +8,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/query"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"mande-chain/x/voting/types"
+	"github.com/mande-labs/mande-chain/x/voting/types"
 )
 
 func (k Keeper) AggregateVoteCountAll(c context.Context, req *types.QueryAllAggregateVoteCountRequest) (*types.QueryAllAggregateVoteCountResponse, error) {

@@ -11,7 +11,7 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 
-	"mande-chain/app"
+	"github.com/mande-labs/mande-chain/app"
 )
 
 const (

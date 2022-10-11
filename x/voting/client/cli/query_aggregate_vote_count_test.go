@@ -12,10 +12,10 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"mande-chain/testutil/network"
-	"mande-chain/testutil/nullify"
-	"mande-chain/x/voting/client/cli"
-	"mande-chain/x/voting/types"
+	"github.com/mande-labs/mande-chain/testutil/network"
+	"github.com/mande-labs/mande-chain/testutil/nullify"
+	"github.com/mande-labs/mande-chain/x/voting/client/cli"
+	"github.com/mande-labs/mande-chain/x/voting/types"
 )
 
 // Prevent strconv unused error

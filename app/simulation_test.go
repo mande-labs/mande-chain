@@ -17,7 +17,7 @@ import (
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	tmtypes "github.com/tendermint/tendermint/types"
-	"mande-chain/app"
+	"github.com/mande-labs/mande-chain/app"
 )
 
 func init() {

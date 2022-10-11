@@ -6,8 +6,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
-	"mande-chain/x/voting/keeper"
-	"mande-chain/x/voting/types"
+	"github.com/mande-labs/mande-chain/x/voting/keeper"
+	"github.com/mande-labs/mande-chain/x/voting/types"
 )
 
 func SimulateMsgCreateVote(

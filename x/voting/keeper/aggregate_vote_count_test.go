@@ -6,10 +6,10 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
-	keepertest "mande-chain/testutil/keeper"
-	"mande-chain/testutil/nullify"
-	"mande-chain/x/voting/keeper"
-	"mande-chain/x/voting/types"
+	keepertest "github.com/mande-labs/mande-chain/testutil/keeper"
+	"github.com/mande-labs/mande-chain/testutil/nullify"
+	"github.com/mande-labs/mande-chain/x/voting/keeper"
+	"github.com/mande-labs/mande-chain/x/voting/types"
 )
 
 // Prevent strconv unused error

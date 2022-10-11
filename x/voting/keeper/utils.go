@@ -1,6 +1,6 @@
 package keeper
 
-import "mande-chain/x/voting/types"
+import "github.com/mande-labs/mande-chain/x/voting/types"
 
 func intAbs(n int32) uint64 {
 	y := n >> 31

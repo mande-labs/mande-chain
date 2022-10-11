@@ -2,7 +2,7 @@ package voting
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"mande-chain/x/voting/keeper"
+	"github.com/mande-labs/mande-chain/x/voting/keeper"
 )
 
 // Called every block, burn voting module acc cred coins

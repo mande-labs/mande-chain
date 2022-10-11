@@ -5,9 +5,9 @@ import (
 	"testing"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	keepertest "mande-chain/testutil/keeper"
-	"mande-chain/x/voting/keeper"
-	"mande-chain/x/voting/types"
+	keepertest "github.com/mande-labs/mande-chain/testutil/keeper"
+	"github.com/mande-labs/mande-chain/x/voting/keeper"
+	"github.com/mande-labs/mande-chain/x/voting/types"
 )
 
 func setupMsgServer(t testing.TB) (types.MsgServer, context.Context) {

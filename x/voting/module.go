@@ -16,9 +16,9 @@ import (
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	"mande-chain/x/voting/client/cli"
-	"mande-chain/x/voting/keeper"
-	"mande-chain/x/voting/types"
+	"github.com/mande-labs/mande-chain/x/voting/client/cli"
+	"github.com/mande-labs/mande-chain/x/voting/keeper"
+	"github.com/mande-labs/mande-chain/x/voting/types"
 )
 
 var (

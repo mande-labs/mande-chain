@@ -98,10 +98,10 @@ import (
 	monitoringpkeeper "github.com/tendermint/spn/x/monitoringp/keeper"
 	monitoringptypes "github.com/tendermint/spn/x/monitoringp/types"
 
-	"mande-chain/docs"
-	votingmodule "mande-chain/x/voting"
-	votingmodulekeeper "mande-chain/x/voting/keeper"
-	votingmoduletypes "mande-chain/x/voting/types"
+	"github.com/mande-labs/mande-chain/docs"
+	votingmodule "github.com/mande-labs/mande-chain/x/voting"
+	votingmodulekeeper "github.com/mande-labs/mande-chain/x/voting/keeper"
+	votingmoduletypes "github.com/mande-labs/mande-chain/x/voting/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 

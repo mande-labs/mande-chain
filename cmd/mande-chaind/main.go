@@ -5,7 +5,7 @@ import (
 
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"
 	"github.com/ignite/cli/ignite/pkg/cosmoscmd"
-	"mande-chain/app"
+	"github.com/mande-labs/mande-chain/app"
 )
 
 func main() {

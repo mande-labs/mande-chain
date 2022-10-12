@@ -1,28 +1,28 @@
 diff --git a/node_modules/@starport/vue/src/components/SpAmountSelect/SpAmountSelect.vue b/node_modules/@starport/vue/src/components/SpAmountSelect/SpAmountSelect.vue
-index b30d2c5..0fa5c7e 100644
+index b30d2c5..bd03d62 100644
 --- a/node_modules/@starport/vue/src/components/SpAmountSelect/SpAmountSelect.vue
 +++ b/node_modules/@starport/vue/src/components/SpAmountSelect/SpAmountSelect.vue
+@@ -20,7 +20,7 @@
+             error: !hasEnoughBalance(x, x.amount.amount)
+           }"
+         >
+-          {{ getBalanceAmount(x) }} available
++          {{ getBalanceAmount(x) / 10**6 }} available
+         </div>
+       </div>
+ 
 @@ -198,10 +198,10 @@ export default defineComponent({
      let findAsset = (x: AssetForUI, y: AssetForUI): boolean =>
        y.path === x.path && x.amount.denom === y.amount.denom
      let parseAmount = (amount: string): number => {
 -      return amount == '' ? 0 : parseInt(amount)
-+      return amount == '' ? 0 : parseFloat(amount * 10**6)
++      return amount == '' ? 0 : parseFloat(amount)
      }
      let handleAmountInput = (amount: string, x: AssetForUI) => {
 -      let amountAsBigNumber = new BigNumber(amount)
 +      let amountAsBigNumber = new BigNumber(amount * 10**6)
  
        let newSelected: Array<AssetForUI> = [...props.selected]
- 
-@@ -228,7 +228,7 @@ export default defineComponent({
-       state.modalOpen = false
-     }
-     let getBalanceAmount = (x: AssetForUI): string =>
--      props.balances.find((y: AssetForUI) => findAsset(x, y))?.amount?.amount
-+      props.balances.find((y: AssetForUI) => findAsset(x, y))?.amount?.amount / 10**6
-     let hasEnoughBalance = (x: AssetForUI, amountDesired: string) =>
-       parseAmount(getBalanceAmount(x)) >= parseAmount(amountDesired)
  
 diff --git a/node_modules/@starport/vue/src/components/SpAssets/SpAssets.vue b/node_modules/@starport/vue/src/components/SpAssets/SpAssets.vue
 index 738e112..08f8cf4 100644

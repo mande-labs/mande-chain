@@ -100,12 +100,16 @@ export default defineComponent ({
       return addr.substring(0, 10) + '...' + addr.slice(-4)
     }
 
-    let copyAddress = (addr) => {
+    let copyAddress = async (addr) => {
       const clipboardData =
         event.clipboardData ||
         window.clipboardData ||
         event.originalEvent?.clipboardData ||
-        navigator.clipboard;
+        await navigator.clipboard;
+
+      if (!clipboardData) {
+        alert("Validator address - " + addr);
+      }
 
       clipboardData.writeText(addr);
       toast.success("Copied!", {

@@ -2,7 +2,7 @@ accounts:
   - name: alice
     coins: ["10000000mand"]
   - name: validator
-    coins: ["5000000mand", "1000000000cred"]
+    coins: ["5000000mand", "500000000000cred"]
   - name: mandfaucet
     coins: ["1000000000000mand"]
   - name: mandfaucet1
@@ -18,7 +18,7 @@ accounts:
 
 validator:
   name: validator
-  staked: "1000000000cred"
+  staked: "500000000000cred"
 
 client:
   openapi:

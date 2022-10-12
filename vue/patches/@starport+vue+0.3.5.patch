@@ -1,16 +1,20 @@
 diff --git a/node_modules/@starport/vue/src/components/SpAmountSelect/SpAmountSelect.vue b/node_modules/@starport/vue/src/components/SpAmountSelect/SpAmountSelect.vue
-index b30d2c5..0912ab6 100644
+index b30d2c5..0fa5c7e 100644
 --- a/node_modules/@starport/vue/src/components/SpAmountSelect/SpAmountSelect.vue
 +++ b/node_modules/@starport/vue/src/components/SpAmountSelect/SpAmountSelect.vue
-@@ -198,7 +198,7 @@ export default defineComponent({
+@@ -198,10 +198,10 @@ export default defineComponent({
      let findAsset = (x: AssetForUI, y: AssetForUI): boolean =>
        y.path === x.path && x.amount.denom === y.amount.denom
      let parseAmount = (amount: string): number => {
 -      return amount == '' ? 0 : parseInt(amount)
-+      return amount == '' ? 0 : parseFloat(amount / 10**6)
++      return amount == '' ? 0 : parseFloat(amount * 10**6)
      }
      let handleAmountInput = (amount: string, x: AssetForUI) => {
-       let amountAsBigNumber = new BigNumber(amount)
+-      let amountAsBigNumber = new BigNumber(amount)
++      let amountAsBigNumber = new BigNumber(amount * 10**6)
+ 
+       let newSelected: Array<AssetForUI> = [...props.selected]
+ 
 @@ -228,7 +228,7 @@ export default defineComponent({
        state.modalOpen = false
      }
@@ -34,7 +38,7 @@ index 738e112..08f8cf4 100644
          </tr>
          <tr v-if="noSearchResults" class="assets-table__row">
 diff --git a/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue b/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
-index 4a5c024..dd1a598 100644
+index 4a5c024..a583cd8 100644
 --- a/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
 +++ b/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
 @@ -10,112 +10,27 @@
@@ -175,7 +179,7 @@ index 4a5c024..dd1a598 100644
        </router-link>
      </div>
      <div class="navbar-section">
-+      <SpButton v-if="address" style="margin-right: 20px" @click="claimTokens">Faucet</SpButton>
++      <SpButton v-if="address" style="margin-right: 20px" @click="claimTokens">Claim MAND</SpButton>
        <SpAcc />
      </div>
    </div>
@@ -214,7 +218,7 @@ index 4a5c024..dd1a598 100644
 +        "Content-Type": "application/json",
 +      };
 +
-+      axios.post(process.ENV.VUE_APP_FAUCET_ENDPOINT, payload, headers)
++      axios.post(process.env.VUE_APP_FAUCET_ENDPOINT, payload, headers)
 +        .then(response => {
 +          if (response.data && response.data.status && response.data.status == "error") {
 +            toast.error(response.data.message, {

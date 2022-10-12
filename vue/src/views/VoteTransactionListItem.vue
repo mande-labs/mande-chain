@@ -45,7 +45,7 @@
             class="tx-amount"
             :class="dirDescription"
           >
-            {{ amountSign + ' ' + tx.amount }}
+            {{ amountSign + ' ' + tx.amount / 10**6 }}
           </span>
         </template>
         <div class="tx-denom">

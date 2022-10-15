@@ -89,6 +89,18 @@ export default defineComponent ({
         bufferValidators.push(val)
       }
 
+      bufferValidators = bufferValidators.sort((val1, val2) => {
+          if (val1.tokens < val2.tokens) {
+              return 1;
+          }
+
+          if (val1.tokens > val2.tokens) {
+              return -1;
+          }
+
+          return 0;
+      });
+
       state.validators = bufferValidators
     }
 

@@ -38,7 +38,7 @@ index 738e112..08f8cf4 100644
          </tr>
          <tr v-if="noSearchResults" class="assets-table__row">
 diff --git a/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue b/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
-index 4a5c024..a583cd8 100644
+index 4a5c024..c220ed1 100644
 --- a/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
 +++ b/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
 @@ -10,112 +10,27 @@
@@ -175,15 +175,18 @@ index 4a5c024..a583cd8 100644
            </div>
          </router-link>
        </slot>
-@@ -133,6 +48,7 @@
+@@ -133,6 +48,10 @@
        </router-link>
      </div>
      <div class="navbar-section">
++      <div class="net-constant">x(t)=1</div>
++    </div>
++    <div class="navbar-section">
 +      <SpButton v-if="address" style="margin-right: 20px" @click="claimTokens">Claim MAND</SpButton>
        <SpAcc />
      </div>
    </div>
-@@ -145,6 +61,10 @@ import SpAcc from '../SpAcc'
+@@ -145,6 +64,10 @@ import SpAcc from '../SpAcc'
  import SpButton from '../SpButton'
  import SpModal from '../SpModal'
  import SpSystemBar from '../SpSystemBar'
@@ -194,7 +197,7 @@ index 4a5c024..a583cd8 100644
  
  export interface NavbarLink {
    name: string
-@@ -170,6 +90,49 @@ export default defineComponent({
+@@ -170,6 +93,49 @@ export default defineComponent({
        type: String,
        required: false
      }
@@ -244,12 +247,16 @@ index 4a5c024..a583cd8 100644
    }
  })
  </script>
-@@ -238,4 +201,7 @@ export default defineComponent({
+@@ -238,4 +204,11 @@ export default defineComponent({
      display: none;
    }
  }
 +.faucet-btn {
 +  margin-right: 20px;
++}
++.net-constant {
++  font-size: 16px;
++  font-weight: 500;
 +}
  </style>
 diff --git a/node_modules/@starport/vue/src/components/SpTokenTransfer/SpTokenTransfer.vue b/node_modules/@starport/vue/src/components/SpTokenTransfer/SpTokenTransfer.vue

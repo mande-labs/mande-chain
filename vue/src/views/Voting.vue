@@ -123,7 +123,7 @@
               :class="{
                 error: state.tx.receiver.length > 0 && !validReceiver
               }"
-              placeholder="Recipient address"
+              placeholder="Validator address"
               :disabled="!hasAnyBalance"
             />
             <div
@@ -144,7 +144,7 @@
               :class="{
                 error: state.tx.count.length > 0 && !validVoteCount
               }"
-              placeholder="100"
+              placeholder="(+/-)100"
               :disabled="!hasAnyBalance"
             />
             <div

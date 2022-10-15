@@ -75,20 +75,16 @@ export default defineComponent ({
       let validatorsList = computed(() => $s.getters['cosmos.staking.v1beta1/getValidators']())
 
       var bufferValidators: Array<Validator> = []
-      var val: Validator = {
-        operatorAddress: '',
-        status: '',
-        tokens: '',
-        moniker: ''
-      }
 
       let addrPrefix = $s.getters["common/env/addrPrefix"]
 
       for (let i=0; i<validatorsList.value.validators.length; i++) {
-        val.operatorAddress = Bech32.encode(addrPrefix, fromHex(toHex(Bech32.decode(validatorsList.value.validators[i].operator_address).data)))
-        val.status = validatorsList.value.validators[i].status
-        val.tokens = validatorsList.value.validators[i].tokens / 10**6
-        val.moniker = validatorsList.value.validators[i].description.moniker
+        let val: Validator = {
+          operatorAddress: Bech32.encode(addrPrefix, fromHex(toHex(Bech32.decode(validatorsList.value.validators[i].operator_address).data))),
+          status: validatorsList.value.validators[i].status,
+          tokens: validatorsList.value.validators[i].tokens / 10**6,
+          moniker: validatorsList.value.validators[i].description.moniker
+        }
 
         bufferValidators.push(val)
       }

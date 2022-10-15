@@ -38,7 +38,7 @@ index 738e112..08f8cf4 100644
          </tr>
          <tr v-if="noSearchResults" class="assets-table__row">
 diff --git a/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue b/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
-index 4a5c024..c220ed1 100644
+index 4a5c024..4edc274 100644
 --- a/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
 +++ b/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
 @@ -10,112 +10,27 @@
@@ -247,7 +247,7 @@ index 4a5c024..c220ed1 100644
    }
  })
  </script>
-@@ -238,4 +204,11 @@ export default defineComponent({
+@@ -238,4 +204,12 @@ export default defineComponent({
      display: none;
    }
  }
@@ -255,7 +255,8 @@ index 4a5c024..c220ed1 100644
 +  margin-right: 20px;
 +}
 +.net-constant {
-+  font-size: 16px;
++  font-size: 26px;
++  font-style: italic;
 +  font-weight: 500;
 +}
  </style>

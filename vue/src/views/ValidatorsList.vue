@@ -79,6 +79,9 @@ export default defineComponent ({
       let addrPrefix = $s.getters["common/env/addrPrefix"]
 
       for (let i=0; i<validatorsList.value.validators.length; i++) {
+        if (validatorsList.value.validators[i].jailed) {
+          continue
+        }
         let val: Validator = {
           operatorAddress: Bech32.encode(addrPrefix, fromHex(toHex(Bech32.decode(validatorsList.value.validators[i].operator_address).data))),
           status: validatorsList.value.validators[i].status,

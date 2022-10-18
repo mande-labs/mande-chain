@@ -151,7 +151,7 @@
               v-if="state.tx.count.length > 0 && !validVoteCount"
               class="error-message"
             >
-              Invalid count
+              Invalid count (-1000..count..1000)
             </div>
           </div>
           <br /><br />
@@ -288,7 +288,7 @@ export default defineComponent ({
     })
     let validVoteCount = computed<boolean>(
       () =>
-        !isNaN(state.tx.count) && state.tx.count != 0 && state.tx.count != ''
+        !isNaN(state.tx.count) && state.tx.count != 0 && state.tx.count != '' && Math.abs(state.tx.count) <= 1000
     )
     let ableToTx = computed<boolean>(
       () =>

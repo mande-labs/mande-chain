@@ -41,6 +41,7 @@ import { useStore } from 'vuex'
 import { useAddress } from '@starport/vue/src/composables'
 import { Bech32, toHex, fromHex } from '@cosmjs/encoding'
 import { useToast } from "vue-toastification";
+import axios from 'axios'
 
 export interface Validator {
   operatorAddress: string,
@@ -68,25 +69,27 @@ export default defineComponent ({
     let toast = useToast();
 
     let loadNewItems = async () => {
-      let res = await $s.dispatch('cosmos.staking.v1beta1/QueryValidators', {
-        options: { subscribe: true },
-      })
+      let API_COSMOS = computed<string>(() => $s.getters['common/env/apiCosmos'])
 
-      let validatorsList = computed(() => $s.getters['cosmos.staking.v1beta1/getValidators']())
+      let validatorsList = await axios.get(
+        `${API_COSMOS.value}` +
+          `/cosmos/staking/v1beta1/validators?` +
+          `pagination.limit=500`
+      )
 
       var bufferValidators: Array<Validator> = []
 
       let addrPrefix = $s.getters["common/env/addrPrefix"]
 
-      for (let i=0; i<validatorsList.value.validators.length; i++) {
-        if (validatorsList.value.validators[i].jailed) {
+      for (let i=0; i<validatorsList.data.validators.length; i++) {
+        if (validatorsList.data.validators[i].jailed) {
           continue
         }
         let val: Validator = {
-          operatorAddress: Bech32.encode(addrPrefix, fromHex(toHex(Bech32.decode(validatorsList.value.validators[i].operator_address).data))),
-          status: validatorsList.value.validators[i].status,
-          tokens: validatorsList.value.validators[i].tokens / 10**6,
-          moniker: validatorsList.value.validators[i].description.moniker
+          operatorAddress: Bech32.encode(addrPrefix, fromHex(toHex(Bech32.decode(validatorsList.data.validators[i].operator_address).data))),
+          status: validatorsList.data.validators[i].status,
+          tokens: validatorsList.data.validators[i].tokens / 10**6,
+          moniker: validatorsList.data.validators[i].description.moniker
         }
 
         bufferValidators.push(val)

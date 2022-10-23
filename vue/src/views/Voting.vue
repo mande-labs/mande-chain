@@ -124,7 +124,7 @@
                 error: state.tx.receiver.length > 0 && !validReceiver
               }"
               placeholder="Validator address"
-              :disabled="!hasAnyBalance"
+              :disabled="!address"
             />
             <div
               v-if="state.tx.receiver.length > 0 && !validReceiver"
@@ -145,7 +145,7 @@
                 error: state.tx.count.length > 0 && !validVoteCount
               }"
               placeholder="(+/-)100"
-              :disabled="!hasAnyBalance"
+              :disabled="!address"
             />
             <div
               v-if="state.tx.count.length > 0 && !validVoteCount"
@@ -156,10 +156,10 @@
           </div>
           <br /><br />
           <div class="input-wrapper">
-            <input type="radio" id="cast" value="1" v-model="state.tx.mode" :disabled="!hasAnyBalance"/>&nbsp;
+            <input type="radio" id="cast" value="1" v-model="state.tx.mode" :disabled="!address"/>&nbsp;
             <label class="input-label" for="cast">Cast</label>
             &nbsp;&nbsp;&nbsp;
-            <input type="radio" id="uncast" value="0" v-model="state.tx.mode" :disabled="!hasAnyBalance"/>&nbsp;
+            <input type="radio" id="uncast" value="0" v-model="state.tx.mode" :disabled="!address"/>&nbsp;
             <label class="input-label" for="uncast">Uncast</label>
           </div>
           <br /><br />
@@ -299,11 +299,6 @@ export default defineComponent ({
     let parseAmount = (amount: string): number => {
       return amount == '' ? 0 : parseInt(amount)
     }
-    let hasAnyBalance = computed<boolean>(
-      () =>
-        balances.value.assets.length > 0 &&
-        balances.value.assets.some((x) => parseAmount(x.amount.amount) > 0)
-    )
 
     //watch
     watch(
@@ -324,7 +319,6 @@ export default defineComponent ({
       ableToTx,
       validVoteCount,
       validReceiver,
-      hasAnyBalance
     }
   }
 });

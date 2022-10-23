@@ -25,7 +25,7 @@ index b30d2c5..bd03d62 100644
        let newSelected: Array<AssetForUI> = [...props.selected]
  
 diff --git a/node_modules/@starport/vue/src/components/SpAssets/SpAssets.vue b/node_modules/@starport/vue/src/components/SpAssets/SpAssets.vue
-index 738e112..08f8cf4 100644
+index 738e112..06adffa 100644
 --- a/node_modules/@starport/vue/src/components/SpAssets/SpAssets.vue
 +++ b/node_modules/@starport/vue/src/components/SpAssets/SpAssets.vue
 @@ -103,7 +103,7 @@
@@ -37,8 +37,16 @@ index 738e112..08f8cf4 100644
            </td>
          </tr>
          <tr v-if="noSearchResults" class="assets-table__row">
+@@ -532,7 +532,6 @@ $avatar-offset: 32 + 16;
+ 
+ section {
+   position: relative;
+-  padding-bottom: 132px;
+ }
+ 
+ .loading {
 diff --git a/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue b/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
-index 4a5c024..4edc274 100644
+index 4a5c024..ab7eb17 100644
 --- a/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
 +++ b/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
 @@ -10,112 +10,27 @@
@@ -197,7 +205,7 @@ index 4a5c024..4edc274 100644
  
  export interface NavbarLink {
    name: string
-@@ -170,6 +93,49 @@ export default defineComponent({
+@@ -170,6 +93,51 @@ export default defineComponent({
        type: String,
        required: false
      }
@@ -221,8 +229,10 @@ index 4a5c024..4edc274 100644
 +        "Content-Type": "application/json",
 +      };
 +
-+      axios.post(process.env.VUE_APP_FAUCET_ENDPOINT, payload, headers)
++      axios.post('http://localhost:8080/request', payload, headers)
 +        .then(response => {
++          console.log('check response below')
++          console.log(response)
 +          if (response.data && response.data.status && response.data.status == "error") {
 +            toast.error(response.data.message, {
 +              timeout: 1500
@@ -247,7 +257,7 @@ index 4a5c024..4edc274 100644
    }
  })
  </script>
-@@ -238,4 +204,12 @@ export default defineComponent({
+@@ -238,4 +206,12 @@ export default defineComponent({
      display: none;
    }
  }
@@ -287,10 +297,21 @@ index 69f7957..074b60d 100644
            </span>
          </template>
 diff --git a/node_modules/@starport/vue/src/composables/useKeplr.ts b/node_modules/@starport/vue/src/composables/useKeplr.ts
-index 4fd0968..7b6b932 100644
+index 4fd0968..60e9273 100644
 --- a/node_modules/@starport/vue/src/composables/useKeplr.ts
 +++ b/node_modules/@starport/vue/src/composables/useKeplr.ts
-@@ -63,11 +63,16 @@ export default function ({ $s }: Params): Response {
+@@ -33,6 +33,10 @@ export default function ({ $s }: Params): Response {
+       let rpc = $s.getters['common/env/apiTendermint']
+       let rest = $s.getters['common/env/apiCosmos']
+       let addrPrefix = $s.getters['common/env/addrPrefix']
++      addrPrefix = "mande"
++
++      console.log('check prefix below')
++      console.log(addrPrefix)
+ 
+       let stakeCurrency = {
+         coinDenom: staking.params.bond_denom.toUpperCase(),
+@@ -63,11 +67,16 @@ export default function ({ $s }: Params): Response {
          }
          y.coinDenom = x.denom.toUpperCase()
          y.coinMinimalDenom = x.denom
@@ -309,7 +330,7 @@ index 4fd0968..7b6b932 100644
          const y: AmountWithMeta = {
            amount: '0',
            denom: '',
-@@ -77,7 +82,7 @@ export default function ({ $s }: Params): Response {
+@@ -77,7 +86,7 @@ export default function ({ $s }: Params): Response {
          }
          y.coinDenom = x.denom.toUpperCase()
          y.coinMinimalDenom = x.denom

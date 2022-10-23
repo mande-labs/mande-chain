@@ -9,6 +9,7 @@
       </div>
       <div class="col-md-3 col-lg-offset-1">
         <SpAssets />
+        <LockedAssets />
       </div>
     </div>
     <div class="row row-sm-revers">
@@ -30,13 +31,14 @@ import { SpAssets, SpTokenTransfer, SpTokenTransferList } from '@starport/vue'
 import Voting from './Voting.vue'
 import VoteTransactionList from './VoteTransactionList.vue'
 import ValidatorsList from './ValidatorsList.vue'
+import LockedAssets from './LockedAssets.vue'
 import { computed, defineComponent } from 'vue'
 import { useStore } from 'vuex'
 
 export default defineComponent ({
   name: 'Portfolio',
 
-  components: { SpTokenTransfer, SpAssets, SpTokenTransferList, Voting, VoteTransactionList, ValidatorsList },
+  components: { SpTokenTransfer, SpAssets, SpTokenTransferList, Voting, VoteTransactionList, ValidatorsList, LockedAssets },
 
   setup() {
     // store

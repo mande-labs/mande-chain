@@ -14,7 +14,7 @@ service Msg {
 message MsgCreateVote {
   string creator = 1;
   string receiver = 2;
-  int32 count = 3;
+  int64 count = 3;
   uint64 mode = 4;
 }
 

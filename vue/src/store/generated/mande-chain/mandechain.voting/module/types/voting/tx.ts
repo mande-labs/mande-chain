@@ -29,7 +29,7 @@ export const MsgCreateVote = {
       writer.uint32(18).string(message.receiver);
     }
     if (message.count !== 0) {
-      writer.uint32(24).int32(message.count);
+      writer.uint32(24).int64(message.count);
     }
     if (message.mode !== 0) {
       writer.uint32(32).uint64(message.mode);
@@ -51,7 +51,7 @@ export const MsgCreateVote = {
           message.receiver = reader.string();
           break;
         case 3:
-          message.count = reader.int32();
+          message.count = longToNumber(reader.int64() as Long);
           break;
         case 4:
           message.mode = longToNumber(reader.uint64() as Long);

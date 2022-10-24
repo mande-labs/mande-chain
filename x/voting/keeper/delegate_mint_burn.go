@@ -15,7 +15,7 @@ import (
 */
 func (k Keeper) lockMandAndDelegateStake(ctx sdk.Context, msg *types.MsgCreateVote, ballotBefore int64, ballotAfter int64) error {
 	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
-	voteCountAbs := int64(Abs(msg.Count))
+	voteCountAbs := int64(intAbs(msg.Count))
 
 	// send tokens from the vote creator to the voting module account
 	voteCountEquivalentMand := sdk.Coins{sdk.NewInt64Coin("mand", voteCountAbs)}
@@ -38,7 +38,7 @@ func (k Keeper) lockMandAndDelegateStake(ctx sdk.Context, msg *types.MsgCreateVo
 */
 func (k Keeper) undelegateStakeAndUnlockMand(ctx sdk.Context, msg *types.MsgCreateVote, ballotBefore int64, ballotAfter int64) error {
 	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
-	voteCountAbs := int64(Abs(msg.Count))
+	voteCountAbs := int64(intAbs(msg.Count))
 
 	// send mand tokens back to creator
 	voteCountEquivalentMand := sdk.Coins{sdk.NewInt64Coin("mand", voteCountAbs)}

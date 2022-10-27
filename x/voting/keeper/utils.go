@@ -2,16 +2,9 @@ package keeper
 
 import "mande-chain/x/voting/types"
 
-func intAbs(n int32) uint64 {
-	y := n >> 31
+func intAbs(n int64) uint64 {
+	y := n >> 63
 	return uint64((n ^ y) - y)
-}
-
-func Abs(x int32) int32 {
-	if x < 0 {
-		return -x
-	}
-	return x
 }
 
 func Max(x int64, y int64) int64 {

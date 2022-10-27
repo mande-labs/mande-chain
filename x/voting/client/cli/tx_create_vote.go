@@ -20,7 +20,7 @@ func CmdCreateVote() *cobra.Command {
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argReceiver := args[0]
-			argCount, err := cast.ToInt32E(args[1])
+			argCount, err := cast.ToInt64E(args[1])
 			if err != nil {
 				return err
 			}

@@ -46,7 +46,7 @@ index 738e112..06adffa 100644
  
  .loading {
 diff --git a/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue b/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
-index 4a5c024..f01dbf0 100644
+index 4a5c024..233be55 100644
 --- a/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
 +++ b/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
 @@ -10,112 +10,27 @@
@@ -190,7 +190,7 @@ index 4a5c024..f01dbf0 100644
 +      <div class="net-constant">x(t)=1</div>
 +    </div>
 +    <div class="navbar-section">
-+      <SpButton v-if="address" style="margin-right: 20px" @click="claimTokens">Claim MAND</SpButton>
++      <a target="blank" href="https://discord.gg/VmKYxQJSTM"><SpButton v-if="address" style="margin-right: 20px">Claim MAND on Discord</SpButton></a>
        <SpAcc />
      </div>
    </div>
@@ -205,7 +205,7 @@ index 4a5c024..f01dbf0 100644
  
  export interface NavbarLink {
    name: string
-@@ -170,6 +93,51 @@ export default defineComponent({
+@@ -170,6 +93,16 @@ export default defineComponent({
        type: String,
        required: false
      }
@@ -216,48 +216,13 @@ index 4a5c024..f01dbf0 100644
 +    let { address } = useAddress({ $s })
 +    let toast = useToast();
 +
-+    let claimTokens = async (): Promise<void> => {
-+      toast.info("Claiming!", {
-+        timeout: 1500
-+      });
-+
-+      let payload: any = {
-+        address: address.value
-+      }
-+
-+      let headers = {
-+        "Content-Type": "application/json",
-+      };
-+
-+      axios.post('http://localhost:8080/request', payload, headers)
-+        .then(response => {
-+          console.log('check response below')
-+          console.log(response)
-+          if (response.data && response.data.status && response.data.status == "error") {
-+            toast.error(response.data.message, {
-+              timeout: 1500
-+            });
-+          } else {
-+            toast.success("Coins sent!", {
-+              timeout: 1500
-+            });
-+          }
-+        })
-+        .catch(error => {
-+          toast.error(error + ", Meanwhile use faucet on our discord", {
-+            timeout: 1500
-+          });
-+        });
-+    }
-+
 +    return {
-+      claimTokens,
 +      address
 +    }
    }
  })
  </script>
-@@ -238,4 +206,12 @@ export default defineComponent({
+@@ -238,4 +171,12 @@ export default defineComponent({
      display: none;
    }
  }

@@ -62,9 +62,17 @@ func (k Keeper) uncastVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateV
 	}
 
 	k.SetVoteBook(ctx, voteBookEntry)
-	k.ReconcileAggregatedVotes(msg, aggregateVoteCreatorCount, &aggregateVoteReceiverCount)
-	k.SetAggregateVoteCount(ctx, aggregateVoteReceiverCount)
-	k.SetAggregateVoteCount(ctx, *aggregateVoteCreatorCount)
+	
+	if msg.Receiver == msg.Creator {
+		k.ReconcileCreatorAggregatedVotes(msg, &aggregateVoteReceiverCount)
+		k.ReconcileReceiverAggregatedVotes(msg, &aggregateVoteReceiverCount)
+		k.SetAggregateVoteCount(ctx, aggregateVoteReceiverCount)
+	} else {
+		k.ReconcileCreatorAggregatedVotes(msg, aggregateVoteCreatorCount)
+		k.SetAggregateVoteCount(ctx, *aggregateVoteCreatorCount)
+		k.ReconcileReceiverAggregatedVotes(msg, &aggregateVoteReceiverCount)
+		k.SetAggregateVoteCount(ctx, aggregateVoteReceiverCount)
+	}
 
 	ballotAfter := calculateBallot(&aggregateVoteReceiverCount)
 	err := k.undelegateStakeAndUnlockMand(ctx, msg, ballotBefore, ballotAfter)
@@ -118,9 +126,17 @@ func (k Keeper) castVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateVot
 	ballotBefore := calculateBallot(&aggregateVoteReceiverCount)
 
 	k.SetVoteBook(ctx, voteBookEntry)
-	k.ReconcileAggregatedVotes(msg, aggregateVoteCreatorCount, &aggregateVoteReceiverCount)
-	k.SetAggregateVoteCount(ctx, aggregateVoteReceiverCount)
-	k.SetAggregateVoteCount(ctx, *aggregateVoteCreatorCount)
+	
+	if msg.Receiver == msg.Creator {
+		k.ReconcileCreatorAggregatedVotes(msg, &aggregateVoteReceiverCount)
+		k.ReconcileReceiverAggregatedVotes(msg, &aggregateVoteReceiverCount)
+		k.SetAggregateVoteCount(ctx, aggregateVoteReceiverCount)
+	} else {
+		k.ReconcileCreatorAggregatedVotes(msg, aggregateVoteCreatorCount)
+		k.SetAggregateVoteCount(ctx, *aggregateVoteCreatorCount)
+		k.ReconcileReceiverAggregatedVotes(msg, &aggregateVoteReceiverCount)
+		k.SetAggregateVoteCount(ctx, aggregateVoteReceiverCount)
+	}
 
 	ballotAfter := calculateBallot(&aggregateVoteReceiverCount)
 	err := k.lockMandAndDelegateStake(ctx, msg, ballotBefore, ballotAfter)

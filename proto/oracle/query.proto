@@ -1,0 +1,51 @@
+syntax = "proto3";
+package mandechain.oracle;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "oracle/params.proto";
+import "oracle/network_constant.proto";
+// this line is used by starport scaffolding # 1
+
+option go_package = "mande-chain/x/oracle/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/mande-chain/oracle/params";
+  }
+  
+  	// NetworkConstantResult defines a rpc handler method for MsgNetworkConstantData.
+  	rpc NetworkConstantResult(QueryNetworkConstantRequest) returns (QueryNetworkConstantResponse) {
+		option (google.api.http).get = "/mandechain/oracle/network_constant_result/{request_id}";
+  	}
+
+  	// LastNetworkConstantId query the last NetworkConstant result id
+  	rpc LastNetworkConstantId(QueryLastNetworkConstantIdRequest) returns (QueryLastNetworkConstantIdResponse) {
+		option (google.api.http).get = "/mandechain/oracle/last_network_constant_id";
+  	}
+// this line is used by starport scaffolding # 2
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryNetworkConstantRequest {int64 request_id = 1;}
+
+message QueryNetworkConstantResponse {
+  NetworkConstantResult result = 1;
+}
+
+message QueryLastNetworkConstantIdRequest {}
+
+message QueryLastNetworkConstantIdResponse {int64 request_id = 1;}
+
+// this line is used by starport scaffolding # 3

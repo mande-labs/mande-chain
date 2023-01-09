@@ -2,9 +2,9 @@ package types
 
 // bank module event types
 const (
-	EventTypeVoteCasted = "vote_casted"
+	EventTypeVoteCasted   = "vote_casted"
 	EventTypeVoteUncasted = "vote_uncasted"
 
-	AttributeKeyCaster    = "sender"
+	AttributeKeyCaster   = "sender"
 	AttributeKeyReceiver = "recipient"
 )

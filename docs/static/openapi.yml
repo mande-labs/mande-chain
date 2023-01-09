@@ -29820,6 +29820,121 @@ paths:
           format: uint64
       tags:
         - Query
+  /mande-chain/oracle/params:
+    get:
+      summary: Parameters queries the parameters of the module.
+      operationId: MandechainOracleParams
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              params:
+                description: params holds all the parameters of this module.
+                type: object
+            description: >-
+              QueryParamsResponse is response type for the Query/Params RPC
+              method.
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  /mandechain/oracle/last_network_constant_id:
+    get:
+      summary: LastNetworkConstantId query the last NetworkConstant result id
+      operationId: MandechainOracleLastNetworkConstantId
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              request_id:
+                type: string
+                format: int64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
+  '/mandechain/oracle/network_constant_result/{request_id}':
+    get:
+      summary: >-
+        NetworkConstantResult defines a rpc handler method for
+        MsgNetworkConstantData.
+      operationId: MandechainOracleNetworkConstantResult
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              result:
+                type: object
+                properties:
+                  rates:
+                    type: array
+                    items:
+                      type: string
+                      format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: request_id
+          in: path
+          required: true
+          type: string
+          format: int64
+      tags:
+        - Query
   /mande-chain/voting/aggregate_vote_count:
     get:
       summary: Queries a list of AggregateVoteCount items.
@@ -51406,6 +51521,53 @@ definitions:
     description: |-
       Version defines the versioning scheme used to negotiate the IBC verison in
       the connection handshake.
+  mandechain.oracle.MsgNetworkConstantDataResponse:
+    type: object
+  mandechain.oracle.NetworkConstantCallData:
+    type: object
+    properties:
+      symbols:
+        type: array
+        items:
+          type: string
+      multiplier:
+        type: string
+        format: uint64
+  mandechain.oracle.NetworkConstantResult:
+    type: object
+    properties:
+      rates:
+        type: array
+        items:
+          type: string
+          format: uint64
+  mandechain.oracle.Params:
+    type: object
+    description: Params defines the parameters for the module.
+  mandechain.oracle.QueryLastNetworkConstantIdResponse:
+    type: object
+    properties:
+      request_id:
+        type: string
+        format: int64
+  mandechain.oracle.QueryNetworkConstantResponse:
+    type: object
+    properties:
+      result:
+        type: object
+        properties:
+          rates:
+            type: array
+            items:
+              type: string
+              format: uint64
+  mandechain.oracle.QueryParamsResponse:
+    type: object
+    properties:
+      params:
+        description: params holds all the parameters of this module.
+        type: object
+    description: QueryParamsResponse is response type for the Query/Params RPC method.
   mandechain.voting.AggregateVoteCount:
     type: object
     properties:

@@ -99,6 +99,9 @@ import (
 	monitoringptypes "github.com/tendermint/spn/x/monitoringp/types"
 
 	"mande-chain/docs"
+	oraclemodule "mande-chain/x/oracle"
+	oraclemodulekeeper "mande-chain/x/oracle/keeper"
+	oraclemoduletypes "mande-chain/x/oracle/types"
 	votingmodule "mande-chain/x/voting"
 	votingmodulekeeper "mande-chain/x/voting/keeper"
 	votingmoduletypes "mande-chain/x/voting/types"
@@ -157,6 +160,7 @@ var (
 		vesting.AppModuleBasic{},
 		monitoringp.AppModuleBasic{},
 		votingmodule.AppModuleBasic{},
+		oraclemodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -230,7 +234,9 @@ type App struct {
 	ScopedTransferKeeper   capabilitykeeper.ScopedKeeper
 	ScopedMonitoringKeeper capabilitykeeper.ScopedKeeper
 
-	VotingKeeper votingmodulekeeper.Keeper
+	VotingKeeper       votingmodulekeeper.Keeper
+	ScopedOracleKeeper capabilitykeeper.ScopedKeeper
+	OracleKeeper       oraclemodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -268,6 +274,7 @@ func New(
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey, monitoringptypes.StoreKey,
 		votingmoduletypes.StoreKey,
+		oraclemoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -401,12 +408,26 @@ func New(
 	)
 	votingModule := votingmodule.NewAppModule(appCodec, app.VotingKeeper, app.AccountKeeper, app.BankKeeper)
 
+	scopedOracleKeeper := app.CapabilityKeeper.ScopeToModule(oraclemoduletypes.ModuleName)
+	app.ScopedOracleKeeper = scopedOracleKeeper
+	app.OracleKeeper = *oraclemodulekeeper.NewKeeper(
+		appCodec,
+		keys[oraclemoduletypes.StoreKey],
+		keys[oraclemoduletypes.MemStoreKey],
+		app.GetSubspace(oraclemoduletypes.ModuleName),
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedOracleKeeper,
+	)
+	oracleModule := oraclemodule.NewAppModule(appCodec, app.OracleKeeper, app.AccountKeeper, app.BankKeeper)
+
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// Create static IBC router, add transfer route, then set and seal it
 	ibcRouter := ibcporttypes.NewRouter()
 	ibcRouter.AddRoute(ibctransfertypes.ModuleName, transferIBCModule)
 	ibcRouter.AddRoute(monitoringptypes.ModuleName, monitoringModule)
+	ibcRouter.AddRoute(oraclemoduletypes.ModuleName, oracleModule)
 	// this line is used by starport scaffolding # ibc/app/router
 	app.IBCKeeper.SetRouter(ibcRouter)
 
@@ -443,6 +464,7 @@ func New(
 		transferModule,
 		monitoringModule,
 		votingModule,
+		oracleModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -471,6 +493,7 @@ func New(
 		paramstypes.ModuleName,
 		monitoringptypes.ModuleName,
 		votingmoduletypes.ModuleName,
+		oraclemoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -495,6 +518,7 @@ func New(
 		ibctransfertypes.ModuleName,
 		monitoringptypes.ModuleName,
 		votingmoduletypes.ModuleName,
+		oraclemoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -524,6 +548,7 @@ func New(
 		feegrant.ModuleName,
 		monitoringptypes.ModuleName,
 		votingmoduletypes.ModuleName,
+		oraclemoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -549,6 +574,7 @@ func New(
 		transferModule,
 		monitoringModule,
 		votingModule,
+		oracleModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
@@ -739,6 +765,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	paramsKeeper.Subspace(monitoringptypes.ModuleName)
 	paramsKeeper.Subspace(votingmoduletypes.ModuleName)
+	paramsKeeper.Subspace(oraclemoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

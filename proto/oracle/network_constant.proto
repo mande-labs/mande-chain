@@ -1,0 +1,13 @@
+syntax = "proto3";
+package mandechain.oracle;
+
+option go_package = "mande-chain/x/oracle/types";
+
+message NetworkConstantCallData {
+  repeated string symbols = 1;
+  uint64 multiplier = 2;
+}
+
+message NetworkConstantResult {
+  repeated uint64 rates = 1;
+}

@@ -62,7 +62,7 @@ func (k Keeper) uncastVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateV
 	}
 
 	k.SetVoteBook(ctx, voteBookEntry)
-	
+
 	if msg.Receiver == msg.Creator {
 		k.ReconcileCreatorAggregatedVotes(msg, &aggregateVoteReceiverCount)
 		k.ReconcileReceiverAggregatedVotes(msg, &aggregateVoteReceiverCount)
@@ -126,7 +126,7 @@ func (k Keeper) castVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateVot
 	ballotBefore := calculateBallot(&aggregateVoteReceiverCount)
 
 	k.SetVoteBook(ctx, voteBookEntry)
-	
+
 	if msg.Receiver == msg.Creator {
 		k.ReconcileCreatorAggregatedVotes(msg, &aggregateVoteReceiverCount)
 		k.ReconcileReceiverAggregatedVotes(msg, &aggregateVoteReceiverCount)
@@ -143,7 +143,6 @@ func (k Keeper) castVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateVot
 	if err != nil {
 		return err
 	}
-
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(

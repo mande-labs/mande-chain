@@ -12,14 +12,12 @@
 export type OracleMsgNetworkConstantDataResponse = object;
 
 export interface OracleNetworkConstantCallData {
-  symbols?: string[];
-
   /** @format uint64 */
-  multiplier?: string;
+  repeat?: string;
 }
 
 export interface OracleNetworkConstantResult {
-  rates?: string[];
+  response?: string;
 }
 
 /**

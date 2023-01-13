@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"time"
+	"fmt"
 
 	"github.com/bandprotocol/bandchain-packet/obi"
 	"github.com/bandprotocol/bandchain-packet/packet"
@@ -68,6 +69,9 @@ func (k msgServer) NetworkConstantData(goCtx context.Context, msg *types.MsgNetw
 		clienttypes.NewHeight(0, 0),
 		uint64(ctx.BlockTime().UnixNano()+int64(10*time.Minute)), // Arbitrary timestamp timeout for now
 	))
+
+	ctx.Logger().Info(fmt.Sprintf("check err here: %s", err))
+
 	if err != nil {
 		return nil, err
 	}

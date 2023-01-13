@@ -29904,11 +29904,8 @@ paths:
               result:
                 type: object
                 properties:
-                  rates:
-                    type: array
-                    items:
-                      type: string
-                      format: uint64
+                  response:
+                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -51526,21 +51523,14 @@ definitions:
   mandechain.oracle.NetworkConstantCallData:
     type: object
     properties:
-      symbols:
-        type: array
-        items:
-          type: string
-      multiplier:
+      repeat:
         type: string
         format: uint64
   mandechain.oracle.NetworkConstantResult:
     type: object
     properties:
-      rates:
-        type: array
-        items:
-          type: string
-          format: uint64
+      response:
+        type: string
   mandechain.oracle.Params:
     type: object
     description: Params defines the parameters for the module.
@@ -51556,11 +51546,8 @@ definitions:
       result:
         type: object
         properties:
-          rates:
-            type: array
-            items:
-              type: string
-              format: uint64
+          response:
+            type: string
   mandechain.oracle.QueryParamsResponse:
     type: object
     properties:

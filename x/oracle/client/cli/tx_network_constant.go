@@ -43,21 +43,8 @@ func CmdRequestNetworkConstantData() *cobra.Command {
 				return err
 			}
 
-			// retrieve the list of symbols for the requested oracle script.
-			symbols, err := cmd.Flags().GetStringSlice(flagSymbols)
-			if err != nil {
-				return err
-			}
-
-			// retrieve the multiplier for the symbols' price.
-			multiplier, err := cmd.Flags().GetUint64(flagMultiplier)
-			if err != nil {
-				return err
-			}
-
 			calldata := &types.NetworkConstantCallData{
-				Symbols:    symbols,
-				Multiplier: multiplier,
+				Repeat: 1,
 			}
 
 			// retrieve the amount of coins allowed to be paid for oracle request fee from the pool account.
@@ -107,8 +94,6 @@ func CmdRequestNetworkConstantData() *cobra.Command {
 
 	cmd.Flags().String(flagChannel, "", "The channel id")
 	cmd.MarkFlagRequired(flagChannel)
-	cmd.Flags().StringSlice(flagSymbols, nil, "Symbols used in calling the oracle script")
-	cmd.Flags().Uint64(flagMultiplier, 1000000, "Multiplier used in calling the oracle script")
 	cmd.Flags().String(flagFeeLimit, "", "the maximum tokens that will be paid to all data source providers")
 	cmd.Flags().Uint64(flagPrepareGas, 200000, "Prepare gas used in fee counting for prepare request")
 	cmd.Flags().Uint64(flagExecuteGas, 200000, "Execute gas used in fee counting for execute request")

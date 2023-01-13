@@ -4,10 +4,9 @@ package mandechain.oracle;
 option go_package = "mande-chain/x/oracle/types";
 
 message NetworkConstantCallData {
-  repeated string symbols = 1;
-  uint64 multiplier = 2;
+  uint64 repeat = 1;
 }
 
 message NetworkConstantResult {
-  repeated uint64 rates = 1;
+  string response = 1;
 }

@@ -5,26 +5,22 @@ import { util, configure, Writer, Reader } from "protobufjs/minimal";
 export const protobufPackage = "mandechain.oracle";
 
 export interface NetworkConstantCallData {
-  symbols: string[];
-  multiplier: number;
+  repeat: number;
 }
 
 export interface NetworkConstantResult {
-  rates: number[];
+  response: string;
 }
 
-const baseNetworkConstantCallData: object = { symbols: "", multiplier: 0 };
+const baseNetworkConstantCallData: object = { repeat: 0 };
 
 export const NetworkConstantCallData = {
   encode(
     message: NetworkConstantCallData,
     writer: Writer = Writer.create()
   ): Writer {
-    for (const v of message.symbols) {
-      writer.uint32(10).string(v!);
-    }
-    if (message.multiplier !== 0) {
-      writer.uint32(16).uint64(message.multiplier);
+    if (message.repeat !== 0) {
+      writer.uint32(8).uint64(message.repeat);
     }
     return writer;
   },
@@ -35,15 +31,11 @@ export const NetworkConstantCallData = {
     const message = {
       ...baseNetworkConstantCallData,
     } as NetworkConstantCallData;
-    message.symbols = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.symbols.push(reader.string());
-          break;
-        case 2:
-          message.multiplier = longToNumber(reader.uint64() as Long);
+          message.repeat = longToNumber(reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -57,28 +49,17 @@ export const NetworkConstantCallData = {
     const message = {
       ...baseNetworkConstantCallData,
     } as NetworkConstantCallData;
-    message.symbols = [];
-    if (object.symbols !== undefined && object.symbols !== null) {
-      for (const e of object.symbols) {
-        message.symbols.push(String(e));
-      }
-    }
-    if (object.multiplier !== undefined && object.multiplier !== null) {
-      message.multiplier = Number(object.multiplier);
+    if (object.repeat !== undefined && object.repeat !== null) {
+      message.repeat = Number(object.repeat);
     } else {
-      message.multiplier = 0;
+      message.repeat = 0;
     }
     return message;
   },
 
   toJSON(message: NetworkConstantCallData): unknown {
     const obj: any = {};
-    if (message.symbols) {
-      obj.symbols = message.symbols.map((e) => e);
-    } else {
-      obj.symbols = [];
-    }
-    message.multiplier !== undefined && (obj.multiplier = message.multiplier);
+    message.repeat !== undefined && (obj.repeat = message.repeat);
     return obj;
   },
 
@@ -88,33 +69,25 @@ export const NetworkConstantCallData = {
     const message = {
       ...baseNetworkConstantCallData,
     } as NetworkConstantCallData;
-    message.symbols = [];
-    if (object.symbols !== undefined && object.symbols !== null) {
-      for (const e of object.symbols) {
-        message.symbols.push(e);
-      }
-    }
-    if (object.multiplier !== undefined && object.multiplier !== null) {
-      message.multiplier = object.multiplier;
+    if (object.repeat !== undefined && object.repeat !== null) {
+      message.repeat = object.repeat;
     } else {
-      message.multiplier = 0;
+      message.repeat = 0;
     }
     return message;
   },
 };
 
-const baseNetworkConstantResult: object = { rates: 0 };
+const baseNetworkConstantResult: object = { response: "" };
 
 export const NetworkConstantResult = {
   encode(
     message: NetworkConstantResult,
     writer: Writer = Writer.create()
   ): Writer {
-    writer.uint32(10).fork();
-    for (const v of message.rates) {
-      writer.uint64(v);
+    if (message.response !== "") {
+      writer.uint32(10).string(message.response);
     }
-    writer.ldelim();
     return writer;
   },
 
@@ -122,19 +95,11 @@ export const NetworkConstantResult = {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseNetworkConstantResult } as NetworkConstantResult;
-    message.rates = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          if ((tag & 7) === 2) {
-            const end2 = reader.uint32() + reader.pos;
-            while (reader.pos < end2) {
-              message.rates.push(longToNumber(reader.uint64() as Long));
-            }
-          } else {
-            message.rates.push(longToNumber(reader.uint64() as Long));
-          }
+          message.response = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -146,22 +111,17 @@ export const NetworkConstantResult = {
 
   fromJSON(object: any): NetworkConstantResult {
     const message = { ...baseNetworkConstantResult } as NetworkConstantResult;
-    message.rates = [];
-    if (object.rates !== undefined && object.rates !== null) {
-      for (const e of object.rates) {
-        message.rates.push(Number(e));
-      }
+    if (object.response !== undefined && object.response !== null) {
+      message.response = String(object.response);
+    } else {
+      message.response = "";
     }
     return message;
   },
 
   toJSON(message: NetworkConstantResult): unknown {
     const obj: any = {};
-    if (message.rates) {
-      obj.rates = message.rates.map((e) => e);
-    } else {
-      obj.rates = [];
-    }
+    message.response !== undefined && (obj.response = message.response);
     return obj;
   },
 
@@ -169,11 +129,10 @@ export const NetworkConstantResult = {
     object: DeepPartial<NetworkConstantResult>
   ): NetworkConstantResult {
     const message = { ...baseNetworkConstantResult } as NetworkConstantResult;
-    message.rates = [];
-    if (object.rates !== undefined && object.rates !== null) {
-      for (const e of object.rates) {
-        message.rates.push(e);
-      }
+    if (object.response !== undefined && object.response !== null) {
+      message.response = object.response;
+    } else {
+      message.response = "";
     }
     return message;
   },

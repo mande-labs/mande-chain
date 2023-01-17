@@ -9,10 +9,10 @@ import (
 	"mande-chain/x/voting/types"
 )
 
-func CmdListAggregateVoteCount() *cobra.Command {
+func CmdListAggregateVotesReceived() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "list-aggregate-vote-count",
-		Short: "list all aggregateVoteCount",
+		Use:   "list-aggregate-votes-received",
+		Short: "list all aggregateVotesReceived",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)
 
@@ -23,11 +23,11 @@ func CmdListAggregateVoteCount() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			params := &types.QueryAllAggregateVoteCountRequest{
+			params := &types.QueryAllAggregateVotesReceivedRequest{
 				Pagination: pageReq,
 			}
 
-			res, err := queryClient.AggregateVoteCountAll(context.Background(), params)
+			res, err := queryClient.AggregateVotesReceivedAll(context.Background(), params)
 			if err != nil {
 				return err
 			}
@@ -42,10 +42,10 @@ func CmdListAggregateVoteCount() *cobra.Command {
 	return cmd
 }
 
-func CmdShowAggregateVoteCount() *cobra.Command {
+func CmdShowAggregateVotesReceived() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-aggregate-vote-count [index]",
-		Short: "shows a aggregateVoteCount",
+		Use:   "show-aggregate-votes-received [index]",
+		Short: "shows a aggregateVotesReceived",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx := client.GetClientContextFromCmd(cmd)
@@ -54,11 +54,11 @@ func CmdShowAggregateVoteCount() *cobra.Command {
 
 			argIndex := args[0]
 
-			params := &types.QueryGetAggregateVoteCountRequest{
+			params := &types.QueryGetAggregateVotesReceivedRequest{
 				Index: argIndex,
 			}
 
-			res, err := queryClient.AggregateVoteCount(context.Background(), params)
+			res, err := queryClient.AggregateVotesReceived(context.Background(), params)
 			if err != nil {
 				return err
 			}

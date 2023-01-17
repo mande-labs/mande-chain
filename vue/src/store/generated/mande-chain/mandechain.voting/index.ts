@@ -1,11 +1,12 @@
 import { txClient, queryClient, MissingWalletError , registry} from './module'
 
-import { AggregateVoteCount } from "./module/types/voting/aggregate_vote_count"
+import { AggregateVotesCasted } from "./module/types/voting/aggregate_votes_casted"
+import { AggregateVotesReceived } from "./module/types/voting/aggregate_votes_received"
 import { Params } from "./module/types/voting/params"
 import { VoteBook } from "./module/types/voting/vote_book"
 
 
-export { AggregateVoteCount, Params, VoteBook };
+export { AggregateVotesCasted, AggregateVotesReceived, Params, VoteBook };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -46,11 +47,14 @@ const getDefaultState = () => {
 				Params: {},
 				VoteBook: {},
 				VoteBookAll: {},
-				AggregateVoteCount: {},
-				AggregateVoteCountAll: {},
+				AggregateVotesCasted: {},
+				AggregateVotesCastedAll: {},
+				AggregateVotesReceived: {},
+				AggregateVotesReceivedAll: {},
 				
 				_Structure: {
-						AggregateVoteCount: getStructure(AggregateVoteCount.fromPartial({})),
+						AggregateVotesCasted: getStructure(AggregateVotesCasted.fromPartial({})),
+						AggregateVotesReceived: getStructure(AggregateVotesReceived.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						VoteBook: getStructure(VoteBook.fromPartial({})),
 						
@@ -99,17 +103,29 @@ export default {
 					}
 			return state.VoteBookAll[JSON.stringify(params)] ?? {}
 		},
-				getAggregateVoteCount: (state) => (params = { params: {}}) => {
+				getAggregateVotesCasted: (state) => (params = { params: {}}) => {
 					if (!(<any> params).query) {
 						(<any> params).query=null
 					}
-			return state.AggregateVoteCount[JSON.stringify(params)] ?? {}
+			return state.AggregateVotesCasted[JSON.stringify(params)] ?? {}
 		},
-				getAggregateVoteCountAll: (state) => (params = { params: {}}) => {
+				getAggregateVotesCastedAll: (state) => (params = { params: {}}) => {
 					if (!(<any> params).query) {
 						(<any> params).query=null
 					}
-			return state.AggregateVoteCountAll[JSON.stringify(params)] ?? {}
+			return state.AggregateVotesCastedAll[JSON.stringify(params)] ?? {}
+		},
+				getAggregateVotesReceived: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.AggregateVotesReceived[JSON.stringify(params)] ?? {}
+		},
+				getAggregateVotesReceivedAll: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.AggregateVotesReceivedAll[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -220,18 +236,18 @@ export default {
 		 		
 		
 		
-		async QueryAggregateVoteCount({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+		async QueryAggregateVotesCasted({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
 			try {
 				const key = params ?? {};
 				const queryClient=await initQueryClient(rootGetters)
-				let value= (await queryClient.queryAggregateVoteCount( key.index)).data
+				let value= (await queryClient.queryAggregateVotesCasted( key.index)).data
 				
 					
-				commit('QUERY', { query: 'AggregateVoteCount', key: { params: {...key}, query}, value })
-				if (subscribe) commit('SUBSCRIBE', { action: 'QueryAggregateVoteCount', payload: { options: { all }, params: {...key},query }})
-				return getters['getAggregateVoteCount']( { params: {...key}, query}) ?? {}
+				commit('QUERY', { query: 'AggregateVotesCasted', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryAggregateVotesCasted', payload: { options: { all }, params: {...key},query }})
+				return getters['getAggregateVotesCasted']( { params: {...key}, query}) ?? {}
 			} catch (e) {
-				throw new Error('QueryClient:QueryAggregateVoteCount API Node Unavailable. Could not perform query: ' + e.message)
+				throw new Error('QueryClient:QueryAggregateVotesCasted API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},
@@ -242,22 +258,70 @@ export default {
 		 		
 		
 		
-		async QueryAggregateVoteCountAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+		async QueryAggregateVotesCastedAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
 			try {
 				const key = params ?? {};
 				const queryClient=await initQueryClient(rootGetters)
-				let value= (await queryClient.queryAggregateVoteCountAll(query)).data
+				let value= (await queryClient.queryAggregateVotesCastedAll(query)).data
 				
 					
 				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
-					let next_values=(await queryClient.queryAggregateVoteCountAll({...query, 'pagination.key':(<any> value).pagination.next_key})).data
+					let next_values=(await queryClient.queryAggregateVotesCastedAll({...query, 'pagination.key':(<any> value).pagination.next_key})).data
 					value = mergeResults(value, next_values);
 				}
-				commit('QUERY', { query: 'AggregateVoteCountAll', key: { params: {...key}, query}, value })
-				if (subscribe) commit('SUBSCRIBE', { action: 'QueryAggregateVoteCountAll', payload: { options: { all }, params: {...key},query }})
-				return getters['getAggregateVoteCountAll']( { params: {...key}, query}) ?? {}
+				commit('QUERY', { query: 'AggregateVotesCastedAll', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryAggregateVotesCastedAll', payload: { options: { all }, params: {...key},query }})
+				return getters['getAggregateVotesCastedAll']( { params: {...key}, query}) ?? {}
 			} catch (e) {
-				throw new Error('QueryClient:QueryAggregateVoteCountAll API Node Unavailable. Could not perform query: ' + e.message)
+				throw new Error('QueryClient:QueryAggregateVotesCastedAll API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryAggregateVotesReceived({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryAggregateVotesReceived( key.index)).data
+				
+					
+				commit('QUERY', { query: 'AggregateVotesReceived', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryAggregateVotesReceived', payload: { options: { all }, params: {...key},query }})
+				return getters['getAggregateVotesReceived']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryAggregateVotesReceived API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryAggregateVotesReceivedAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryAggregateVotesReceivedAll(query)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await queryClient.queryAggregateVotesReceivedAll({...query, 'pagination.key':(<any> value).pagination.next_key})).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'AggregateVotesReceivedAll', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryAggregateVotesReceivedAll', payload: { options: { all }, params: {...key},query }})
+				return getters['getAggregateVotesReceivedAll']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryAggregateVotesReceivedAll API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},

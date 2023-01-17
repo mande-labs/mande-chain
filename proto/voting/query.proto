@@ -6,7 +6,8 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "voting/params.proto";
 import "voting/vote_book.proto";
-import "voting/aggregate_vote_count.proto";
+import "voting/aggregate_votes_casted.proto";
+import "voting/aggregate_votes_received.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "mande-chain/x/voting/types";
@@ -27,14 +28,24 @@ service Query {
 		option (google.api.http).get = "/mande-chain/voting/vote_book";
 	}
 
-// Queries a AggregateVoteCount by index.
-	rpc AggregateVoteCount(QueryGetAggregateVoteCountRequest) returns (QueryGetAggregateVoteCountResponse) {
-		option (google.api.http).get = "/mande-chain/voting/aggregate_vote_count/{index}";
+// Queries a AggregateVotesCasted by index.
+	rpc AggregateVotesCasted(QueryGetAggregateVotesCastedRequest) returns (QueryGetAggregateVotesCastedResponse) {
+		option (google.api.http).get = "/mande-chain/voting/aggregate_votes_casted/{index}";
 	}
 
-	// Queries a list of AggregateVoteCount items.
-	rpc AggregateVoteCountAll(QueryAllAggregateVoteCountRequest) returns (QueryAllAggregateVoteCountResponse) {
-		option (google.api.http).get = "/mande-chain/voting/aggregate_vote_count";
+	// Queries a list of AggregateVotesCasted items.
+	rpc AggregateVotesCastedAll(QueryAllAggregateVotesCastedRequest) returns (QueryAllAggregateVotesCastedResponse) {
+		option (google.api.http).get = "/mande-chain/voting/aggregate_votes_casted";
+	}
+
+// Queries a AggregateVotesReceived by index.
+	rpc AggregateVotesReceived(QueryGetAggregateVotesReceivedRequest) returns (QueryGetAggregateVotesReceivedResponse) {
+		option (google.api.http).get = "/mande-chain/voting/aggregate_votes_received/{index}";
+	}
+
+	// Queries a list of AggregateVotesReceived items.
+	rpc AggregateVotesReceivedAll(QueryAllAggregateVotesReceivedRequest) returns (QueryAllAggregateVotesReceivedResponse) {
+		option (google.api.http).get = "/mande-chain/voting/aggregate_votes_received";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -67,21 +78,39 @@ message QueryAllVoteBookResponse {
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
-message QueryGetAggregateVoteCountRequest {
+message QueryGetAggregateVotesCastedRequest {
 	  string index = 1;
 
 }
 
-message QueryGetAggregateVoteCountResponse {
-	AggregateVoteCount aggregateVoteCount = 1 [(gogoproto.nullable) = false];
+message QueryGetAggregateVotesCastedResponse {
+	AggregateVotesCasted aggregateVotesCasted = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryAllAggregateVoteCountRequest {
+message QueryAllAggregateVotesCastedRequest {
 	cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
-message QueryAllAggregateVoteCountResponse {
-	repeated AggregateVoteCount aggregateVoteCount = 1 [(gogoproto.nullable) = false];
+message QueryAllAggregateVotesCastedResponse {
+	repeated AggregateVotesCasted aggregateVotesCasted = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetAggregateVotesReceivedRequest {
+	  string index = 1;
+
+}
+
+message QueryGetAggregateVotesReceivedResponse {
+	AggregateVotesReceived aggregateVotesReceived = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllAggregateVotesReceivedRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllAggregateVotesReceivedResponse {
+	repeated AggregateVotesReceived aggregateVotesReceived = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

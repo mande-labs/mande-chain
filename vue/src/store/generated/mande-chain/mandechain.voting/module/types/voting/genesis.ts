@@ -1,7 +1,8 @@
 /* eslint-disable */
 import { Params } from "../voting/params";
 import { VoteBook } from "../voting/vote_book";
-import { AggregateVoteCount } from "../voting/aggregate_vote_count";
+import { AggregateVotesCasted } from "../voting/aggregate_votes_casted";
+import { AggregateVotesReceived } from "../voting/aggregate_votes_received";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "mandechain.voting";
@@ -10,8 +11,9 @@ export const protobufPackage = "mandechain.voting";
 export interface GenesisState {
   params: Params | undefined;
   voteBookList: VoteBook[];
+  aggregateVotesCastedList: AggregateVotesCasted[];
   /** this line is used by starport scaffolding # genesis/proto/state */
-  aggregateVoteCountList: AggregateVoteCount[];
+  aggregateVotesReceivedList: AggregateVotesReceived[];
 }
 
 const baseGenesisState: object = {};
@@ -24,8 +26,11 @@ export const GenesisState = {
     for (const v of message.voteBookList) {
       VoteBook.encode(v!, writer.uint32(18).fork()).ldelim();
     }
-    for (const v of message.aggregateVoteCountList) {
-      AggregateVoteCount.encode(v!, writer.uint32(26).fork()).ldelim();
+    for (const v of message.aggregateVotesCastedList) {
+      AggregateVotesCasted.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    for (const v of message.aggregateVotesReceivedList) {
+      AggregateVotesReceived.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -35,7 +40,8 @@ export const GenesisState = {
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseGenesisState } as GenesisState;
     message.voteBookList = [];
-    message.aggregateVoteCountList = [];
+    message.aggregateVotesCastedList = [];
+    message.aggregateVotesReceivedList = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -46,8 +52,13 @@ export const GenesisState = {
           message.voteBookList.push(VoteBook.decode(reader, reader.uint32()));
           break;
         case 3:
-          message.aggregateVoteCountList.push(
-            AggregateVoteCount.decode(reader, reader.uint32())
+          message.aggregateVotesCastedList.push(
+            AggregateVotesCasted.decode(reader, reader.uint32())
+          );
+          break;
+        case 4:
+          message.aggregateVotesReceivedList.push(
+            AggregateVotesReceived.decode(reader, reader.uint32())
           );
           break;
         default:
@@ -61,7 +72,8 @@ export const GenesisState = {
   fromJSON(object: any): GenesisState {
     const message = { ...baseGenesisState } as GenesisState;
     message.voteBookList = [];
-    message.aggregateVoteCountList = [];
+    message.aggregateVotesCastedList = [];
+    message.aggregateVotesReceivedList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromJSON(object.params);
     } else {
@@ -73,11 +85,21 @@ export const GenesisState = {
       }
     }
     if (
-      object.aggregateVoteCountList !== undefined &&
-      object.aggregateVoteCountList !== null
+      object.aggregateVotesCastedList !== undefined &&
+      object.aggregateVotesCastedList !== null
     ) {
-      for (const e of object.aggregateVoteCountList) {
-        message.aggregateVoteCountList.push(AggregateVoteCount.fromJSON(e));
+      for (const e of object.aggregateVotesCastedList) {
+        message.aggregateVotesCastedList.push(AggregateVotesCasted.fromJSON(e));
+      }
+    }
+    if (
+      object.aggregateVotesReceivedList !== undefined &&
+      object.aggregateVotesReceivedList !== null
+    ) {
+      for (const e of object.aggregateVotesReceivedList) {
+        message.aggregateVotesReceivedList.push(
+          AggregateVotesReceived.fromJSON(e)
+        );
       }
     }
     return message;
@@ -94,12 +116,19 @@ export const GenesisState = {
     } else {
       obj.voteBookList = [];
     }
-    if (message.aggregateVoteCountList) {
-      obj.aggregateVoteCountList = message.aggregateVoteCountList.map((e) =>
-        e ? AggregateVoteCount.toJSON(e) : undefined
+    if (message.aggregateVotesCastedList) {
+      obj.aggregateVotesCastedList = message.aggregateVotesCastedList.map((e) =>
+        e ? AggregateVotesCasted.toJSON(e) : undefined
       );
     } else {
-      obj.aggregateVoteCountList = [];
+      obj.aggregateVotesCastedList = [];
+    }
+    if (message.aggregateVotesReceivedList) {
+      obj.aggregateVotesReceivedList = message.aggregateVotesReceivedList.map(
+        (e) => (e ? AggregateVotesReceived.toJSON(e) : undefined)
+      );
+    } else {
+      obj.aggregateVotesReceivedList = [];
     }
     return obj;
   },
@@ -107,7 +136,8 @@ export const GenesisState = {
   fromPartial(object: DeepPartial<GenesisState>): GenesisState {
     const message = { ...baseGenesisState } as GenesisState;
     message.voteBookList = [];
-    message.aggregateVoteCountList = [];
+    message.aggregateVotesCastedList = [];
+    message.aggregateVotesReceivedList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     } else {
@@ -119,11 +149,23 @@ export const GenesisState = {
       }
     }
     if (
-      object.aggregateVoteCountList !== undefined &&
-      object.aggregateVoteCountList !== null
+      object.aggregateVotesCastedList !== undefined &&
+      object.aggregateVotesCastedList !== null
     ) {
-      for (const e of object.aggregateVoteCountList) {
-        message.aggregateVoteCountList.push(AggregateVoteCount.fromPartial(e));
+      for (const e of object.aggregateVotesCastedList) {
+        message.aggregateVotesCastedList.push(
+          AggregateVotesCasted.fromPartial(e)
+        );
+      }
+    }
+    if (
+      object.aggregateVotesReceivedList !== undefined &&
+      object.aggregateVotesReceivedList !== null
+    ) {
+      for (const e of object.aggregateVotesReceivedList) {
+        message.aggregateVotesReceivedList.push(
+          AggregateVotesReceived.fromPartial(e)
+        );
       }
     }
     return message;

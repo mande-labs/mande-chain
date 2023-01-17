@@ -83,18 +83,24 @@ export interface V1Beta1PageResponse {
   total?: string;
 }
 
-export interface VotingAggregateVoteCount {
+export interface VotingAggregateVotesCasted {
   index?: string;
-  voter?: string;
 
   /** @format uint64 */
-  casted?: string;
+  positive?: string;
 
   /** @format uint64 */
-  positiveReceived?: string;
+  negative?: string;
+}
+
+export interface VotingAggregateVotesReceived {
+  index?: string;
 
   /** @format uint64 */
-  negativeReceived?: string;
+  positive?: string;
+
+  /** @format uint64 */
+  negative?: string;
 }
 
 export type VotingMsgCreateVoteResponse = object;
@@ -104,8 +110,23 @@ export type VotingMsgCreateVoteResponse = object;
  */
 export type VotingParams = object;
 
-export interface VotingQueryAllAggregateVoteCountResponse {
-  aggregateVoteCount?: VotingAggregateVoteCount[];
+export interface VotingQueryAllAggregateVotesCastedResponse {
+  aggregateVotesCasted?: VotingAggregateVotesCasted[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface VotingQueryAllAggregateVotesReceivedResponse {
+  aggregateVotesReceived?: VotingAggregateVotesReceived[];
 
   /**
    * PageResponse is to be embedded in gRPC response messages where the
@@ -134,8 +155,12 @@ export interface VotingQueryAllVoteBookResponse {
   pagination?: V1Beta1PageResponse;
 }
 
-export interface VotingQueryGetAggregateVoteCountResponse {
-  aggregateVoteCount?: VotingAggregateVoteCount;
+export interface VotingQueryGetAggregateVotesCastedResponse {
+  aggregateVotesCasted?: VotingAggregateVotesCasted;
+}
+
+export interface VotingQueryGetAggregateVotesReceivedResponse {
+  aggregateVotesReceived?: VotingAggregateVotesReceived;
 }
 
 export interface VotingQueryGetVoteBookResponse {
@@ -354,7 +379,7 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title voting/aggregate_vote_count.proto
+ * @title voting/aggregate_votes_casted.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
@@ -362,11 +387,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryAggregateVoteCountAll
-   * @summary Queries a list of AggregateVoteCount items.
-   * @request GET:/mande-chain/voting/aggregate_vote_count
+   * @name QueryAggregateVotesCastedAll
+   * @summary Queries a list of AggregateVotesCasted items.
+   * @request GET:/mande-chain/voting/aggregate_votes_casted
    */
-  queryAggregateVoteCountAll = (
+  queryAggregateVotesCastedAll = (
     query?: {
       "pagination.key"?: string;
       "pagination.offset"?: string;
@@ -376,8 +401,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
     params: RequestParams = {},
   ) =>
-    this.request<VotingQueryAllAggregateVoteCountResponse, RpcStatus>({
-      path: `/mande-chain/voting/aggregate_vote_count`,
+    this.request<VotingQueryAllAggregateVotesCastedResponse, RpcStatus>({
+      path: `/mande-chain/voting/aggregate_votes_casted`,
       method: "GET",
       query: query,
       format: "json",
@@ -388,13 +413,55 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryAggregateVoteCount
-   * @summary Queries a AggregateVoteCount by index.
-   * @request GET:/mande-chain/voting/aggregate_vote_count/{index}
+   * @name QueryAggregateVotesCasted
+   * @summary Queries a AggregateVotesCasted by index.
+   * @request GET:/mande-chain/voting/aggregate_votes_casted/{index}
    */
-  queryAggregateVoteCount = (index: string, params: RequestParams = {}) =>
-    this.request<VotingQueryGetAggregateVoteCountResponse, RpcStatus>({
-      path: `/mande-chain/voting/aggregate_vote_count/${index}`,
+  queryAggregateVotesCasted = (index: string, params: RequestParams = {}) =>
+    this.request<VotingQueryGetAggregateVotesCastedResponse, RpcStatus>({
+      path: `/mande-chain/voting/aggregate_votes_casted/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryAggregateVotesReceivedAll
+   * @summary Queries a list of AggregateVotesReceived items.
+   * @request GET:/mande-chain/voting/aggregate_votes_received
+   */
+  queryAggregateVotesReceivedAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<VotingQueryAllAggregateVotesReceivedResponse, RpcStatus>({
+      path: `/mande-chain/voting/aggregate_votes_received`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryAggregateVotesReceived
+   * @summary Queries a AggregateVotesReceived by index.
+   * @request GET:/mande-chain/voting/aggregate_votes_received/{index}
+   */
+  queryAggregateVotesReceived = (index: string, params: RequestParams = {}) =>
+    this.request<VotingQueryGetAggregateVotesReceivedResponse, RpcStatus>({
+      path: `/mande-chain/voting/aggregate_votes_received/${index}`,
       method: "GET",
       format: "json",
       ...params,

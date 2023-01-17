@@ -15,21 +15,21 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func createNAggregateVoteCount(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.AggregateVoteCount {
-	items := make([]types.AggregateVoteCount, n)
+func createNAggregateVotesCasted(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.AggregateVotesCasted {
+	items := make([]types.AggregateVotesCasted, n)
 	for i := range items {
 		items[i].Index = strconv.Itoa(i)
 
-		keeper.SetAggregateVoteCount(ctx, items[i])
+		keeper.SetAggregateVotesCasted(ctx, items[i])
 	}
 	return items
 }
 
-func TestAggregateVoteCountGet(t *testing.T) {
+func TestAggregateVotesCastedGet(t *testing.T) {
 	keeper, ctx := keepertest.VotingKeeper(t)
-	items := createNAggregateVoteCount(keeper, ctx, 10)
+	items := createNAggregateVotesCasted(keeper, ctx, 10)
 	for _, item := range items {
-		rst, found := keeper.GetAggregateVoteCount(ctx,
+		rst, found := keeper.GetAggregateVotesCasted(ctx,
 			item.Index,
 		)
 		require.True(t, found)
@@ -39,25 +39,25 @@ func TestAggregateVoteCountGet(t *testing.T) {
 		)
 	}
 }
-func TestAggregateVoteCountRemove(t *testing.T) {
+func TestAggregateVotesCastedRemove(t *testing.T) {
 	keeper, ctx := keepertest.VotingKeeper(t)
-	items := createNAggregateVoteCount(keeper, ctx, 10)
+	items := createNAggregateVotesCasted(keeper, ctx, 10)
 	for _, item := range items {
-		keeper.RemoveAggregateVoteCount(ctx,
+		keeper.RemoveAggregateVotesCasted(ctx,
 			item.Index,
 		)
-		_, found := keeper.GetAggregateVoteCount(ctx,
+		_, found := keeper.GetAggregateVotesCasted(ctx,
 			item.Index,
 		)
 		require.False(t, found)
 	}
 }
 
-func TestAggregateVoteCountGetAll(t *testing.T) {
+func TestAggregateVotesCastedGetAll(t *testing.T) {
 	keeper, ctx := keepertest.VotingKeeper(t)
-	items := createNAggregateVoteCount(keeper, ctx, 10)
+	items := createNAggregateVotesCasted(keeper, ctx, 10)
 	require.ElementsMatch(t,
 		nullify.Fill(items),
-		nullify.Fill(keeper.GetAllAggregateVoteCount(ctx)),
+		nullify.Fill(keeper.GetAllAggregateVotesCasted(ctx)),
 	)
 }

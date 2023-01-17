@@ -14,6 +14,6 @@ func Max(x int64, y int64) int64 {
 	return y
 }
 
-func calculateBallot(aggregateVoteCreatorCount *types.AggregateVoteCount) int64 {
-	return int64(aggregateVoteCreatorCount.PositiveReceived - aggregateVoteCreatorCount.NegativeReceived)
+func calculateBallot(aggregateVoteCreatorCount *types.AggregateVotesReceived) int64 {
+	return int64(aggregateVoteCreatorCount.Positive - aggregateVoteCreatorCount.Negative)
 }

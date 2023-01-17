@@ -3,7 +3,6 @@ package keeper
 import (
 	"context"
 	"time"
-	"fmt"
 
 	"github.com/bandprotocol/bandchain-packet/obi"
 	"github.com/bandprotocol/bandchain-packet/packet"

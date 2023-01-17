@@ -10,8 +10,9 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default Capability genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		VoteBookList:           []VoteBook{},
-		AggregateVoteCountList: []AggregateVoteCount{},
+		VoteBookList:               []VoteBook{},
+		AggregateVotesCastedList:   []AggregateVotesCasted{},
+		AggregateVotesReceivedList: []AggregateVotesReceived{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -30,15 +31,25 @@ func (gs GenesisState) Validate() error {
 		}
 		voteBookIndexMap[index] = struct{}{}
 	}
-	// Check for duplicated index in aggregateVoteCount
-	aggregateVoteCountIndexMap := make(map[string]struct{})
+	// Check for duplicated index in aggregateVotesCasted
+	aggregateVotesCastedIndexMap := make(map[string]struct{})
 
-	for _, elem := range gs.AggregateVoteCountList {
-		index := string(AggregateVoteCountKey(elem.Index))
-		if _, ok := aggregateVoteCountIndexMap[index]; ok {
-			return fmt.Errorf("duplicated index for aggregateVoteCount")
+	for _, elem := range gs.AggregateVotesCastedList {
+		index := string(AggregateVotesCastedKey(elem.Index))
+		if _, ok := aggregateVotesCastedIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for aggregateVotesCasted")
 		}
-		aggregateVoteCountIndexMap[index] = struct{}{}
+		aggregateVotesCastedIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in aggregateVotesReceived
+	aggregateVotesReceivedIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.AggregateVotesReceivedList {
+		index := string(AggregateVotesReceivedKey(elem.Index))
+		if _, ok := aggregateVotesReceivedIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for aggregateVotesReceived")
+		}
+		aggregateVotesReceivedIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

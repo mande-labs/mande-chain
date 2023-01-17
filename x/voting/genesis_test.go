@@ -22,7 +22,15 @@ func TestGenesis(t *testing.T) {
 				Index: "1",
 			},
 		},
-		AggregateVoteCountList: []types.AggregateVoteCount{
+		AggregateVotesCastedList: []types.AggregateVotesCasted{
+			{
+				Index: "0",
+			},
+			{
+				Index: "1",
+			},
+		},
+		AggregateVotesReceivedList: []types.AggregateVotesReceived{
 			{
 				Index: "0",
 			},
@@ -42,6 +50,7 @@ func TestGenesis(t *testing.T) {
 	nullify.Fill(got)
 
 	require.ElementsMatch(t, genesisState.VoteBookList, got.VoteBookList)
-	require.ElementsMatch(t, genesisState.AggregateVoteCountList, got.AggregateVoteCountList)
+	require.ElementsMatch(t, genesisState.AggregateVotesCastedList, got.AggregateVotesCastedList)
+	require.ElementsMatch(t, genesisState.AggregateVotesReceivedList, got.AggregateVotesReceivedList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

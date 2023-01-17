@@ -30,7 +30,15 @@ func TestGenesisState_Validate(t *testing.T) {
 						Index: "1",
 					},
 				},
-				AggregateVoteCountList: []types.AggregateVoteCount{
+				AggregateVotesCastedList: []types.AggregateVotesCasted{
+					{
+						Index: "0",
+					},
+					{
+						Index: "1",
+					},
+				},
+				AggregateVotesReceivedList: []types.AggregateVotesReceived{
 					{
 						Index: "0",
 					},
@@ -57,9 +65,23 @@ func TestGenesisState_Validate(t *testing.T) {
 			valid: false,
 		},
 		{
-			desc: "duplicated aggregateVoteCount",
+			desc: "duplicated aggregateVotesCasted",
 			genState: &types.GenesisState{
-				AggregateVoteCountList: []types.AggregateVoteCount{
+				AggregateVotesCastedList: []types.AggregateVotesCasted{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated aggregateVotesReceived",
+			genState: &types.GenesisState{
+				AggregateVotesReceivedList: []types.AggregateVotesReceived{
 					{
 						Index: "0",
 					},

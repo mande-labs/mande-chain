@@ -21,27 +21,27 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func networkWithAggregateVoteCountObjects(t *testing.T, n int) (*network.Network, []types.AggregateVoteCount) {
+func networkWithAggregateVotesReceivedObjects(t *testing.T, n int) (*network.Network, []types.AggregateVotesReceived) {
 	t.Helper()
 	cfg := network.DefaultConfig()
 	state := types.GenesisState{}
 	require.NoError(t, cfg.Codec.UnmarshalJSON(cfg.GenesisState[types.ModuleName], &state))
 
 	for i := 0; i < n; i++ {
-		aggregateVoteCount := types.AggregateVoteCount{
+		aggregateVotesReceived := types.AggregateVotesReceived{
 			Index: strconv.Itoa(i),
 		}
-		nullify.Fill(&aggregateVoteCount)
-		state.AggregateVoteCountList = append(state.AggregateVoteCountList, aggregateVoteCount)
+		nullify.Fill(&aggregateVotesReceived)
+		state.AggregateVotesReceivedList = append(state.AggregateVotesReceivedList, aggregateVotesReceived)
 	}
 	buf, err := cfg.Codec.MarshalJSON(&state)
 	require.NoError(t, err)
 	cfg.GenesisState[types.ModuleName] = buf
-	return network.New(t, cfg), state.AggregateVoteCountList
+	return network.New(t, cfg), state.AggregateVotesReceivedList
 }
 
-func TestShowAggregateVoteCount(t *testing.T) {
-	net, objs := networkWithAggregateVoteCountObjects(t, 2)
+func TestShowAggregateVotesReceived(t *testing.T) {
+	net, objs := networkWithAggregateVotesReceivedObjects(t, 2)
 
 	ctx := net.Validators[0].ClientCtx
 	common := []string{
@@ -53,7 +53,7 @@ func TestShowAggregateVoteCount(t *testing.T) {
 
 		args []string
 		err  error
-		obj  types.AggregateVoteCount
+		obj  types.AggregateVotesReceived
 	}{
 		{
 			desc:    "found",
@@ -75,27 +75,27 @@ func TestShowAggregateVoteCount(t *testing.T) {
 				tc.idIndex,
 			}
 			args = append(args, tc.args...)
-			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdShowAggregateVoteCount(), args)
+			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdShowAggregateVotesReceived(), args)
 			if tc.err != nil {
 				stat, ok := status.FromError(tc.err)
 				require.True(t, ok)
 				require.ErrorIs(t, stat.Err(), tc.err)
 			} else {
 				require.NoError(t, err)
-				var resp types.QueryGetAggregateVoteCountResponse
+				var resp types.QueryGetAggregateVotesReceivedResponse
 				require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
-				require.NotNil(t, resp.AggregateVoteCount)
+				require.NotNil(t, resp.AggregateVotesReceived)
 				require.Equal(t,
 					nullify.Fill(&tc.obj),
-					nullify.Fill(&resp.AggregateVoteCount),
+					nullify.Fill(&resp.AggregateVotesReceived),
 				)
 			}
 		})
 	}
 }
 
-func TestListAggregateVoteCount(t *testing.T) {
-	net, objs := networkWithAggregateVoteCountObjects(t, 5)
+func TestListAggregateVotesReceived(t *testing.T) {
+	net, objs := networkWithAggregateVotesReceivedObjects(t, 5)
 
 	ctx := net.Validators[0].ClientCtx
 	request := func(next []byte, offset, limit uint64, total bool) []string {
@@ -117,14 +117,14 @@ func TestListAggregateVoteCount(t *testing.T) {
 		step := 2
 		for i := 0; i < len(objs); i += step {
 			args := request(nil, uint64(i), uint64(step), false)
-			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListAggregateVoteCount(), args)
+			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListAggregateVotesReceived(), args)
 			require.NoError(t, err)
-			var resp types.QueryAllAggregateVoteCountResponse
+			var resp types.QueryAllAggregateVotesReceivedResponse
 			require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
-			require.LessOrEqual(t, len(resp.AggregateVoteCount), step)
+			require.LessOrEqual(t, len(resp.AggregateVotesReceived), step)
 			require.Subset(t,
 				nullify.Fill(objs),
-				nullify.Fill(resp.AggregateVoteCount),
+				nullify.Fill(resp.AggregateVotesReceived),
 			)
 		}
 	})
@@ -133,29 +133,29 @@ func TestListAggregateVoteCount(t *testing.T) {
 		var next []byte
 		for i := 0; i < len(objs); i += step {
 			args := request(next, 0, uint64(step), false)
-			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListAggregateVoteCount(), args)
+			out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListAggregateVotesReceived(), args)
 			require.NoError(t, err)
-			var resp types.QueryAllAggregateVoteCountResponse
+			var resp types.QueryAllAggregateVotesReceivedResponse
 			require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
-			require.LessOrEqual(t, len(resp.AggregateVoteCount), step)
+			require.LessOrEqual(t, len(resp.AggregateVotesReceived), step)
 			require.Subset(t,
 				nullify.Fill(objs),
-				nullify.Fill(resp.AggregateVoteCount),
+				nullify.Fill(resp.AggregateVotesReceived),
 			)
 			next = resp.Pagination.NextKey
 		}
 	})
 	t.Run("Total", func(t *testing.T) {
 		args := request(nil, 0, uint64(len(objs)), true)
-		out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListAggregateVoteCount(), args)
+		out, err := clitestutil.ExecTestCLICmd(ctx, cli.CmdListAggregateVotesReceived(), args)
 		require.NoError(t, err)
-		var resp types.QueryAllAggregateVoteCountResponse
+		var resp types.QueryAllAggregateVotesReceivedResponse
 		require.NoError(t, net.Config.Codec.UnmarshalJSON(out.Bytes(), &resp))
 		require.NoError(t, err)
 		require.Equal(t, len(objs), int(resp.Pagination.Total))
 		require.ElementsMatch(t,
 			nullify.Fill(objs),
-			nullify.Fill(resp.AggregateVoteCount),
+			nullify.Fill(resp.AggregateVotesReceived),
 		)
 	})
 }

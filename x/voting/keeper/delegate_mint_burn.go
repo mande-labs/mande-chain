@@ -3,7 +3,6 @@ package keeper
 import (
 	"encoding/hex"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/tendermint/tendermint/crypto"
 	"mande-chain/x/voting/types"
@@ -56,12 +55,23 @@ func (k Keeper) undelegateStakeAndUnlockMand(ctx sdk.Context, msg *types.MsgCrea
 }
 
 func (k Keeper) delegationHandler(ctx sdk.Context, msg *types.MsgCreateVote, ballotBefore int64, ballotAfter int64) error {
+	receiverAccAddress, _ := sdk.AccAddressFromBech32(msg.Receiver)
+	receiverValAddr, err := sdk.ValAddressFromHex(hex.EncodeToString(receiverAccAddress.Bytes()))
+	if err != nil {
+		return err
+	}
+	recipientValidator, found := k.stakingKeeper.GetValidator(ctx, receiverValAddr)
+	if !found {
+		// delegation or undelegation not reqd for non validators
+		return nil
+	}
+
 	ballotDiff := ballotAfter - ballotBefore
 
 	if ballotDiff > 0 { // delegate
 		ballotDiffAdjusted := ballotAfter - Max(ballotBefore, 0)
 		if ballotDiffAdjusted > 0 {
-			err := k.delegate(ctx, msg, ballotDiffAdjusted)
+			err := k.delegate(ctx, msg, ballotDiffAdjusted, recipientValidator)
 			if err != nil {
 				return err
 			}
@@ -72,7 +82,7 @@ func (k Keeper) delegationHandler(ctx sdk.Context, msg *types.MsgCreateVote, bal
 	// un-delegate
 	if ballotBefore > 0 {
 		ballotDiffAdjusted := ballotBefore - Max(ballotAfter, 0)
-		err := k.undelegate(ctx, msg, ballotDiffAdjusted)
+		err := k.undelegate(ctx, msg, ballotDiffAdjusted, recipientValidator, receiverValAddr)
 		if err != nil {
 			return err
 		}
@@ -80,7 +90,7 @@ func (k Keeper) delegationHandler(ctx sdk.Context, msg *types.MsgCreateVote, bal
 	return nil
 }
 
-func (k Keeper) delegate(ctx sdk.Context, msg *types.MsgCreateVote, amount int64) error {
+func (k Keeper) delegate(ctx sdk.Context, msg *types.MsgCreateVote, amount int64, recipientValidator stakingtypes.Validator) error {
 	// mint staking token to voting module account
 	coinsToMint := sdk.Coins{sdk.NewInt64Coin("cred", amount)}
 	err := k.bankKeeper.MintCoins(ctx, types.ModuleName, coinsToMint)
@@ -91,17 +101,6 @@ func (k Keeper) delegate(ctx sdk.Context, msg *types.MsgCreateVote, amount int64
 	// delegate minted staking tokens to receiver
 	votingModuleAcct := sdk.AccAddress(crypto.AddressHash([]byte(types.ModuleName)))
 
-	receiverAccAddress, _ := sdk.AccAddressFromBech32(msg.Receiver)
-	receiverValAddr, err := sdk.ValAddressFromHex(hex.EncodeToString(receiverAccAddress.Bytes()))
-	if err != nil {
-		return err
-	}
-
-	recipientValidator, found := k.stakingKeeper.GetValidator(ctx, receiverValAddr)
-	if !found {
-		return sdkerrors.Wrapf(types.ErrReceiverIsNotAValidator, receiverValAddr.String())
-	}
-
 	_, err = k.stakingKeeper.Delegate(ctx, votingModuleAcct, sdk.NewInt(amount), stakingtypes.Unbonded, recipientValidator, true)
 	if err != nil {
 		return err
@@ -110,20 +109,9 @@ func (k Keeper) delegate(ctx sdk.Context, msg *types.MsgCreateVote, amount int64
 	return nil
 }
 
-func (k Keeper) undelegate(ctx sdk.Context, msg *types.MsgCreateVote, amount int64) error {
+func (k Keeper) undelegate(ctx sdk.Context, msg *types.MsgCreateVote, amount int64, recipientValidator stakingtypes.Validator, receiverValAddr sdk.ValAddress) error {
 	// undelegate the staking tokens
 	votingModuleAcct := sdk.AccAddress(crypto.AddressHash([]byte(types.ModuleName)))
-	receiverAccAddress, _ := sdk.AccAddressFromBech32(msg.Receiver)
-	receiverValAddr, err := sdk.ValAddressFromHex(hex.EncodeToString(receiverAccAddress.Bytes()))
-	if err != nil {
-		return err
-	}
-
-	recipientValidator, found := k.stakingKeeper.GetValidator(ctx, receiverValAddr)
-	if !found {
-		return sdkerrors.Wrapf(types.ErrReceiverIsNotAValidator, receiverValAddr.String())
-	}
-
 	sharesToUnDelegate, err := recipientValidator.SharesFromTokens(sdk.NewInt(amount))
 	if err != nil {
 		return err

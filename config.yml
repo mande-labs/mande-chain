@@ -38,7 +38,7 @@ genesis:
     staking:
       params:
         bond_denom: "cred"
-        unbonding_time: "0.001s"
+        unbonding_time: "1814400s"
         max_validators: 175
         max_entries: 7
         historical_entries: 10000

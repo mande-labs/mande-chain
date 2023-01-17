@@ -3,6 +3,7 @@ module mande-chain
 go 1.18
 
 require (
+	github.com/bandprotocol/bandchain-packet v0.0.2
 	github.com/cosmos/cosmos-sdk v0.45.5
 	github.com/cosmos/ibc-go/v3 v3.0.1
 	github.com/gogo/protobuf v1.3.3

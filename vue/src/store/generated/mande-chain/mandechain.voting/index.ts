@@ -3,11 +3,12 @@ import { txClient, queryClient, MissingWalletError , registry} from './module'
 import { AggregateVotesCasted } from "./module/types/voting/aggregate_votes_casted"
 import { AggregateVotesReceived } from "./module/types/voting/aggregate_votes_received"
 import { Credibility } from "./module/types/voting/credibility"
+import { AppliedX } from "./module/types/voting/credibility"
 import { Params } from "./module/types/voting/params"
 import { VoteBook } from "./module/types/voting/vote_book"
 
 
-export { AggregateVotesCasted, AggregateVotesReceived, Credibility, Params, VoteBook };
+export { AggregateVotesCasted, AggregateVotesReceived, Credibility, AppliedX, Params, VoteBook };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -57,6 +58,7 @@ const getDefaultState = () => {
 						AggregateVotesCasted: getStructure(AggregateVotesCasted.fromPartial({})),
 						AggregateVotesReceived: getStructure(AggregateVotesReceived.fromPartial({})),
 						Credibility: getStructure(Credibility.fromPartial({})),
+						AppliedX: getStructure(AppliedX.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						VoteBook: getStructure(VoteBook.fromPartial({})),
 						

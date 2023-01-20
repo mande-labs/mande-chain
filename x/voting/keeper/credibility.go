@@ -19,6 +19,13 @@ func (k Keeper) SetCredibility(ctx sdk.Context, credibility types.Credibility) {
 	), b)
 }
 
+// SetCredibility set a specific credibility in the store from its index
+func (k Keeper) SetAppliedX(ctx sdk.Context, appliedX types.AppliedX) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AppliedXKeyPrefix))
+	b := k.cdc.MustMarshal(&appliedX)
+	store.Set(types.AppliedXKey(), b)
+}
+
 // GetCredibility returns a credibility from its index
 func (k Keeper) GetCredibility(
 	ctx sdk.Context,
@@ -30,6 +37,22 @@ func (k Keeper) GetCredibility(
 	b := store.Get(types.CredibilityKey(
 		index,
 	))
+	if b == nil {
+		return val, false
+	}
+
+	k.cdc.MustUnmarshal(b, &val)
+	return val, true
+}
+
+// GetCredibility returns a credibility from its index
+func (k Keeper) GetAppliedX(
+	ctx sdk.Context,
+
+) (val types.AppliedX, found bool) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.AppliedXKeyPrefix))
+
+	b := store.Get(types.AppliedXKey())
 	if b == nil {
 		return val, false
 	}
@@ -66,7 +89,7 @@ func (k Keeper) GetAllCredibility(ctx sdk.Context) (list []types.Credibility) {
 	return
 }
 
-func (k Keeper) UpdateCredibility(ctx sdk.Context, aggVotes types.AggregateVotesReceived, credibility *types.Credibility) {
+func (k Keeper) UpdateCredibility(ctx sdk.Context, receiver string, credibility *types.Credibility) {
 	ctx.Logger().Info(fmt.Sprintf("entered UpdateCredibility"))
 	lastReqId := k.oracleKeeper.GetLastNetworkConstantID(ctx)
 	ctx.Logger().Info(fmt.Sprintf("check lastReqId here: %d", lastReqId))
@@ -77,7 +100,7 @@ func (k Keeper) UpdateCredibility(ctx sdk.Context, aggVotes types.AggregateVotes
 	var credScore float64
 
 	// TODO: Implement some caching mechanism to cache cred scores for votes and only compute for the current vote
-	iterator := k.GetVoteBookIteratorByPrefix(ctx, aggVotes.Index)
+	iterator := k.GetVoteBookIteratorByPrefix(ctx, receiver)
 	defer iterator.Close()
 	ctx.Logger().Info(fmt.Sprintf("iteraction started"))
 	for ; iterator.Valid(); iterator.Next() {

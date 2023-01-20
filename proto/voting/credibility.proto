@@ -9,3 +9,8 @@ message Credibility {
   string forX = 3; 
   
 }
+
+message AppliedX {
+  string X = 1; 
+  
+}

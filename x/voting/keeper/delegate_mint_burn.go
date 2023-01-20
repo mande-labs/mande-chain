@@ -24,7 +24,7 @@ func (k Keeper) lockMandAndDelegateStake(ctx sdk.Context, msg *types.MsgCreateVo
 		return err
 	}
 
-	err = k.delegationHandler(ctx, msg, ballotBefore, ballotAfter)
+	err = k.delegationHandler(ctx, msg.Receiver, ballotBefore, ballotAfter)
 	if err != nil {
 		return err
 	}
@@ -47,7 +47,7 @@ func (k Keeper) undelegateStakeAndUnlockMand(ctx sdk.Context, msg *types.MsgCrea
 		return err
 	}
 
-	err = k.delegationHandler(ctx, msg, ballotBefore, ballotAfter)
+	err = k.delegationHandler(ctx, msg.Receiver, ballotBefore, ballotAfter)
 	if err != nil {
 		return err
 	}
@@ -55,8 +55,8 @@ func (k Keeper) undelegateStakeAndUnlockMand(ctx sdk.Context, msg *types.MsgCrea
 	return nil
 }
 
-func (k Keeper) delegationHandler(ctx sdk.Context, msg *types.MsgCreateVote, ballotBefore int64, ballotAfter int64) error {
-	receiverAccAddress, _ := sdk.AccAddressFromBech32(msg.Receiver)
+func (k Keeper) delegationHandler(ctx sdk.Context, receiver string, ballotBefore int64, ballotAfter int64) error {
+	receiverAccAddress, _ := sdk.AccAddressFromBech32(receiver)
 	receiverValAddr, err := sdk.ValAddressFromHex(hex.EncodeToString(receiverAccAddress.Bytes()))
 	ctx.Logger().Info(fmt.Sprintf("entered delegationHandler"))
 	ctx.Logger().Info(fmt.Sprintf("check receiverValAddr: %s", receiverValAddr))
@@ -77,7 +77,7 @@ func (k Keeper) delegationHandler(ctx sdk.Context, msg *types.MsgCreateVote, bal
 		ballotDiffAdjusted := ballotAfter - Max(ballotBefore, 0)
 		if ballotDiffAdjusted > 0 {
 			ctx.Logger().Info(fmt.Sprintf("entering delegate()"))
-			err := k.delegate(ctx, msg, ballotDiffAdjusted, recipientValidator)
+			err := k.delegate(ctx, ballotDiffAdjusted, recipientValidator)
 			if err != nil {
 				return err
 			}
@@ -88,7 +88,7 @@ func (k Keeper) delegationHandler(ctx sdk.Context, msg *types.MsgCreateVote, bal
 	// un-delegate
 	if ballotBefore > 0 {
 		ballotDiffAdjusted := ballotBefore - Max(ballotAfter, 0)
-		err := k.undelegate(ctx, msg, ballotDiffAdjusted, recipientValidator, receiverValAddr)
+		err := k.undelegate(ctx, ballotDiffAdjusted, recipientValidator, receiverValAddr)
 		if err != nil {
 			return err
 		}
@@ -96,7 +96,7 @@ func (k Keeper) delegationHandler(ctx sdk.Context, msg *types.MsgCreateVote, bal
 	return nil
 }
 
-func (k Keeper) delegate(ctx sdk.Context, msg *types.MsgCreateVote, amount int64, recipientValidator stakingtypes.Validator) error {
+func (k Keeper) delegate(ctx sdk.Context, amount int64, recipientValidator stakingtypes.Validator) error {
 	// mint staking token to voting module account
 	coinsToMint := sdk.Coins{sdk.NewInt64Coin("cred", amount)}
 	ctx.Logger().Info(fmt.Sprintf("check coinsToMint: %s", coinsToMint.String()))
@@ -116,7 +116,7 @@ func (k Keeper) delegate(ctx sdk.Context, msg *types.MsgCreateVote, amount int64
 	return nil
 }
 
-func (k Keeper) undelegate(ctx sdk.Context, msg *types.MsgCreateVote, amount int64, recipientValidator stakingtypes.Validator, receiverValAddr sdk.ValAddress) error {
+func (k Keeper) undelegate(ctx sdk.Context, amount int64, recipientValidator stakingtypes.Validator, receiverValAddr sdk.ValAddress) error {
 	// undelegate the staking tokens
 	votingModuleAcct := sdk.AccAddress(crypto.AddressHash([]byte(types.ModuleName)))
 	sharesToUnDelegate, err := recipientValidator.SharesFromTokens(sdk.NewInt(amount))

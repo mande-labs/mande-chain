@@ -74,7 +74,7 @@ func (k Keeper) uncastVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateV
 	k.SetAggregateVotesReceived(ctx, aggregateVotesReceiverCount)
 
 	beforeCred, _ := strconv.ParseFloat(credibility.Score, 64)
-	k.UpdateCredibility(ctx, aggregateVotesReceiverCount, &credibility)
+	k.UpdateCredibility(ctx, msg.Receiver, &credibility)
 	afterCred, _ := strconv.ParseFloat(credibility.Score, 64)
 
 	err := k.undelegateStakeAndUnlockMand(ctx, msg, int64(beforeCred), int64(afterCred))
@@ -136,7 +136,7 @@ func (k Keeper) castVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateVot
 	beforeCred, _ := strconv.ParseFloat(credibility.Score, 64)
 	ctx.Logger().Info(fmt.Sprintf("check beforeCred here: %f", beforeCred))
 	ctx.Logger().Info(fmt.Sprintf("check credibility score before updating here: %s", credibility.Score))
-	k.UpdateCredibility(ctx, aggregateVotesReceiverCount, &credibility)
+	k.UpdateCredibility(ctx, msg.Receiver, &credibility)
 	ctx.Logger().Info(fmt.Sprintf("check credibility after updating here: %s", credibility.Score))
 	afterCred, _ := strconv.ParseFloat(credibility.Score, 64)
 	// afterCred := fmt.Sprintf("%d", credibility.Score)

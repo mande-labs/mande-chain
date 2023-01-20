@@ -8,4 +8,5 @@ import (
 // Called every block, burn voting module acc cred coins
 func BeginBlocker(ctx sdk.Context, k keeper.Keeper) {
 	k.BurnModuleCredCoins(ctx)
+	k.UpdateValidatorsCredibility(ctx)
 }

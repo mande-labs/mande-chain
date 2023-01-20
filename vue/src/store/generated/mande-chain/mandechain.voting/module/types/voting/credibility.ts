@@ -9,6 +9,10 @@ export interface Credibility {
   forX: string;
 }
 
+export interface AppliedX {
+  X: string;
+}
+
 const baseCredibility: object = { index: "", score: "", forX: "" };
 
 export const Credibility = {
@@ -93,6 +97,61 @@ export const Credibility = {
       message.forX = object.forX;
     } else {
       message.forX = "";
+    }
+    return message;
+  },
+};
+
+const baseAppliedX: object = { X: "" };
+
+export const AppliedX = {
+  encode(message: AppliedX, writer: Writer = Writer.create()): Writer {
+    if (message.X !== "") {
+      writer.uint32(10).string(message.X);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): AppliedX {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseAppliedX } as AppliedX;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.X = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AppliedX {
+    const message = { ...baseAppliedX } as AppliedX;
+    if (object.X !== undefined && object.X !== null) {
+      message.X = String(object.X);
+    } else {
+      message.X = "";
+    }
+    return message;
+  },
+
+  toJSON(message: AppliedX): unknown {
+    const obj: any = {};
+    message.X !== undefined && (obj.X = message.X);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<AppliedX>): AppliedX {
+    const message = { ...baseAppliedX } as AppliedX;
+    if (object.X !== undefined && object.X !== null) {
+      message.X = object.X;
+    } else {
+      message.X = "";
     }
     return message;
   },

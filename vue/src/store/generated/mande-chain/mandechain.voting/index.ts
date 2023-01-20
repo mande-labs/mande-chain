@@ -53,6 +53,7 @@ const getDefaultState = () => {
 				AggregateVotesCastedAll: {},
 				AggregateVotesReceived: {},
 				AggregateVotesReceivedAll: {},
+				CredibilityScore: {},
 				
 				_Structure: {
 						AggregateVotesCasted: getStructure(AggregateVotesCasted.fromPartial({})),
@@ -130,6 +131,12 @@ export default {
 						(<any> params).query=null
 					}
 			return state.AggregateVotesReceivedAll[JSON.stringify(params)] ?? {}
+		},
+				getCredibilityScore: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.CredibilityScore[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -326,6 +333,28 @@ export default {
 				return getters['getAggregateVotesReceivedAll']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QueryAggregateVotesReceivedAll API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryCredibilityScore({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryCredibilityScore( key.address)).data
+				
+					
+				commit('QUERY', { query: 'CredibilityScore', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryCredibilityScore', payload: { options: { all }, params: {...key},query }})
+				return getters['getCredibilityScore']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryCredibilityScore API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},

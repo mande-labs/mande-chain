@@ -155,6 +155,11 @@ export interface VotingQueryAllVoteBookResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface VotingQueryCredibilityScoreResponse {
+  score?: string;
+  updated?: boolean;
+}
+
 export interface VotingQueryGetAggregateVotesCastedResponse {
   aggregateVotesCasted?: VotingAggregateVotesCasted;
 }
@@ -462,6 +467,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryAggregateVotesReceived = (index: string, params: RequestParams = {}) =>
     this.request<VotingQueryGetAggregateVotesReceivedResponse, RpcStatus>({
       path: `/mande-chain/voting/aggregate_votes_received/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryCredibilityScore
+   * @summary Queries a list of CredibilityScore items.
+   * @request GET:/mande-chain/voting/credibility_score/{address}
+   */
+  queryCredibilityScore = (address: string, params: RequestParams = {}) =>
+    this.request<VotingQueryCredibilityScoreResponse, RpcStatus>({
+      path: `/mande-chain/voting/credibility_score/${address}`,
       method: "GET",
       format: "json",
       ...params,

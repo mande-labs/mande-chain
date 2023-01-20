@@ -2,12 +2,12 @@ package keeper
 
 import (
 	"fmt"
-	"math"
-	"strconv"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"mande-chain/x/voting/types"
 	oracletypes "mande-chain/x/oracle/types"
+	"mande-chain/x/voting/types"
+	"math"
+	"strconv"
 )
 
 // SetCredibility set a specific credibility in the store from its index
@@ -115,7 +115,7 @@ func (k Keeper) UpdateCredibility(ctx sdk.Context, receiver string, credibility 
 		voteCount := float64(intAbs2(ballot))
 		ctx.Logger().Info(fmt.Sprintf("vote count: %f", voteCount))
 		if ballot < 0 {
-			credScore = credScore + math.Pow(voteCount, x) * -1.0
+			credScore = credScore + math.Pow(voteCount, x)*-1.0
 		} else {
 			credScore = credScore + math.Pow(voteCount, x)
 		}

@@ -7,7 +7,7 @@ var _ binary.ByteOrder
 const (
 	// CredibilityKeyPrefix is the prefix to retrieve all Credibility
 	CredibilityKeyPrefix = "Credibility/value/"
-	AppliedXKeyPrefix = "AppliedX/value/"
+	AppliedXKeyPrefix    = "AppliedX/value/"
 )
 
 // CredibilityKey returns the store key to retrieve a Credibility from the index fields

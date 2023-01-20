@@ -2,9 +2,9 @@ package keeper
 
 import (
 	"github.com/cosmos/cosmos-sdk/store/prefix"
+	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"mande-chain/x/voting/types"
-	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 )
 
 // SetVoteBook set a specific voteBook in the store from its index

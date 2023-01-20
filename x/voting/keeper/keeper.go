@@ -1,16 +1,16 @@
 package keeper
 
 import (
-	"fmt"
 	"encoding/hex"
-	"strconv"
+	"fmt"
 	"github.com/tendermint/tendermint/libs/log"
+	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	"mande-chain/x/voting/types"
 	oracletypes "mande-chain/x/oracle/types"
+	"mande-chain/x/voting/types"
 )
 
 type (
@@ -23,7 +23,7 @@ type (
 		accountKeeper types.AccountKeeper
 		bankKeeper    types.BankKeeper
 		stakingKeeper types.StakingKeeper
-		oracleKeeper types.OracleKeeper
+		oracleKeeper  types.OracleKeeper
 	}
 )
 

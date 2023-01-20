@@ -421,7 +421,6 @@ func New(
 	)
 	votingModule := votingmodule.NewAppModule(appCodec, app.VotingKeeper, app.AccountKeeper, app.BankKeeper, app.OracleKeeper)
 
-
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// Create static IBC router, add transfer route, then set and seal it

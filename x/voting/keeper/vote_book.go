@@ -4,6 +4,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"mande-chain/x/voting/types"
+	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 )
 
 // SetVoteBook set a specific voteBook in the store from its index
@@ -60,4 +61,17 @@ func (k Keeper) GetAllVoteBook(ctx sdk.Context) (list []types.VoteBook) {
 	}
 
 	return
+}
+
+func (k Keeper) GetVoteBookIteratorByPrefix(ctx sdk.Context, vbPrefix string) storetypes.Iterator {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.VoteBookKeyPrefix))
+	return sdk.KVStorePrefixIterator(store, []byte(vbPrefix))
+}
+
+func (k Keeper) UnmarshalVoteBook(bz []byte, voteBook *types.VoteBook) error {
+	err := k.cdc.Unmarshal(bz, voteBook)
+	if err != nil {
+		return err
+	}
+	return nil
 }

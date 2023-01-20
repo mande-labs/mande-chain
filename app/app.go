@@ -396,18 +396,6 @@ func New(
 	)
 	monitoringModule := monitoringp.NewAppModule(appCodec, app.MonitoringKeeper)
 
-	app.VotingKeeper = *votingmodulekeeper.NewKeeper(
-		appCodec,
-		keys[votingmoduletypes.StoreKey],
-		keys[votingmoduletypes.MemStoreKey],
-		app.GetSubspace(votingmoduletypes.ModuleName),
-
-		app.AccountKeeper,
-		app.BankKeeper,
-		app.StakingKeeper,
-	)
-	votingModule := votingmodule.NewAppModule(appCodec, app.VotingKeeper, app.AccountKeeper, app.BankKeeper)
-
 	scopedOracleKeeper := app.CapabilityKeeper.ScopeToModule(oraclemoduletypes.ModuleName)
 	app.ScopedOracleKeeper = scopedOracleKeeper
 	app.OracleKeeper = *oraclemodulekeeper.NewKeeper(
@@ -420,6 +408,19 @@ func New(
 		scopedOracleKeeper,
 	)
 	oracleModule := oraclemodule.NewAppModule(appCodec, app.OracleKeeper, app.AccountKeeper, app.BankKeeper)
+	app.VotingKeeper = *votingmodulekeeper.NewKeeper(
+		appCodec,
+		keys[votingmoduletypes.StoreKey],
+		keys[votingmoduletypes.MemStoreKey],
+		app.GetSubspace(votingmoduletypes.ModuleName),
+
+		app.AccountKeeper,
+		app.BankKeeper,
+		app.StakingKeeper,
+		app.OracleKeeper,
+	)
+	votingModule := votingmodule.NewAppModule(appCodec, app.VotingKeeper, app.AccountKeeper, app.BankKeeper, app.OracleKeeper)
+
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
@@ -463,8 +464,8 @@ func New(
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
 		monitoringModule,
-		votingModule,
 		oracleModule,
+		votingModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -492,8 +493,8 @@ func New(
 		feegrant.ModuleName,
 		paramstypes.ModuleName,
 		monitoringptypes.ModuleName,
-		votingmoduletypes.ModuleName,
 		oraclemoduletypes.ModuleName,
+		votingmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -517,8 +518,8 @@ func New(
 		ibchost.ModuleName,
 		ibctransfertypes.ModuleName,
 		monitoringptypes.ModuleName,
-		votingmoduletypes.ModuleName,
 		oraclemoduletypes.ModuleName,
+		votingmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -547,8 +548,8 @@ func New(
 		ibctransfertypes.ModuleName,
 		feegrant.ModuleName,
 		monitoringptypes.ModuleName,
-		votingmoduletypes.ModuleName,
 		oraclemoduletypes.ModuleName,
+		votingmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -573,8 +574,8 @@ func New(
 		ibc.NewAppModule(app.IBCKeeper),
 		transferModule,
 		monitoringModule,
-		votingModule,
 		oracleModule,
+		votingModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()

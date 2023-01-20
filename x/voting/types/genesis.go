@@ -13,6 +13,7 @@ func DefaultGenesis() *GenesisState {
 		VoteBookList:               []VoteBook{},
 		AggregateVotesCastedList:   []AggregateVotesCasted{},
 		AggregateVotesReceivedList: []AggregateVotesReceived{},
+		CredibilityList:            []Credibility{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -50,6 +51,16 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for aggregateVotesReceived")
 		}
 		aggregateVotesReceivedIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in credibility
+	credibilityIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.CredibilityList {
+		index := string(CredibilityKey(elem.Index))
+		if _, ok := credibilityIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for credibility")
+		}
+		credibilityIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

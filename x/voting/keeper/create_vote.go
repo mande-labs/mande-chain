@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"mande-chain/x/voting/types"
@@ -15,13 +16,20 @@ func (k Keeper) CreateVote(ctx sdk.Context, msg *types.MsgCreateVote) error {
 		aggregateVoteCreatorCount.Negative = 0
 	}
 
+	credibility, found := k.GetCredibility(ctx, msg.Receiver)
+	if !found {
+		credibility.Index = msg.Receiver
+		credibility.Score = "0"
+		credibility.ForX = "0"
+	}
+
 	switch msg.Mode {
 	case 0:
-		if err := k.uncastVote(ctx, msg, &aggregateVoteCreatorCount); err != nil {
+		if err := k.uncastVote(ctx, msg, &aggregateVoteCreatorCount, credibility); err != nil {
 			return err
 		}
 	case 1:
-		if err := k.castVote(ctx, msg, &aggregateVoteCreatorCount); err != nil {
+		if err := k.castVote(ctx, msg, &aggregateVoteCreatorCount, credibility); err != nil {
 			return err
 		}
 	default:
@@ -31,19 +39,17 @@ func (k Keeper) CreateVote(ctx sdk.Context, msg *types.MsgCreateVote) error {
 	return nil
 }
 
-func (k Keeper) uncastVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateVoteCreatorCount *types.AggregateVotesCasted) error {
-	voteBookIndex := types.VoteBookIndex(msg.Creator, msg.Receiver)
+func (k Keeper) uncastVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateVotesCreatorCount *types.AggregateVotesCasted, credibility types.Credibility) error {
+	voteBookIndex := types.VoteBookIndex(msg.Receiver, msg.Creator)
 	voteBookEntry, found := k.GetVoteBook(ctx, voteBookIndex)
 	if !found {
 		return sdkerrors.Wrap(types.ErrNoVoteRecord, msg.Receiver)
 	}
 
-	aggregateVoteReceiverCount, found := k.GetAggregateVotesReceived(ctx, msg.Receiver)
+	aggregateVotesReceiverCount, found := k.GetAggregateVotesReceived(ctx, msg.Receiver)
 	if !found {
 		return sdkerrors.Wrap(types.ErrNoVotesCasted, msg.Receiver)
 	}
-
-	ballotBefore := calculateBallot(&aggregateVoteReceiverCount)
 
 	voteCount := intAbs(msg.Count)
 	if msg.Count < 0 {
@@ -61,14 +67,17 @@ func (k Keeper) uncastVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateV
 	}
 
 	k.SetVoteBook(ctx, voteBookEntry)
-	
-	k.ReconcileCreatorAggregatedVotes(msg, aggregateVoteCreatorCount)
-	k.ReconcileReceiverAggregatedVotes(msg, &aggregateVoteReceiverCount)
-	k.SetAggregateVotesCasted(ctx, *aggregateVoteCreatorCount)
-	k.SetAggregateVotesReceived(ctx, aggregateVoteReceiverCount)
 
-	ballotAfter := calculateBallot(&aggregateVoteReceiverCount)
-	err := k.undelegateStakeAndUnlockMand(ctx, msg, ballotBefore, ballotAfter)
+	k.ReconcileCreatorAggregatedVotes(msg, aggregateVotesCreatorCount)
+	k.ReconcileReceiverAggregatedVotes(msg, &aggregateVotesReceiverCount)
+	k.SetAggregateVotesCasted(ctx, *aggregateVotesCreatorCount)
+	k.SetAggregateVotesReceived(ctx, aggregateVotesReceiverCount)
+
+	beforeCred, _ := strconv.ParseFloat(credibility.Score, 64)
+	k.UpdateCredibility(ctx, aggregateVotesReceiverCount, &credibility)
+	afterCred, _ := strconv.ParseFloat(credibility.Score, 64)
+
+	err := k.undelegateStakeAndUnlockMand(ctx, msg, int64(beforeCred), int64(afterCred))
 	if err != nil {
 		return err
 	}
@@ -85,7 +94,7 @@ func (k Keeper) uncastVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateV
 	return nil
 }
 
-func (k Keeper) castVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateVotesCreatorCount *types.AggregateVotesCasted) error {
+func (k Keeper) castVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateVotesCreatorCount *types.AggregateVotesCasted, credibility types.Credibility) error {
 	creator, _ := sdk.AccAddressFromBech32(msg.Creator)
 	mandBalance := k.bankKeeper.GetBalance(ctx, creator, "mand").Amount.Uint64()
 
@@ -93,7 +102,7 @@ func (k Keeper) castVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateVot
 		return sdkerrors.Wrapf(types.ErrNotEnoughMand, "count - (%d)", msg.Count)
 	}
 
-	voteBookIndex := types.VoteBookIndex(msg.Creator, msg.Receiver)
+	voteBookIndex := types.VoteBookIndex(msg.Receiver, msg.Creator)
 	voteBookEntry, found := k.GetVoteBook(ctx, voteBookIndex)
 	if !found {
 		voteBookEntry.Index = voteBookIndex
@@ -117,8 +126,6 @@ func (k Keeper) castVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateVot
 		aggregateVotesReceiverCount.Negative = 0
 	}
 
-	ballotBefore := calculateBallot(&aggregateVotesReceiverCount)
-
 	k.SetVoteBook(ctx, voteBookEntry)
 
 	k.ReconcileCreatorAggregatedVotes(msg, aggregateVotesCreatorCount)
@@ -126,8 +133,16 @@ func (k Keeper) castVote(ctx sdk.Context, msg *types.MsgCreateVote, aggregateVot
 	k.SetAggregateVotesCasted(ctx, *aggregateVotesCreatorCount)
 	k.SetAggregateVotesReceived(ctx, aggregateVotesReceiverCount)
 
-	ballotAfter := calculateBallot(&aggregateVotesReceiverCount)
-	err := k.lockMandAndDelegateStake(ctx, msg, ballotBefore, ballotAfter)
+	beforeCred, _ := strconv.ParseFloat(credibility.Score, 64)
+	ctx.Logger().Info(fmt.Sprintf("check beforeCred here: %f", beforeCred))
+	ctx.Logger().Info(fmt.Sprintf("check credibility score before updating here: %s", credibility.Score))
+	k.UpdateCredibility(ctx, aggregateVotesReceiverCount, &credibility)
+	ctx.Logger().Info(fmt.Sprintf("check credibility after updating here: %s", credibility.Score))
+	afterCred, _ := strconv.ParseFloat(credibility.Score, 64)
+	// afterCred := fmt.Sprintf("%d", credibility.Score)
+	ctx.Logger().Info(fmt.Sprintf("check afterCred here: %f", afterCred))
+
+	err := k.lockMandAndDelegateStake(ctx, msg, int64(beforeCred), int64(afterCred))
 	if err != nil {
 		return err
 	}

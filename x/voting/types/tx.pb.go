@@ -131,30 +131,124 @@ func (m *MsgCreateVoteResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgCreateVoteResponse proto.InternalMessageInfo
 
+type MsgUpdateCredibility struct {
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Address string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
+}
+
+func (m *MsgUpdateCredibility) Reset()         { *m = MsgUpdateCredibility{} }
+func (m *MsgUpdateCredibility) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateCredibility) ProtoMessage()    {}
+func (*MsgUpdateCredibility) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e20a5c39fb5d1c62, []int{2}
+}
+func (m *MsgUpdateCredibility) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgUpdateCredibility) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgUpdateCredibility.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgUpdateCredibility) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateCredibility.Merge(m, src)
+}
+func (m *MsgUpdateCredibility) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgUpdateCredibility) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateCredibility.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgUpdateCredibility proto.InternalMessageInfo
+
+func (m *MsgUpdateCredibility) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgUpdateCredibility) GetAddress() string {
+	if m != nil {
+		return m.Address
+	}
+	return ""
+}
+
+type MsgUpdateCredibilityResponse struct {
+}
+
+func (m *MsgUpdateCredibilityResponse) Reset()         { *m = MsgUpdateCredibilityResponse{} }
+func (m *MsgUpdateCredibilityResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgUpdateCredibilityResponse) ProtoMessage()    {}
+func (*MsgUpdateCredibilityResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_e20a5c39fb5d1c62, []int{3}
+}
+func (m *MsgUpdateCredibilityResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgUpdateCredibilityResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgUpdateCredibilityResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgUpdateCredibilityResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgUpdateCredibilityResponse.Merge(m, src)
+}
+func (m *MsgUpdateCredibilityResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgUpdateCredibilityResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgUpdateCredibilityResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgUpdateCredibilityResponse proto.InternalMessageInfo
+
 func init() {
 	proto.RegisterType((*MsgCreateVote)(nil), "mandechain.voting.MsgCreateVote")
 	proto.RegisterType((*MsgCreateVoteResponse)(nil), "mandechain.voting.MsgCreateVoteResponse")
+	proto.RegisterType((*MsgUpdateCredibility)(nil), "mandechain.voting.MsgUpdateCredibility")
+	proto.RegisterType((*MsgUpdateCredibilityResponse)(nil), "mandechain.voting.MsgUpdateCredibilityResponse")
 }
 
 func init() { proto.RegisterFile("voting/tx.proto", fileDescriptor_e20a5c39fb5d1c62) }
 
 var fileDescriptor_e20a5c39fb5d1c62 = []byte{
-	// 234 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x2f, 0xcb, 0x2f, 0xc9,
-	0xcc, 0x4b, 0xd7, 0x2f, 0xa9, 0xd0, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x12, 0xcc, 0x4d, 0xcc,
-	0x4b, 0x49, 0x4d, 0xce, 0x48, 0xcc, 0xcc, 0xd3, 0x83, 0xc8, 0x29, 0xe5, 0x73, 0xf1, 0xfa, 0x16,
-	0xa7, 0x3b, 0x17, 0xa5, 0x26, 0x96, 0xa4, 0x86, 0xe5, 0x97, 0xa4, 0x0a, 0x49, 0x70, 0xb1, 0x27,
-	0x83, 0x78, 0xf9, 0x45, 0x12, 0x8c, 0x0a, 0x8c, 0x1a, 0x9c, 0x41, 0x30, 0xae, 0x90, 0x14, 0x17,
-	0x47, 0x51, 0x6a, 0x72, 0x6a, 0x66, 0x59, 0x6a, 0x91, 0x04, 0x13, 0x58, 0x0a, 0xce, 0x17, 0x12,
-	0xe1, 0x62, 0x4d, 0xce, 0x2f, 0xcd, 0x2b, 0x91, 0x60, 0x56, 0x60, 0xd4, 0x60, 0x0e, 0x82, 0x70,
-	0x84, 0x84, 0xb8, 0x58, 0x72, 0xf3, 0x53, 0x52, 0x25, 0x58, 0x14, 0x18, 0x35, 0x58, 0x82, 0xc0,
-	0x6c, 0x25, 0x71, 0x2e, 0x51, 0x14, 0x0b, 0x83, 0x52, 0x8b, 0x0b, 0xf2, 0xf3, 0x8a, 0x53, 0x8d,
-	0xe2, 0xb9, 0x98, 0x7d, 0x8b, 0xd3, 0x85, 0x22, 0xb8, 0xb8, 0x90, 0x5c, 0xa3, 0xa0, 0x87, 0xe1,
-	0x64, 0x3d, 0x14, 0xed, 0x52, 0x1a, 0x84, 0x54, 0xc0, 0x2c, 0x70, 0x32, 0x39, 0xf1, 0x48, 0x8e,
-	0xf1, 0xc2, 0x23, 0x39, 0xc6, 0x07, 0x8f, 0xe4, 0x18, 0x27, 0x3c, 0x96, 0x63, 0xb8, 0xf0, 0x58,
-	0x8e, 0xe1, 0xc6, 0x63, 0x39, 0x86, 0x28, 0x29, 0xb0, 0x11, 0xba, 0x60, 0x33, 0xf4, 0x2b, 0xf4,
-	0x61, 0xc1, 0x56, 0x59, 0x90, 0x5a, 0x9c, 0xc4, 0x06, 0x0e, 0x3a, 0x63, 0x40, 0x00, 0x00, 0x00,
-	0xff, 0xff, 0x90, 0x22, 0x80, 0xa7, 0x4d, 0x01, 0x00, 0x00,
+	// 300 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x92, 0xc1, 0x4a, 0xf3, 0x40,
+	0x14, 0x85, 0x3b, 0x7f, 0xfb, 0x5b, 0xbd, 0x20, 0xd2, 0xa1, 0xe2, 0x10, 0x64, 0x08, 0xd9, 0x98,
+	0x8d, 0x09, 0xa8, 0x4f, 0x60, 0x77, 0x42, 0x37, 0x01, 0x45, 0xdc, 0xa5, 0x99, 0x4b, 0x1c, 0x30,
+	0x99, 0x30, 0x33, 0x96, 0xf6, 0x2d, 0x7c, 0x2c, 0x57, 0xd2, 0xa5, 0x4b, 0x49, 0x5e, 0x44, 0x4c,
+	0x1d, 0xb1, 0xa4, 0xa8, 0xbb, 0x7c, 0xdc, 0x93, 0x73, 0xce, 0x1d, 0x2e, 0x1c, 0xcc, 0x95, 0x95,
+	0x65, 0x1e, 0xdb, 0x45, 0x54, 0x69, 0x65, 0x15, 0x1d, 0x15, 0x69, 0x29, 0x30, 0xbb, 0x4f, 0x65,
+	0x19, 0xad, 0x67, 0x81, 0x82, 0xfd, 0xa9, 0xc9, 0x27, 0x1a, 0x53, 0x8b, 0x37, 0xca, 0x22, 0x65,
+	0x30, 0xcc, 0x3e, 0x48, 0x69, 0x46, 0x7c, 0x12, 0xee, 0x25, 0x0e, 0xa9, 0x07, 0xbb, 0x1a, 0x33,
+	0x94, 0x73, 0xd4, 0xec, 0x5f, 0x3b, 0xfa, 0x62, 0x3a, 0x86, 0xff, 0x99, 0x7a, 0x2c, 0x2d, 0xeb,
+	0xfb, 0x24, 0xec, 0x27, 0x6b, 0xa0, 0x14, 0x06, 0x85, 0x12, 0xc8, 0x06, 0x3e, 0x09, 0x07, 0x49,
+	0xfb, 0x1d, 0x1c, 0xc1, 0xe1, 0x46, 0x60, 0x82, 0xa6, 0x52, 0xa5, 0xc1, 0xe0, 0x0a, 0xc6, 0x53,
+	0x93, 0x5f, 0x57, 0x22, 0xb5, 0x38, 0xd1, 0x28, 0xe4, 0x4c, 0x3e, 0x48, 0xbb, 0xfc, 0xa1, 0x10,
+	0x83, 0x61, 0x2a, 0x84, 0x46, 0x63, 0x3e, 0xfb, 0x38, 0x0c, 0x38, 0x1c, 0x6f, 0xf3, 0x72, 0x59,
+	0x67, 0x2f, 0x04, 0xfa, 0x53, 0x93, 0xd3, 0x5b, 0x80, 0x6f, 0xab, 0xfb, 0x51, 0xe7, 0x7d, 0xa2,
+	0x8d, 0xae, 0x5e, 0xf8, 0x9b, 0xc2, 0x25, 0xd0, 0x02, 0x46, 0xdd, 0x55, 0x4e, 0xb6, 0xff, 0xde,
+	0x11, 0x7a, 0xf1, 0x1f, 0x85, 0x2e, 0xee, 0xf2, 0xe2, 0xb9, 0xe6, 0x64, 0x55, 0x73, 0xf2, 0x56,
+	0x73, 0xf2, 0xd4, 0xf0, 0xde, 0xaa, 0xe1, 0xbd, 0xd7, 0x86, 0xf7, 0xee, 0xbc, 0xd6, 0xe9, 0xb4,
+	0xb5, 0x8a, 0x17, 0xb1, 0x3b, 0x89, 0x65, 0x85, 0x66, 0xb6, 0xd3, 0x9e, 0xc5, 0xf9, 0x7b, 0x00,
+	0x00, 0x00, 0xff, 0xff, 0x61, 0x2b, 0xab, 0x34, 0x29, 0x02, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -170,6 +264,7 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
 	CreateVote(ctx context.Context, in *MsgCreateVote, opts ...grpc.CallOption) (*MsgCreateVoteResponse, error)
+	UpdateCredibility(ctx context.Context, in *MsgUpdateCredibility, opts ...grpc.CallOption) (*MsgUpdateCredibilityResponse, error)
 }
 
 type msgClient struct {
@@ -189,9 +284,19 @@ func (c *msgClient) CreateVote(ctx context.Context, in *MsgCreateVote, opts ...g
 	return out, nil
 }
 
+func (c *msgClient) UpdateCredibility(ctx context.Context, in *MsgUpdateCredibility, opts ...grpc.CallOption) (*MsgUpdateCredibilityResponse, error) {
+	out := new(MsgUpdateCredibilityResponse)
+	err := c.cc.Invoke(ctx, "/mandechain.voting.Msg/UpdateCredibility", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	CreateVote(context.Context, *MsgCreateVote) (*MsgCreateVoteResponse, error)
+	UpdateCredibility(context.Context, *MsgUpdateCredibility) (*MsgUpdateCredibilityResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -200,6 +305,9 @@ type UnimplementedMsgServer struct {
 
 func (*UnimplementedMsgServer) CreateVote(ctx context.Context, req *MsgCreateVote) (*MsgCreateVoteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateVote not implemented")
+}
+func (*UnimplementedMsgServer) UpdateCredibility(ctx context.Context, req *MsgUpdateCredibility) (*MsgUpdateCredibilityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateCredibility not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -224,6 +332,24 @@ func _Msg_CreateVote_Handler(srv interface{}, ctx context.Context, dec func(inte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_UpdateCredibility_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgUpdateCredibility)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).UpdateCredibility(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mandechain.voting.Msg/UpdateCredibility",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).UpdateCredibility(ctx, req.(*MsgUpdateCredibility))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "mandechain.voting.Msg",
 	HandlerType: (*MsgServer)(nil),
@@ -231,6 +357,10 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateVote",
 			Handler:    _Msg_CreateVote_Handler,
+		},
+		{
+			MethodName: "UpdateCredibility",
+			Handler:    _Msg_UpdateCredibility_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -307,6 +437,66 @@ func (m *MsgCreateVoteResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *MsgUpdateCredibility) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgUpdateCredibility) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgUpdateCredibility) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Address) > 0 {
+		i -= len(m.Address)
+		copy(dAtA[i:], m.Address)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Address)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgUpdateCredibilityResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgUpdateCredibilityResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgUpdateCredibilityResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTx(v)
 	base := offset
@@ -342,6 +532,32 @@ func (m *MsgCreateVote) Size() (n int) {
 }
 
 func (m *MsgCreateVoteResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgUpdateCredibility) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Address)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgUpdateCredibilityResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -535,6 +751,170 @@ func (m *MsgCreateVoteResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: MsgCreateVoteResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgUpdateCredibility) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgUpdateCredibility: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgUpdateCredibility: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Address = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgUpdateCredibilityResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgUpdateCredibilityResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgUpdateCredibilityResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

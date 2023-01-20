@@ -6,8 +6,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"mande-chain/x/voting/types"
 	oracletypes "mande-chain/x/oracle/types"
+	"mande-chain/x/voting/types"
 )
 
 func (k Keeper) CredibilityScore(goCtx context.Context, req *types.QueryCredibilityScoreRequest) (*types.QueryCredibilityScoreResponse, error) {
@@ -22,14 +22,12 @@ func (k Keeper) CredibilityScore(goCtx context.Context, req *types.QueryCredibil
 		return nil, status.Error(codes.NotFound, "not found")
 	}
 
-	rawAppliedX, _ := k.GetAppliedX(ctx)
-	appliedX := rawAppliedX.X
 	lastReqId := k.oracleKeeper.GetLastNetworkConstantID(ctx)
 	xResult, _ := k.oracleKeeper.GetNetworkConstantResult(ctx, oracletypes.OracleRequestID(lastReqId))
 	currentX := xResult.Response
 
 	updated := false
-	if appliedX == currentX {
+	if credibility.ForX == currentX {
 		updated = true
 	}
 

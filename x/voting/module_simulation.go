@@ -28,6 +28,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgCreateVote int = 100
 
+	opWeightMsgUpdateCredibility = "op_weight_msg_update_credibility"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgUpdateCredibility int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -71,6 +75,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgCreateVote,
 		votingsimulation.SimulateMsgCreateVote(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgUpdateCredibility int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateCredibility, &weightMsgUpdateCredibility, nil,
+		func(_ *rand.Rand) {
+			weightMsgUpdateCredibility = defaultWeightMsgUpdateCredibility
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgUpdateCredibility,
+		votingsimulation.SimulateMsgUpdateCredibility(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

@@ -105,6 +105,8 @@ export interface VotingAggregateVotesReceived {
 
 export type VotingMsgCreateVoteResponse = object;
 
+export type VotingMsgUpdateCredibilityResponse = object;
+
 /**
  * Params defines the parameters for the module.
  */

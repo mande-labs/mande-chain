@@ -11,10 +11,12 @@ import (
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	oracletypes "mande-chain/x/oracle/types"
 	"mande-chain/x/voting/types"
+	"github.com/ignite/cli/ignite/pkg/cosmosibckeeper"
 )
 
 type (
 	Keeper struct {
+		*cosmosibckeeper.Keeper
 		cdc        codec.BinaryCodec
 		storeKey   sdk.StoreKey
 		memKey     sdk.StoreKey
@@ -32,6 +34,9 @@ func NewKeeper(
 	storeKey,
 	memKey sdk.StoreKey,
 	ps paramtypes.Subspace,
+	channelKeeper cosmosibckeeper.ChannelKeeper,
+	portKeeper cosmosibckeeper.PortKeeper,
+	scopedKeeper cosmosibckeeper.ScopedKeeper,
 
 	accountKeeper types.AccountKeeper, bankKeeper types.BankKeeper, stakingKeeper types.StakingKeeper, oracleKeeper types.OracleKeeper,
 ) *Keeper {
@@ -41,6 +46,13 @@ func NewKeeper(
 	}
 
 	return &Keeper{
+		Keeper: cosmosibckeeper.NewKeeper(
+                types.PortKey,
+                storeKey,
+                channelKeeper,
+                portKeeper,
+                scopedKeeper,
+        ),
 
 		cdc:           cdc,
 		storeKey:      storeKey,

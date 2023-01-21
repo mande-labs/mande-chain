@@ -19,11 +19,13 @@ import (
 	"mande-chain/x/voting/client/cli"
 	"mande-chain/x/voting/keeper"
 	"mande-chain/x/voting/types"
+	porttypes "github.com/cosmos/ibc-go/v3/modules/core/05-port/types"
 )
 
 var (
 	_ module.AppModule      = AppModule{}
 	_ module.AppModuleBasic = AppModuleBasic{}
+	_ porttypes.IBCModule   = AppModule{}
 )
 
 // ----------------------------------------------------------------------------

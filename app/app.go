@@ -234,6 +234,7 @@ type App struct {
 	ScopedTransferKeeper   capabilitykeeper.ScopedKeeper
 	ScopedMonitoringKeeper capabilitykeeper.ScopedKeeper
 
+ 	ScopedVotingKeeper capabilitykeeper.ScopedKeeper
 	VotingKeeper       votingmodulekeeper.Keeper
 	ScopedOracleKeeper capabilitykeeper.ScopedKeeper
 	OracleKeeper       oraclemodulekeeper.Keeper
@@ -408,11 +409,16 @@ func New(
 		scopedOracleKeeper,
 	)
 	oracleModule := oraclemodule.NewAppModule(appCodec, app.OracleKeeper, app.AccountKeeper, app.BankKeeper)
+	scopedVotingKeeper := app.CapabilityKeeper.ScopeToModule(votingmoduletypes.ModuleName)
+	app.ScopedVotingKeeper = scopedVotingKeeper
 	app.VotingKeeper = *votingmodulekeeper.NewKeeper(
 		appCodec,
 		keys[votingmoduletypes.StoreKey],
 		keys[votingmoduletypes.MemStoreKey],
 		app.GetSubspace(votingmoduletypes.ModuleName),
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		scopedVotingKeeper,
 
 		app.AccountKeeper,
 		app.BankKeeper,
@@ -428,6 +434,7 @@ func New(
 	ibcRouter.AddRoute(ibctransfertypes.ModuleName, transferIBCModule)
 	ibcRouter.AddRoute(monitoringptypes.ModuleName, monitoringModule)
 	ibcRouter.AddRoute(oraclemoduletypes.ModuleName, oracleModule)
+	ibcRouter.AddRoute(votingmoduletypes.ModuleName, votingModule)
 	// this line is used by starport scaffolding # ibc/app/router
 	app.IBCKeeper.SetRouter(ibcRouter)
 

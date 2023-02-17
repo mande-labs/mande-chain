@@ -2,11 +2,13 @@ import { txClient, queryClient, MissingWalletError , registry} from './module'
 
 import { AggregateVotesCasted } from "./module/types/voting/aggregate_votes_casted"
 import { AggregateVotesReceived } from "./module/types/voting/aggregate_votes_received"
+import { Credibility } from "./module/types/voting/credibility"
+import { AppliedX } from "./module/types/voting/credibility"
 import { Params } from "./module/types/voting/params"
 import { VoteBook } from "./module/types/voting/vote_book"
 
 
-export { AggregateVotesCasted, AggregateVotesReceived, Params, VoteBook };
+export { AggregateVotesCasted, AggregateVotesReceived, Credibility, AppliedX, Params, VoteBook };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -51,10 +53,13 @@ const getDefaultState = () => {
 				AggregateVotesCastedAll: {},
 				AggregateVotesReceived: {},
 				AggregateVotesReceivedAll: {},
+				CredibilityScore: {},
 				
 				_Structure: {
 						AggregateVotesCasted: getStructure(AggregateVotesCasted.fromPartial({})),
 						AggregateVotesReceived: getStructure(AggregateVotesReceived.fromPartial({})),
+						Credibility: getStructure(Credibility.fromPartial({})),
+						AppliedX: getStructure(AppliedX.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						VoteBook: getStructure(VoteBook.fromPartial({})),
 						
@@ -126,6 +131,12 @@ export default {
 						(<any> params).query=null
 					}
 			return state.AggregateVotesReceivedAll[JSON.stringify(params)] ?? {}
+		},
+				getCredibilityScore: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.CredibilityScore[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -327,6 +338,28 @@ export default {
 		},
 		
 		
+		
+		
+		 		
+		
+		
+		async QueryCredibilityScore({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryCredibilityScore( key.address)).data
+				
+					
+				commit('QUERY', { query: 'CredibilityScore', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryCredibilityScore', payload: { options: { all }, params: {...key},query }})
+				return getters['getCredibilityScore']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryCredibilityScore API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
 		async sendMsgCreateVote({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -342,6 +375,21 @@ export default {
 				}
 			}
 		},
+		async sendMsgUpdateCredibility({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgUpdateCredibility(value)
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgUpdateCredibility:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgUpdateCredibility:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
 		
 		async MsgCreateVote({ rootGetters }, { value }) {
 			try {
@@ -353,6 +401,19 @@ export default {
 					throw new Error('TxClient:MsgCreateVote:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgCreateVote:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgUpdateCredibility({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgUpdateCredibility(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgUpdateCredibility:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgUpdateCredibility:Create Could not create message: ' + e.message)
 				}
 			}
 		},

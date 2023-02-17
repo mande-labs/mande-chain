@@ -6,6 +6,7 @@ import "voting/params.proto";
 import "voting/vote_book.proto";
 import "voting/aggregate_votes_casted.proto";
 import "voting/aggregate_votes_received.proto";
+import "voting/credibility.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "mande-chain/x/voting/types";
@@ -16,5 +17,6 @@ message GenesisState {
   repeated VoteBook voteBookList = 2 [(gogoproto.nullable) = false];
   repeated AggregateVotesCasted aggregateVotesCastedList = 3 [(gogoproto.nullable) = false];
   repeated AggregateVotesReceived aggregateVotesReceivedList = 4 [(gogoproto.nullable) = false];
+  repeated Credibility credibilityList = 5 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

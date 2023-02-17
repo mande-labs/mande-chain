@@ -48,6 +48,11 @@ service Query {
 		option (google.api.http).get = "/mande-chain/voting/aggregate_votes_received";
 	}
 
+// Queries a list of CredibilityScore items.
+	rpc CredibilityScore(QueryCredibilityScoreRequest) returns (QueryCredibilityScoreResponse) {
+		option (google.api.http).get = "/mande-chain/voting/credibility_score/{address}";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -112,6 +117,15 @@ message QueryAllAggregateVotesReceivedRequest {
 message QueryAllAggregateVotesReceivedResponse {
 	repeated AggregateVotesReceived aggregateVotesReceived = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryCredibilityScoreRequest {
+  string address = 1;
+}
+
+message QueryCredibilityScoreResponse {
+  string score = 1;
+  bool updated = 2;
 }
 
 // this line is used by starport scaffolding # 3

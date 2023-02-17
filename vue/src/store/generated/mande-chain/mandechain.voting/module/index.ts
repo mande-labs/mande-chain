@@ -5,10 +5,12 @@ import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
 import { MsgCreateVote } from "./types/voting/tx";
+import { MsgUpdateCredibility } from "./types/voting/tx";
 
 
 const types = [
   ["/mandechain.voting.MsgCreateVote", MsgCreateVote],
+  ["/mandechain.voting.MsgUpdateCredibility", MsgUpdateCredibility],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -42,6 +44,7 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
     msgCreateVote: (data: MsgCreateVote): EncodeObject => ({ typeUrl: "/mandechain.voting.MsgCreateVote", value: MsgCreateVote.fromPartial( data ) }),
+    msgUpdateCredibility: (data: MsgUpdateCredibility): EncodeObject => ({ typeUrl: "/mandechain.voting.MsgUpdateCredibility", value: MsgUpdateCredibility.fromPartial( data ) }),
     
   };
 };

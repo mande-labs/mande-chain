@@ -4,6 +4,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	oracletypes "mande-chain/x/oracle/types"
 	"time"
 )
 
@@ -13,6 +14,7 @@ type StakingKeeper interface {
 	Delegate(ctx sdk.Context, delAddr sdk.AccAddress, bondAmt sdk.Int, tokenSrc stakingtypes.BondStatus,
 		validator stakingtypes.Validator, subtractAccount bool) (newShares sdk.Dec, err error)
 	Undelegate(ctx sdk.Context, delAddr sdk.AccAddress, valAddr sdk.ValAddress, sharesAmount sdk.Dec) (time.Time, error)
+	GetBondedValidatorsByPower(ctx sdk.Context) []stakingtypes.Validator
 }
 
 // AccountKeeper defines the expected account keeper used for simulations (noalias)
@@ -31,4 +33,9 @@ type BankKeeper interface {
 	SendCoinsFromModuleToAccount(ctx sdk.Context, senderModule string, recipientAddr sdk.AccAddress, amt sdk.Coins) error
 	MintCoins(ctx sdk.Context, moduleName string, amt sdk.Coins) error
 	BurnCoins(ctx sdk.Context, moduleName string, amt sdk.Coins) error
+}
+
+type OracleKeeper interface {
+	GetLastNetworkConstantID(ctx sdk.Context) int64
+	GetNetworkConstantResult(ctx sdk.Context, id oracletypes.OracleRequestID) (oracletypes.NetworkConstantResult, error)
 }

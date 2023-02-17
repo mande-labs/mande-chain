@@ -46,6 +46,14 @@ func TestGenesisState_Validate(t *testing.T) {
 						Index: "1",
 					},
 				},
+				CredibilityList: []types.Credibility{
+					{
+						Index: "0",
+					},
+					{
+						Index: "1",
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -82,6 +90,20 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "duplicated aggregateVotesReceived",
 			genState: &types.GenesisState{
 				AggregateVotesReceivedList: []types.AggregateVotesReceived{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated credibility",
+			genState: &types.GenesisState{
+				CredibilityList: []types.Credibility{
 					{
 						Index: "0",
 					},

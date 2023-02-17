@@ -38,6 +38,14 @@ func TestGenesis(t *testing.T) {
 				Index: "1",
 			},
 		},
+		CredibilityList: []types.Credibility{
+			{
+				Index: "0",
+			},
+			{
+				Index: "1",
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -52,5 +60,6 @@ func TestGenesis(t *testing.T) {
 	require.ElementsMatch(t, genesisState.VoteBookList, got.VoteBookList)
 	require.ElementsMatch(t, genesisState.AggregateVotesCastedList, got.AggregateVotesCastedList)
 	require.ElementsMatch(t, genesisState.AggregateVotesReceivedList, got.AggregateVotesReceivedList)
+	require.ElementsMatch(t, genesisState.CredibilityList, got.CredibilityList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

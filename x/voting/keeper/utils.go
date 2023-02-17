@@ -7,6 +7,11 @@ func intAbs(n int64) uint64 {
 	return uint64((n ^ y) - y)
 }
 
+func intAbs2(n int64) int64 {
+	y := n >> 63
+	return (n ^ y) - y
+}
+
 func Max(x int64, y int64) int64 {
 	if x > y {
 		return x

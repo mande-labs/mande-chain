@@ -71,6 +71,15 @@ export interface QueryAllAggregateVotesReceivedResponse {
   pagination: PageResponse | undefined;
 }
 
+export interface QueryCredibilityScoreRequest {
+  address: string;
+}
+
+export interface QueryCredibilityScoreResponse {
+  score: string;
+  updated: boolean;
+}
+
 const baseQueryParamsRequest: object = {};
 
 export const QueryParamsRequest = {
@@ -1154,6 +1163,161 @@ export const QueryAllAggregateVotesReceivedResponse = {
   },
 };
 
+const baseQueryCredibilityScoreRequest: object = { address: "" };
+
+export const QueryCredibilityScoreRequest = {
+  encode(
+    message: QueryCredibilityScoreRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.address !== "") {
+      writer.uint32(10).string(message.address);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryCredibilityScoreRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryCredibilityScoreRequest,
+    } as QueryCredibilityScoreRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.address = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryCredibilityScoreRequest {
+    const message = {
+      ...baseQueryCredibilityScoreRequest,
+    } as QueryCredibilityScoreRequest;
+    if (object.address !== undefined && object.address !== null) {
+      message.address = String(object.address);
+    } else {
+      message.address = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryCredibilityScoreRequest): unknown {
+    const obj: any = {};
+    message.address !== undefined && (obj.address = message.address);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryCredibilityScoreRequest>
+  ): QueryCredibilityScoreRequest {
+    const message = {
+      ...baseQueryCredibilityScoreRequest,
+    } as QueryCredibilityScoreRequest;
+    if (object.address !== undefined && object.address !== null) {
+      message.address = object.address;
+    } else {
+      message.address = "";
+    }
+    return message;
+  },
+};
+
+const baseQueryCredibilityScoreResponse: object = { score: "", updated: false };
+
+export const QueryCredibilityScoreResponse = {
+  encode(
+    message: QueryCredibilityScoreResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.score !== "") {
+      writer.uint32(10).string(message.score);
+    }
+    if (message.updated === true) {
+      writer.uint32(16).bool(message.updated);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryCredibilityScoreResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryCredibilityScoreResponse,
+    } as QueryCredibilityScoreResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.score = reader.string();
+          break;
+        case 2:
+          message.updated = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryCredibilityScoreResponse {
+    const message = {
+      ...baseQueryCredibilityScoreResponse,
+    } as QueryCredibilityScoreResponse;
+    if (object.score !== undefined && object.score !== null) {
+      message.score = String(object.score);
+    } else {
+      message.score = "";
+    }
+    if (object.updated !== undefined && object.updated !== null) {
+      message.updated = Boolean(object.updated);
+    } else {
+      message.updated = false;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryCredibilityScoreResponse): unknown {
+    const obj: any = {};
+    message.score !== undefined && (obj.score = message.score);
+    message.updated !== undefined && (obj.updated = message.updated);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryCredibilityScoreResponse>
+  ): QueryCredibilityScoreResponse {
+    const message = {
+      ...baseQueryCredibilityScoreResponse,
+    } as QueryCredibilityScoreResponse;
+    if (object.score !== undefined && object.score !== null) {
+      message.score = object.score;
+    } else {
+      message.score = "";
+    }
+    if (object.updated !== undefined && object.updated !== null) {
+      message.updated = object.updated;
+    } else {
+      message.updated = false;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -1180,6 +1344,10 @@ export interface Query {
   AggregateVotesReceivedAll(
     request: QueryAllAggregateVotesReceivedRequest
   ): Promise<QueryAllAggregateVotesReceivedResponse>;
+  /** Queries a list of CredibilityScore items. */
+  CredibilityScore(
+    request: QueryCredibilityScoreRequest
+  ): Promise<QueryCredibilityScoreResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -1274,6 +1442,20 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryAllAggregateVotesReceivedResponse.decode(new Reader(data))
+    );
+  }
+
+  CredibilityScore(
+    request: QueryCredibilityScoreRequest
+  ): Promise<QueryCredibilityScoreResponse> {
+    const data = QueryCredibilityScoreRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "mandechain.voting.Query",
+      "CredibilityScore",
+      data
+    );
+    return promise.then((data) =>
+      QueryCredibilityScoreResponse.decode(new Reader(data))
     );
   }
 }

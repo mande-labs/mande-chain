@@ -105,6 +105,9 @@ import (
 	votingmodule "mande-chain/x/voting"
 	votingmodulekeeper "mande-chain/x/voting/keeper"
 	votingmoduletypes "mande-chain/x/voting/types"
+	ssimodule "mande-chain/x/ssi"
+	ssimodulekeeper "mande-chain/x/ssi/keeper"
+	ssimoduletypes "mande-chain/x/ssi/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 
@@ -161,6 +164,7 @@ var (
 		monitoringp.AppModuleBasic{},
 		votingmodule.AppModuleBasic{},
 		oraclemodule.AppModuleBasic{},
+		ssimodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -237,6 +241,7 @@ type App struct {
 	VotingKeeper       votingmodulekeeper.Keeper
 	ScopedOracleKeeper capabilitykeeper.ScopedKeeper
 	OracleKeeper       oraclemodulekeeper.Keeper
+	SsiKeeper          ssimodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -275,6 +280,7 @@ func New(
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey, monitoringptypes.StoreKey,
 		votingmoduletypes.StoreKey,
 		oraclemoduletypes.StoreKey,
+		ssimoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -420,6 +426,13 @@ func New(
 		app.OracleKeeper,
 	)
 	votingModule := votingmodule.NewAppModule(appCodec, app.VotingKeeper, app.AccountKeeper, app.BankKeeper, app.OracleKeeper)
+	app.SsiKeeper = *ssimodulekeeper.NewKeeper(
+		appCodec,
+		keys[ssimoduletypes.StoreKey],
+		keys[ssimoduletypes.MemStoreKey],
+		app.GetSubspace(ssimoduletypes.ModuleName),
+	)
+	ssiModule := ssimodule.NewAppModule(appCodec, app.SsiKeeper, app.AccountKeeper, app.BankKeeper)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
@@ -465,6 +478,7 @@ func New(
 		monitoringModule,
 		oracleModule,
 		votingModule,
+		ssiModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -494,6 +508,7 @@ func New(
 		monitoringptypes.ModuleName,
 		oraclemoduletypes.ModuleName,
 		votingmoduletypes.ModuleName,
+		ssimoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -519,6 +534,7 @@ func New(
 		monitoringptypes.ModuleName,
 		oraclemoduletypes.ModuleName,
 		votingmoduletypes.ModuleName,
+		ssimoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -549,6 +565,7 @@ func New(
 		monitoringptypes.ModuleName,
 		oraclemoduletypes.ModuleName,
 		votingmoduletypes.ModuleName,
+		ssimoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -766,6 +783,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(monitoringptypes.ModuleName)
 	paramsKeeper.Subspace(votingmoduletypes.ModuleName)
 	paramsKeeper.Subspace(oraclemoduletypes.ModuleName)
+	paramsKeeper.Subspace(ssimoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

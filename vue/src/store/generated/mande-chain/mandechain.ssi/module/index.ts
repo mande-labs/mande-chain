@@ -4,13 +4,19 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgUpdateCredibility } from "./types/voting/tx";
-import { MsgCreateVote } from "./types/voting/tx";
+import { MsgCreateSchema } from "./types/ssi/v1/tx";
+import { MsgUpdateDID } from "./types/ssi/v1/tx";
+import { MsgCreateDID } from "./types/ssi/v1/tx";
+import { MsgRegisterCredentialStatus } from "./types/ssi/v1/tx";
+import { MsgDeactivateDID } from "./types/ssi/v1/tx";
 
 
 const types = [
-  ["/mandechain.voting.MsgUpdateCredibility", MsgUpdateCredibility],
-  ["/mandechain.voting.MsgCreateVote", MsgCreateVote],
+  ["/mandechain.ssi.MsgCreateSchema", MsgCreateSchema],
+  ["/mandechain.ssi.MsgUpdateDID", MsgUpdateDID],
+  ["/mandechain.ssi.MsgCreateDID", MsgCreateDID],
+  ["/mandechain.ssi.MsgRegisterCredentialStatus", MsgRegisterCredentialStatus],
+  ["/mandechain.ssi.MsgDeactivateDID", MsgDeactivateDID],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -43,8 +49,11 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
-    msgUpdateCredibility: (data: MsgUpdateCredibility): EncodeObject => ({ typeUrl: "/mandechain.voting.MsgUpdateCredibility", value: MsgUpdateCredibility.fromPartial( data ) }),
-    msgCreateVote: (data: MsgCreateVote): EncodeObject => ({ typeUrl: "/mandechain.voting.MsgCreateVote", value: MsgCreateVote.fromPartial( data ) }),
+    msgCreateSchema: (data: MsgCreateSchema): EncodeObject => ({ typeUrl: "/mandechain.ssi.MsgCreateSchema", value: MsgCreateSchema.fromPartial( data ) }),
+    msgUpdateDID: (data: MsgUpdateDID): EncodeObject => ({ typeUrl: "/mandechain.ssi.MsgUpdateDID", value: MsgUpdateDID.fromPartial( data ) }),
+    msgCreateDID: (data: MsgCreateDID): EncodeObject => ({ typeUrl: "/mandechain.ssi.MsgCreateDID", value: MsgCreateDID.fromPartial( data ) }),
+    msgRegisterCredentialStatus: (data: MsgRegisterCredentialStatus): EncodeObject => ({ typeUrl: "/mandechain.ssi.MsgRegisterCredentialStatus", value: MsgRegisterCredentialStatus.fromPartial( data ) }),
+    msgDeactivateDID: (data: MsgDeactivateDID): EncodeObject => ({ typeUrl: "/mandechain.ssi.MsgDeactivateDID", value: MsgDeactivateDID.fromPartial( data ) }),
     
   };
 };

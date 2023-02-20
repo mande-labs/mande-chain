@@ -1,0 +1,12 @@
+syntax = "proto3";
+package mandechain.ssi;
+
+import "gogoproto/gogo.proto";
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "mande-chain/x/ssi/types";
+
+// GenesisState defines the ssi module's genesis state.
+message GenesisState {
+  string chain_namespace = 1;
+}

@@ -9,15 +9,15 @@ import (
 	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	typesparams "github.com/cosmos/cosmos-sdk/x/params/types"
+	"mande-chain/x/ssi/keeper"
+	"mande-chain/x/ssi/types"
 	"github.com/stretchr/testify/require"
 	"github.com/tendermint/tendermint/libs/log"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	tmdb "github.com/tendermint/tm-db"
-	"mande-chain/x/voting/keeper"
-	"mande-chain/x/voting/types"
 )
 
-func VotingKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
+func SsiKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	storeKey := sdk.NewKVStoreKey(types.StoreKey)
 	memStoreKey := storetypes.NewMemoryStoreKey(types.MemStoreKey)
 
@@ -34,23 +34,19 @@ func VotingKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		types.Amino,
 		storeKey,
 		memStoreKey,
-		"VotingParams",
+		"SsiParams",
 	)
 	k := keeper.NewKeeper(
 		cdc,
 		storeKey,
 		memStoreKey,
 		paramsSubspace,
-		nil,
-		nil,
-		nil,
-		nil,
 	)
 
-	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, log.NewNopLogger())
-
-	// Initialize params
-	k.SetParams(ctx, types.DefaultParams())
+	ctx := sdk.NewContext(stateStore,
+		tmproto.Header{
+			ChainID: "hidnode",
+		}, false, log.NewNopLogger())
 
 	return k, ctx
 }

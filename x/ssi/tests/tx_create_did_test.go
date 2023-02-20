@@ -110,7 +110,7 @@ func TestInvalidServiceType(t *testing.T) {
 func TestCheckValidMethodSpecificId(t *testing.T) {
 	t.Log("Running test to check valid method-specific Id")
 
-	didIdValidMethodSpecificId := "mid17kuuyfz5pq2raapxet3t06c2f0xxd4yesa5we2"
+	didIdValidMethodSpecificId := "mande17kuuyfz5pq2raapxet3t06c2f0xxd4yesa5we2"
 	didIdInvalidMethodSpecificId1 := "abc2322222"
 	didIdInvalidMethodSpecificId2 := "abc_2322222"
 

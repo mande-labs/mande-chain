@@ -4,7 +4,7 @@ var ServiceTypes = []string{
 	"LinkedDomains",
 }
 
-const DidMethod string = "mid"
+const DidMethod string = "mande"
 
 const ClaimStatus_live = "Live"
 const ClaimStatus_suspended = "Suspended"

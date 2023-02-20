@@ -1,0 +1,1 @@
+Credits for SSI module - Hypersign Identity Network (https://github.com/hypersign-protocol/hid-node)

@@ -17,13 +17,13 @@ func TestMsgUpdateCredibility_ValidateBasic(t *testing.T) {
 		{
 			name: "invalid address",
 			msg: MsgUpdateCredibility{
-				Creator: "invalid_address",
+				Address: "invalid_address",
 			},
 			err: sdkerrors.ErrInvalidAddress,
 		}, {
 			name: "valid address",
 			msg: MsgUpdateCredibility{
-				Creator: sample.AccAddress(),
+				Address: sample.AccAddress(),
 			},
 		},
 	}

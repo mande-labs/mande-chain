@@ -17,6 +17,7 @@ import (
 	tmdb "github.com/tendermint/tm-db"
 	"mande-chain/x/oracle/keeper"
 	"mande-chain/x/oracle/types"
+	"github.com/cosmos/cosmos-sdk/simapp"
 )
 
 func OracleKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
@@ -35,6 +36,8 @@ func OracleKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	appCodec := codec.NewProtoCodec(registry)
 	capabilityKeeper := capabilitykeeper.NewKeeper(appCodec, storeKey, memStoreKey)
 
+	app := simapp.Setup(false)
+
 	ss := typesparams.NewSubspace(appCodec,
 		types.Amino,
 		storeKey,
@@ -45,8 +48,8 @@ func OracleKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		appCodec,
 		storeKey,
 		ss,
-		nil,
-		nil,
+		app.StakingKeeper,
+		app.UpgradeKeeper,
 		capabilityKeeper.ScopeToModule("OracleIBCKeeper"),
 	)
 

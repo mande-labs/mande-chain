@@ -16,7 +16,7 @@ func TestCreateDIDUsingEd25519KeyPair(t *testing.T) {
 	msgServer := keeper.NewMsgServerImpl(*k)
 	goCtx := sdk.WrapSDKContext(ctx)
 
-	k.SetChainNamespace(&ctx, "devnet")
+	k.SetChainNamespace(&ctx, "testnet")
 
 	keyPair1 := GenerateEd25519KeyPair()
 	rpcElements := GenerateDidDocumentRPCElements(keyPair1, []DidSigningElements{})
@@ -46,7 +46,7 @@ func TestCreateDIDUsingSecp256k1KeyPair(t *testing.T) {
 	msgServer := keeper.NewMsgServerImpl(*k)
 	goCtx := sdk.WrapSDKContext(ctx)
 
-	k.SetChainNamespace(&ctx, "devnet")
+	k.SetChainNamespace(&ctx, "testnet")
 
 	keyPair1 := GenerateSecp256k1KeyPair()
 	rpcElements := GenerateDidDocumentRPCElements(keyPair1, []DidSigningElements{})
@@ -77,7 +77,7 @@ func TestInvalidServiceType(t *testing.T) {
 	keyPair1 := GenerateEd25519KeyPair()
 	rpcElements := GenerateDidDocumentRPCElements(keyPair1, []DidSigningElements{})
 	// Set Namespace
-	k.SetChainNamespace(&ctx, "devnet")
+	k.SetChainNamespace(&ctx, "testnet")
 
 	// Changing Service Type from "LinkedDomains" to "DIDComm" which is not supported type
 	invalidServiceType := "DIDComm"
@@ -118,7 +118,7 @@ func TestCheckValidMethodSpecificId(t *testing.T) {
 	msgServer := keeper.NewMsgServerImpl(*k)
 	goCtx := sdk.WrapSDKContext(ctx)
 	// Set Namespace
-	k.SetChainNamespace(&ctx, "devnet")
+	k.SetChainNamespace(&ctx, "testnet")
 
 	keyPair1 := GenerateEd25519KeyPair()
 	keyPair1.optionalID = didIdValidMethodSpecificId

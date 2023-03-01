@@ -65,13 +65,13 @@ export default defineComponent({
       	try {
 	        let API_COSMOS = computed<string>(() => $s.getters['common/env/apiCosmos'])
 
-	        let aggregatedVotes = await axios.get(
+	        let aggregateVotesCasted = await axios.get(
 	          `${API_COSMOS.value}` +
-	            `/mande-chain/voting/aggregate_vote_count/`+
+	            `/mande-chain/voting/aggregate_votes_casted/`+
 	            `${address.value}`
 	          )
 
-	        state.amount = aggregatedVotes.data.aggregateVoteCount.casted
+	        state.amount = aggregateVotesCasted.data.aggregateVotesCasted.positive - aggregateVotesCasted.data.aggregateVotesCasted.negative
       	} catch {
       		state.amount = 0	
       	}

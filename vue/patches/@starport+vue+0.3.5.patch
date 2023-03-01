@@ -46,7 +46,7 @@ index 738e112..06adffa 100644
  
  .loading {
 diff --git a/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue b/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
-index 4a5c024..233be55 100644
+index 4a5c024..a747c65 100644
 --- a/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
 +++ b/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
 @@ -10,112 +10,27 @@
@@ -183,18 +183,26 @@ index 4a5c024..233be55 100644
            </div>
          </router-link>
        </slot>
-@@ -133,6 +48,10 @@
+@@ -133,24 +48,46 @@
        </router-link>
      </div>
      <div class="navbar-section">
 +      <div class="net-constant">x(t)=1</div>
++      <div class="cred-score">Credibility: {{ state.credScore }}</div>
++      <SpButton :class="cred-update-btn" v-if="!state.credUpdated" @click="updateCredTx">Update Credibility</SpButton>
 +    </div>
 +    <div class="navbar-section">
 +      <a target="blank" href="https://discord.gg/VmKYxQJSTM"><SpButton v-if="address" style="margin-right: 20px">Claim MAND on Discord</SpButton></a>
        <SpAcc />
      </div>
    </div>
-@@ -145,6 +64,10 @@ import SpAcc from '../SpAcc'
+ </template>
+ 
+ <script lang="ts">
+-import { defineComponent, PropType } from 'vue'
++import { defineComponent, PropType, reactive, watch, computed } from 'vue'
+ 
+ import SpAcc from '../SpAcc'
  import SpButton from '../SpButton'
  import SpModal from '../SpModal'
  import SpSystemBar from '../SpSystemBar'
@@ -205,7 +213,25 @@ index 4a5c024..233be55 100644
  
  export interface NavbarLink {
    name: string
-@@ -170,6 +93,16 @@ export default defineComponent({
+   url: string
+ }
+ 
++export interface State {
++  x: string
++  credScore: string
++  credUpdated: boolean
++}
++
++export let initialState: State = {
++  x: 1,
++  credScore: 0,
++  credUpdated: true,
++}
++
+ export default defineComponent({
+   name: 'SpNavbar',
+ 
+@@ -170,6 +107,69 @@ export default defineComponent({
        type: String,
        required: false
      }
@@ -215,24 +241,157 @@ index 4a5c024..233be55 100644
 +    let $s = useStore()
 +    let { address } = useAddress({ $s })
 +    let toast = useToast();
++    let state: State = reactive(initialState)
++
++    let loadCredibility = async () => {
++      let API_COSMOS = computed<string>(() => $s.getters['common/env/apiCosmos'])
++
++      let credibility = await axios.get(
++        `${API_COSMOS.value}` +
++          `/mande-chain/voting/credibility_score/${address.value}`
++      )
++
++      state.credScore = credibility.data.score
++      state.credUpdated = credibility.data.updated
++    }
++
++    // actions
++    let sendMsgUpdateCredibility = (opts: any) =>
++      $s.dispatch('mandechain.voting/sendMsgUpdateCredibility', opts)
++
++    let updateCredTx = async (): Promise<void> => {
++      let payload: any = {
++        creator: address.value,
++        address: address.value
++      }
++
++      let send
++
++      try {
++        send = () =>
++          sendMsgUpdateCredibility({
++            value: payload,
++            fee: [],
++            memo: ''
++          })
++
++        const txResult = await send()
++        console.log(txResult)
++        if (txResult.code) {
++          throw new Error()
++        }
++        alert('Success!')
++      } catch (e) {
++        console.error(e)
++      }
++    }
++
++    watch(
++      () => address.value,
++      async () => {
++        await loadCredibility()
++      }
++    )
 +
 +    return {
-+      address
++      address,
++      state,
++      updateCredTx,
 +    }
    }
  })
  </script>
-@@ -238,4 +171,12 @@ export default defineComponent({
+@@ -238,4 +238,92 @@ export default defineComponent({
      display: none;
    }
  }
 +.faucet-btn {
 +  margin-right: 20px;
 +}
-+.net-constant {
++.net-constant, .cred-score {
 +  font-size: 26px;
 +  font-style: italic;
 +  font-weight: 500;
++}
++.cred-score {
++  padding-left: 26px;
++  padding-right: 26px;
++}
++.feedback {
++  display: flex;
++  flex-direction: column;
++  align-items: center;
++}
++.tx-feedback-title {
++  font-family: Inter;
++  font-style: normal;
++  font-weight: bold;
++  font-size: 21px;
++  line-height: 152%;
++  /* identical to box height, or 32px */
++
++  text-align: center;
++  letter-spacing: -0.017em;
++
++  /* light/text */
++
++  color: #000000;
++}
++.tx-feedback-subtitle.amount {
++  text-transform: uppercase;
++}
++.tx-feedback-subtitle {
++  font-family: Inter;
++  font-style: normal;
++  font-weight: normal;
++  font-size: 16px;
++  line-height: 150%;
++  /* identical to box height, or 24px */
++
++  text-align: center;
++
++  /* light/muted */
++
++  color: rgba(0, 0, 0, 0.667);
++}
++.tx-ongoing-title {
++  font-family: Inter;
++  font-style: normal;
++  font-weight: normal;
++  font-size: 16px;
++  line-height: 150%;
++  /* identical to box height, or 24px */
++
++  text-align: center;
++
++  /* light/muted */
++
++  color: rgba(0, 0, 0, 0.667);
++}
++
++.tx-ongoing-subtitle {
++  font-family: Inter;
++  font-style: normal;
++  font-weight: bold;
++  font-size: 21px;
++  line-height: 152%;
++  /* identical to box height, or 32px */
++
++  text-align: center;
++  letter-spacing: -0.017em;
++
++  /* light/text */
++
++  color: #000000;
++}
++.error-message {
++  font-family: Inter;
++  font-style: normal;
++  font-weight: normal;
++  font-size: 13px;
++  line-height: 153.8%;
++  color: #d80228;
++  margin-top: 5px;
 +}
  </style>
 diff --git a/node_modules/@starport/vue/src/components/SpTokenTransfer/SpTokenTransfer.vue b/node_modules/@starport/vue/src/components/SpTokenTransfer/SpTokenTransfer.vue
@@ -262,7 +421,7 @@ index 69f7957..074b60d 100644
            </span>
          </template>
 diff --git a/node_modules/@starport/vue/src/composables/useKeplr.ts b/node_modules/@starport/vue/src/composables/useKeplr.ts
-index 4fd0968..60e9273 100644
+index 4fd0968..944153e 100644
 --- a/node_modules/@starport/vue/src/composables/useKeplr.ts
 +++ b/node_modules/@starport/vue/src/composables/useKeplr.ts
 @@ -33,6 +33,10 @@ export default function ({ $s }: Params): Response {
@@ -304,3 +463,25 @@ index 4fd0968..60e9273 100644
          return y
        })
  
+@@ -90,6 +99,21 @@ export default function ({ $s }: Params): Response {
+       }
+ 
+       if (chainId) {
++        console.log("check chain data below")
++        console.log({
++          features,
++          chainId,
++          chainName,
++          rpc,
++          rest,
++          stakeCurrency,
++          bip44,
++          bech32Config,
++          currencies,
++          feeCurrencies,
++          coinType,
++          gasPriceStep
++        })
+         await window.keplr.experimentalSuggestChain({
+           features,
+           chainId,

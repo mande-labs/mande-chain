@@ -21,7 +21,7 @@ func TestGenesisState_Validate(t *testing.T) {
 		{
 			desc: "valid did namespace",
 			genState: &types.GenesisState{
-				ChainNamespace: "devnet",
+				ChainNamespace: "testnet",
 			},
 			valid: true,
 		},

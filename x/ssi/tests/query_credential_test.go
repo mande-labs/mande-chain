@@ -16,7 +16,7 @@ func TestQueryCredential(t *testing.T) {
 	msgServer := keeper.NewMsgServerImpl(*k)
 	goCtx := sdk.WrapSDKContext(ctx)
 
-	k.SetChainNamespace(&ctx, "devnet")
+	k.SetChainNamespace(&ctx, "testnet")
 
 	keyPair1 := GenerateEd25519KeyPair()
 	didRpcElements := GenerateDidDocumentRPCElements(keyPair1, []DidSigningElements{})
@@ -89,7 +89,7 @@ func TestQueryCredentials(t *testing.T) {
 	msgServer := keeper.NewMsgServerImpl(*k)
 	goCtx := sdk.WrapSDKContext(ctx)
 
-	k.SetChainNamespace(&ctx, "devnet")
+	k.SetChainNamespace(&ctx, "testnet")
 
 	keyPair1 := GenerateEd25519KeyPair()
 	didRpcElements := GenerateDidDocumentRPCElements(keyPair1, []DidSigningElements{})

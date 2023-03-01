@@ -19,12 +19,12 @@ service Query {
   
   	// NetworkConstantResult defines a rpc handler method for MsgNetworkConstantData.
   	rpc NetworkConstantResult(QueryNetworkConstantRequest) returns (QueryNetworkConstantResponse) {
-		option (google.api.http).get = "/mandechain/oracle/network_constant_result/{request_id}";
+		option (google.api.http).get = "/mande-chain/oracle/network_constant_result/{request_id}";
   	}
 
   	// LastNetworkConstantId query the last NetworkConstant result id
   	rpc LastNetworkConstantId(QueryLastNetworkConstantIdRequest) returns (QueryLastNetworkConstantIdResponse) {
-		option (google.api.http).get = "/mandechain/oracle/last_network_constant_id";
+		option (google.api.http).get = "/mande-chain/oracle/last_network_constant_id";
   	}
 // this line is used by starport scaffolding # 2
 }

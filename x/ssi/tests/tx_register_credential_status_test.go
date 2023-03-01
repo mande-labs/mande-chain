@@ -15,7 +15,7 @@ func TestRegisterCredentialStatus(t *testing.T) {
 	msgServer := keeper.NewMsgServerImpl(*k)
 	goCtx := sdk.WrapSDKContext(ctx)
 
-	k.SetChainNamespace(&ctx, "devnet")
+	k.SetChainNamespace(&ctx, "testnet")
 
 	keyPair1 := GenerateSecp256k1KeyPair()
 	didRpcElements := GenerateDidDocumentRPCElements(keyPair1, []DidSigningElements{})
@@ -68,7 +68,7 @@ func TestCreateCredentialStatusWithMultiControllerDid(t *testing.T) {
 	msgServer := keeper.NewMsgServerImpl(*k)
 	goCtx := sdk.WrapSDKContext(ctx)
 
-	k.SetChainNamespace(&ctx, "devnet")
+	k.SetChainNamespace(&ctx, "testnet")
 
 	keyPair1 := GenerateSecp256k1KeyPair()
 	rpcElements1 := GenerateDidDocumentRPCElements(keyPair1, []DidSigningElements{})
@@ -167,7 +167,7 @@ func TestUpdateCredentialStatus(t *testing.T) {
 	msgServer := keeper.NewMsgServerImpl(*k)
 	goCtx := sdk.WrapSDKContext(ctx)
 
-	k.SetChainNamespace(&ctx, "devnet")
+	k.SetChainNamespace(&ctx, "testnet")
 
 	keyPair1 := GenerateEd25519KeyPair()
 	didRpcElements := GenerateDidDocumentRPCElements(keyPair1, []DidSigningElements{})

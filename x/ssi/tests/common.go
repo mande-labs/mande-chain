@@ -140,7 +140,7 @@ func GenerateDidDocumentRPCElements(keyPair GenericKeyPair, signingElements []Di
 }
 
 func GenerateSchemaDocumentRPCElements(keyPair GenericKeyPair, authorId string, verficationMethodId string) SchemaRpcElements {
-	var schemaId string = "sch:" + DidMethod + ":" + "devnet" + ":" + strings.Split(authorId, ":")[3] + ":1.0"
+	var schemaId string = "sch:" + DidMethod + ":" + "testnet" + ":" + strings.Split(authorId, ":")[3] + ":1.0"
 	var schemaDocument *types.SchemaDocument = &types.SchemaDocument{
 		Type:         "https://w3c-ccg.github.io/vc-json-schemas/schema/1.0/schema.json",
 		ModelVersion: "v1.0",
@@ -186,7 +186,7 @@ func GenerateSchemaDocumentRPCElements(keyPair GenericKeyPair, authorId string, 
 }
 
 func GenerateCredStatusRPCElements(keyPair GenericKeyPair, issuerId string, verficationMethod *types.VerificationMethod) CredRpcElements {
-	var credentialId = "vc:" + DidMethod + ":" + "devnet:" + strings.Split(issuerId, ":")[3]
+	var credentialId = "vc:" + DidMethod + ":" + "testnet:" + strings.Split(issuerId, ":")[3]
 	var credHash = sha256.Sum256([]byte("Hash1234"))
 	var credentialStatus *types.CredentialStatus = &types.CredentialStatus{
 		Claim: &types.Claim{

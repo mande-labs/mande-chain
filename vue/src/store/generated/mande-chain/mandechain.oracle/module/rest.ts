@@ -264,29 +264,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryParams
-   * @summary Parameters queries the parameters of the module.
-   * @request GET:/mande-chain/oracle/params
-   */
-  queryParams = (params: RequestParams = {}) =>
-    this.request<OracleQueryParamsResponse, RpcStatus>({
-      path: `/mande-chain/oracle/params`,
-      method: "GET",
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
    * @name QueryLastNetworkConstantId
    * @summary LastNetworkConstantId query the last NetworkConstant result id
-   * @request GET:/mandechain/oracle/last_network_constant_id
+   * @request GET:/mande-chain/oracle/last_network_constant_id
    */
   queryLastNetworkConstantId = (params: RequestParams = {}) =>
     this.request<OracleQueryLastNetworkConstantIdResponse, RpcStatus>({
-      path: `/mandechain/oracle/last_network_constant_id`,
+      path: `/mande-chain/oracle/last_network_constant_id`,
       method: "GET",
       format: "json",
       ...params,
@@ -298,11 +282,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryNetworkConstantResult
    * @summary NetworkConstantResult defines a rpc handler method for MsgNetworkConstantData.
-   * @request GET:/mandechain/oracle/network_constant_result/{request_id}
+   * @request GET:/mande-chain/oracle/network_constant_result/{request_id}
    */
   queryNetworkConstantResult = (request_id: string, params: RequestParams = {}) =>
     this.request<OracleQueryNetworkConstantResponse, RpcStatus>({
-      path: `/mandechain/oracle/network_constant_result/${request_id}`,
+      path: `/mande-chain/oracle/network_constant_result/${request_id}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryParams
+   * @summary Parameters queries the parameters of the module.
+   * @request GET:/mande-chain/oracle/params
+   */
+  queryParams = (params: RequestParams = {}) =>
+    this.request<OracleQueryParamsResponse, RpcStatus>({
+      path: `/mande-chain/oracle/params`,
       method: "GET",
       format: "json",
       ...params,

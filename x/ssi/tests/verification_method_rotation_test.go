@@ -15,7 +15,7 @@ func TestVerificationMethodRotation(t *testing.T) {
 	msgServer := keeper.NewMsgServerImpl(*k)
 	goCtx := sdk.WrapSDKContext(ctx)
 
-	k.SetChainNamespace(&ctx, "devnet")
+	k.SetChainNamespace(&ctx, "testnet")
 
 	// Create a DID with pubKey1
 	keyPair1 := GenerateEd25519KeyPair()

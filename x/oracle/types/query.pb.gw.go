@@ -305,9 +305,9 @@ func RegisterQueryHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 var (
 	pattern_Query_Params_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"mande-chain", "oracle", "params"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_NetworkConstantResult_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"mandechain", "oracle", "network_constant_result", "request_id"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_NetworkConstantResult_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"mande-chain", "oracle", "network_constant_result", "request_id"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_LastNetworkConstantId_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"mandechain", "oracle", "last_network_constant_id"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_LastNetworkConstantId_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"mande-chain", "oracle", "last_network_constant_id"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

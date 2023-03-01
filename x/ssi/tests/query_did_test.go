@@ -15,7 +15,7 @@ func TestQueryDidDocument(t *testing.T) {
 	msgServer := keeper.NewMsgServerImpl(*k)
 	goCtx := sdk.WrapSDKContext(ctx)
 
-	k.SetChainNamespace(&ctx, "devnet")
+	k.SetChainNamespace(&ctx, "testnet")
 
 	keyPair1 := GenerateEd25519KeyPair()
 	rpcElements := GenerateDidDocumentRPCElements(keyPair1, []DidSigningElements{})
@@ -61,7 +61,7 @@ func TestQueryDidDocuments(t *testing.T) {
 	msgServer := keeper.NewMsgServerImpl(*k)
 	goCtx := sdk.WrapSDKContext(ctx)
 
-	k.SetChainNamespace(&ctx, "devnet")
+	k.SetChainNamespace(&ctx, "testnet")
 
 	keyPair1 := GenerateEd25519KeyPair()
 	rpcElements := GenerateDidDocumentRPCElements(keyPair1, []DidSigningElements{})

@@ -14,7 +14,7 @@ func TestCreateSchema(t *testing.T) {
 	msgServer := keeper.NewMsgServerImpl(*k)
 	goCtx := sdk.WrapSDKContext(ctx)
 
-	k.SetChainNamespace(&ctx, "devnet")
+	k.SetChainNamespace(&ctx, "testnet")
 
 	keyPair1 := GenerateSecp256k1KeyPair()
 	rpcElements := GenerateDidDocumentRPCElements(keyPair1, []DidSigningElements{})
@@ -64,7 +64,7 @@ func TestCreateSchemaWithMultiControllerDid(t *testing.T) {
 	msgServer := keeper.NewMsgServerImpl(*k)
 	goCtx := sdk.WrapSDKContext(ctx)
 
-	k.SetChainNamespace(&ctx, "devnet")
+	k.SetChainNamespace(&ctx, "testnet")
 
 	keyPair1 := GenerateSecp256k1KeyPair()
 	rpcElements1 := GenerateDidDocumentRPCElements(keyPair1, []DidSigningElements{})

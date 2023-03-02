@@ -18,7 +18,7 @@ accounts:
 
 validator:
   name: validator
-  staked: "500000000000cred"
+  staked: "5000000000cred"
 
 client:
   openapi:

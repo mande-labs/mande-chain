@@ -12,7 +12,7 @@ import (
 
 func (suite *VotingKeeperTestSuite) TestLockMandAndDelegateStake_PositiveVote() {
 	app, ctx, msgServer := suite.App, sdk.WrapSDKContext(suite.Ctx), suite.MsgServer
-	balances := sdk.NewCoins(testutil.NewMandCoin(500))
+	balances := sdk.NewCoins(testutil.NewMandCoin(500000000))
 
 	addr1 := sdk.AccAddress("addr1_______________")
 	acc1 := app.AccountKeeper.NewAccountWithAddress(suite.Ctx, addr1)
@@ -27,7 +27,7 @@ func (suite *VotingKeeperTestSuite) TestLockMandAndDelegateStake_PositiveVote() 
 	votingModuleAcct := sdk.AccAddress(crypto.AddressHash([]byte(types.ModuleName)))
 
 	acc1Balance := app.BankKeeper.GetBalance(suite.Ctx, addr1, "mand").Amount.Uint64()
-	suite.Require().Equal(uint64(500), acc1Balance)
+	suite.Require().Equal(uint64(500000000), acc1Balance)
 
 	app.OracleKeeper.SetNetworkConstantResult(suite.Ctx, oracletypes.OracleRequestID(1), oracletypes.NetworkConstantResult{Response: "1.0"})
 	app.OracleKeeper.SetLastNetworkConstantID(suite.Ctx, oracletypes.OracleRequestID(1))
@@ -36,7 +36,7 @@ func (suite *VotingKeeperTestSuite) TestLockMandAndDelegateStake_PositiveVote() 
 	msgCreateVote := &types.MsgCreateVote{
 		Creator:  addr1.String(),
 		Receiver: addr2.String(),
-		Count:    100,
+		Count:    100000000,
 		Mode:     1, // cast
 	}
 	_, err := msgServer.CreateVote(ctx, msgCreateVote)
@@ -44,18 +44,18 @@ func (suite *VotingKeeperTestSuite) TestLockMandAndDelegateStake_PositiveVote() 
 
 	// validate mand transferred to voting module
 	acc1Balance = app.BankKeeper.GetBalance(suite.Ctx, addr1, "mand").Amount.Uint64()
-	suite.Require().Equal(uint64(400), acc1Balance)
+	suite.Require().Equal(uint64(400000000), acc1Balance)
 	votingModuleMandBalance := app.BankKeeper.GetBalance(suite.Ctx, votingModuleAcct, "mand").Amount.Uint64()
-	suite.Require().Equal(uint64(100), votingModuleMandBalance)
+	suite.Require().Equal(uint64(100000000), votingModuleMandBalance)
 
 	// validate stake tokens delegated to receiver
 	validator, _ = app.StakingKeeper.GetValidator(suite.Ctx, valAddr)
-	suite.Require().Equal(validator.GetTokens().Int64(), initialValidatorStake.AddRaw(100).Int64())
+	suite.Require().Equal(validator.GetTokens().Int64(), initialValidatorStake.AddRaw(100000000).Int64())
 }
 
 func (suite *VotingKeeperTestSuite) TestLockMandAndDelegateStake_NegativeVote_NoZeroClipping() {
 	app, ctx, msgServer := suite.App, sdk.WrapSDKContext(suite.Ctx), suite.MsgServer
-	balances := sdk.NewCoins(testutil.NewMandCoin(500))
+	balances := sdk.NewCoins(testutil.NewMandCoin(500000000))
 
 	addr1 := sdk.AccAddress("addr1_______________")
 	acc1 := app.AccountKeeper.NewAccountWithAddress(suite.Ctx, addr1)
@@ -75,10 +75,10 @@ func (suite *VotingKeeperTestSuite) TestLockMandAndDelegateStake_NegativeVote_No
 	votingModuleAcct := sdk.AccAddress(crypto.AddressHash([]byte(types.ModuleName)))
 
 	acc1Balance := app.BankKeeper.GetBalance(suite.Ctx, addr1, "mand").Amount.Uint64()
-	suite.Require().Equal(uint64(500), acc1Balance)
+	suite.Require().Equal(uint64(500000000), acc1Balance)
 
 	acc3Balance := app.BankKeeper.GetBalance(suite.Ctx, addr3, "mand").Amount.Uint64()
-	suite.Require().Equal(uint64(500), acc3Balance)
+	suite.Require().Equal(uint64(500000000), acc3Balance)
 
 	app.OracleKeeper.SetNetworkConstantResult(suite.Ctx, oracletypes.OracleRequestID(1), oracletypes.NetworkConstantResult{Response: "1.0"})
 	app.OracleKeeper.SetLastNetworkConstantID(suite.Ctx, oracletypes.OracleRequestID(1))
@@ -87,7 +87,7 @@ func (suite *VotingKeeperTestSuite) TestLockMandAndDelegateStake_NegativeVote_No
 	msgCreateVote := &types.MsgCreateVote{
 		Creator:  addr1.String(),
 		Receiver: addr2.String(),
-		Count:    100,
+		Count:    100000000,
 		Mode:     1, // cast
 	}
 	_, err := msgServer.CreateVote(ctx, msgCreateVote)
@@ -97,7 +97,7 @@ func (suite *VotingKeeperTestSuite) TestLockMandAndDelegateStake_NegativeVote_No
 	msgCreateVote = &types.MsgCreateVote{
 		Creator:  addr3.String(),
 		Receiver: addr2.String(),
-		Count:    -50,
+		Count:    -50000000,
 		Mode:     1, // cast
 	}
 	_, err = msgServer.CreateVote(ctx, msgCreateVote)
@@ -105,15 +105,15 @@ func (suite *VotingKeeperTestSuite) TestLockMandAndDelegateStake_NegativeVote_No
 
 	// validate mand transferred to voting module
 	acc1Balance = app.BankKeeper.GetBalance(suite.Ctx, addr1, "mand").Amount.Uint64()
-	suite.Require().Equal(uint64(400), acc1Balance)
+	suite.Require().Equal(uint64(400000000), acc1Balance)
 	acc3Balance = app.BankKeeper.GetBalance(suite.Ctx, addr3, "mand").Amount.Uint64()
-	suite.Require().Equal(uint64(450), acc3Balance)
+	suite.Require().Equal(uint64(450000000), acc3Balance)
 	votingModuleMandBalance := app.BankKeeper.GetBalance(suite.Ctx, votingModuleAcct, "mand").Amount.Uint64()
-	suite.Require().Equal(uint64(150), votingModuleMandBalance)
+	suite.Require().Equal(uint64(150000000), votingModuleMandBalance)
 
 	// validate stake tokens delegated to receiver
 	validator, _ = app.StakingKeeper.GetValidator(suite.Ctx, valAddr)
-	suite.Require().Equal(validator.GetTokens().Int64(), initialValidatorStake.AddRaw(100).AddRaw(-50).Int64())
+	suite.Require().Equal(validator.GetTokens().Int64(), initialValidatorStake.AddRaw(100000000).AddRaw(-50000000).Int64())
 }
 
 func (suite *VotingKeeperTestSuite) TestLockMandAndDelegateStake_NegativeVote_ZeroClipping() {

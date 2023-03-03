@@ -46,7 +46,7 @@ index 738e112..06adffa 100644
  
  .loading {
 diff --git a/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue b/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
-index 4a5c024..4e7cf87 100644
+index 4a5c024..76138bf 100644
 --- a/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
 +++ b/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
 @@ -10,112 +10,27 @@
@@ -251,7 +251,7 @@ index 4a5c024..4e7cf87 100644
 +          `/mande-chain/voting/credibility_score/${address.value}`
 +      )
 +
-+      state.credScore = credibility.data.score
++      state.credScore = credibility.data.score / 10**6
 +      state.credUpdated = credibility.data.updated
 +    }
 +

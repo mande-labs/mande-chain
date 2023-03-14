@@ -24,7 +24,7 @@
           </td>
           <td></td>
           <td class="assets-table__amount">
-            {{ new Intl.NumberFormat('en-GB').format(state.amount / 10**6) }}
+            {{ new Intl.NumberFormat('en-GB').format(state.amount) }}
           </td>
         </tr>
       </tbody>
@@ -71,7 +71,7 @@ export default defineComponent({
 	            `${address.value}`
 	          )
 
-	        state.amount = aggregateVotesCasted.data.aggregateVotesCasted.positive - aggregateVotesCasted.data.aggregateVotesCasted.negative
+	        state.amount = aggregateVotesCasted.data.aggregateVotesCasted.positive / 10**6 + aggregateVotesCasted.data.aggregateVotesCasted.negative / 10**6
       	} catch {
       		state.amount = 0	
       	}

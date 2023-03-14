@@ -46,7 +46,7 @@ index 738e112..06adffa 100644
  
  .loading {
 diff --git a/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue b/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
-index 4a5c024..76138bf 100644
+index 4a5c024..d79c4d1 100644
 --- a/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
 +++ b/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
 @@ -10,112 +10,27 @@
@@ -188,7 +188,7 @@ index 4a5c024..76138bf 100644
      </div>
      <div class="navbar-section">
 +      <div class="net-constant">x(t)=0.5</div>
-+      <div class="cred-score">Credibility: {{ state.credScore }}</div>
++      <div class="cred-score">Your Credibility: {{ state.credScore }}</div>
 +      <SpButton :class="cred-update-btn" v-if="!state.credUpdated" @click="updateCredTx">Update Credibility</SpButton>
 +    </div>
 +    <div class="navbar-section">
@@ -421,7 +421,7 @@ index 69f7957..074b60d 100644
            </span>
          </template>
 diff --git a/node_modules/@starport/vue/src/composables/useKeplr.ts b/node_modules/@starport/vue/src/composables/useKeplr.ts
-index 4fd0968..944153e 100644
+index 4fd0968..60e9273 100644
 --- a/node_modules/@starport/vue/src/composables/useKeplr.ts
 +++ b/node_modules/@starport/vue/src/composables/useKeplr.ts
 @@ -33,6 +33,10 @@ export default function ({ $s }: Params): Response {
@@ -463,25 +463,3 @@ index 4fd0968..944153e 100644
          return y
        })
  
-@@ -90,6 +99,21 @@ export default function ({ $s }: Params): Response {
-       }
- 
-       if (chainId) {
-+        console.log("check chain data below")
-+        console.log({
-+          features,
-+          chainId,
-+          chainName,
-+          rpc,
-+          rest,
-+          stakeCurrency,
-+          bip44,
-+          bech32Config,
-+          currencies,
-+          feeCurrencies,
-+          coinType,
-+          gasPriceStep
-+        })
-         await window.keplr.experimentalSuggestChain({
-           features,
-           chainId,

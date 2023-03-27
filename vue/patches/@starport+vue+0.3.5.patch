@@ -46,7 +46,7 @@ index 738e112..06adffa 100644
  
  .loading {
 diff --git a/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue b/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
-index 4a5c024..d79c4d1 100644
+index 4a5c024..56e0189 100644
 --- a/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
 +++ b/node_modules/@starport/vue/src/components/SpNavbar/SpNavbar.vue
 @@ -10,112 +10,27 @@
@@ -187,7 +187,7 @@ index 4a5c024..d79c4d1 100644
        </router-link>
      </div>
      <div class="navbar-section">
-+      <div class="net-constant">x(t)=0.5</div>
++      <div class="net-constant">x(t)=1.0</div>
 +      <div class="cred-score">Your Credibility: {{ state.credScore }}</div>
 +      <SpButton :class="cred-update-btn" v-if="!state.credUpdated" @click="updateCredTx">Update Credibility</SpButton>
 +    </div>

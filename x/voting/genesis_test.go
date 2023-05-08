@@ -13,6 +13,7 @@ import (
 func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
 		Params: types.DefaultParams(),
+		PortId: types.PortID,
 
 		VoteBookList: []types.VoteBook{
 			{
@@ -56,6 +57,8 @@ func TestGenesis(t *testing.T) {
 
 	nullify.Fill(&genesisState)
 	nullify.Fill(got)
+
+	require.Equal(t, genesisState.PortId, got.PortId)
 
 	require.ElementsMatch(t, genesisState.VoteBookList, got.VoteBookList)
 	require.ElementsMatch(t, genesisState.AggregateVotesCastedList, got.AggregateVotesCastedList)

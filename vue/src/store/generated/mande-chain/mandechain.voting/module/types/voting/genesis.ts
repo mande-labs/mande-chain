@@ -11,6 +11,7 @@ export const protobufPackage = "mandechain.voting";
 /** GenesisState defines the voting module's genesis state. */
 export interface GenesisState {
   params: Params | undefined;
+  port_id: string;
   voteBookList: VoteBook[];
   aggregateVotesCastedList: AggregateVotesCasted[];
   aggregateVotesReceivedList: AggregateVotesReceived[];
@@ -18,24 +19,27 @@ export interface GenesisState {
   credibilityList: Credibility[];
 }
 
-const baseGenesisState: object = {};
+const baseGenesisState: object = { port_id: "" };
 
 export const GenesisState = {
   encode(message: GenesisState, writer: Writer = Writer.create()): Writer {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
+    if (message.port_id !== "") {
+      writer.uint32(18).string(message.port_id);
+    }
     for (const v of message.voteBookList) {
-      VoteBook.encode(v!, writer.uint32(18).fork()).ldelim();
+      VoteBook.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     for (const v of message.aggregateVotesCastedList) {
-      AggregateVotesCasted.encode(v!, writer.uint32(26).fork()).ldelim();
+      AggregateVotesCasted.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     for (const v of message.aggregateVotesReceivedList) {
-      AggregateVotesReceived.encode(v!, writer.uint32(34).fork()).ldelim();
+      AggregateVotesReceived.encode(v!, writer.uint32(42).fork()).ldelim();
     }
     for (const v of message.credibilityList) {
-      Credibility.encode(v!, writer.uint32(42).fork()).ldelim();
+      Credibility.encode(v!, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -55,19 +59,22 @@ export const GenesisState = {
           message.params = Params.decode(reader, reader.uint32());
           break;
         case 2:
-          message.voteBookList.push(VoteBook.decode(reader, reader.uint32()));
+          message.port_id = reader.string();
           break;
         case 3:
+          message.voteBookList.push(VoteBook.decode(reader, reader.uint32()));
+          break;
+        case 4:
           message.aggregateVotesCastedList.push(
             AggregateVotesCasted.decode(reader, reader.uint32())
           );
           break;
-        case 4:
+        case 5:
           message.aggregateVotesReceivedList.push(
             AggregateVotesReceived.decode(reader, reader.uint32())
           );
           break;
-        case 5:
+        case 6:
           message.credibilityList.push(
             Credibility.decode(reader, reader.uint32())
           );
@@ -90,6 +97,11 @@ export const GenesisState = {
       message.params = Params.fromJSON(object.params);
     } else {
       message.params = undefined;
+    }
+    if (object.port_id !== undefined && object.port_id !== null) {
+      message.port_id = String(object.port_id);
+    } else {
+      message.port_id = "";
     }
     if (object.voteBookList !== undefined && object.voteBookList !== null) {
       for (const e of object.voteBookList) {
@@ -129,6 +141,7 @@ export const GenesisState = {
     const obj: any = {};
     message.params !== undefined &&
       (obj.params = message.params ? Params.toJSON(message.params) : undefined);
+    message.port_id !== undefined && (obj.port_id = message.port_id);
     if (message.voteBookList) {
       obj.voteBookList = message.voteBookList.map((e) =>
         e ? VoteBook.toJSON(e) : undefined
@@ -170,6 +183,11 @@ export const GenesisState = {
       message.params = Params.fromPartial(object.params);
     } else {
       message.params = undefined;
+    }
+    if (object.port_id !== undefined && object.port_id !== null) {
+      message.port_id = object.port_id;
+    } else {
+      message.port_id = "";
     }
     if (object.voteBookList !== undefined && object.voteBookList !== null) {
       for (const e of object.voteBookList) {

@@ -4,11 +4,13 @@ import { AggregateVotesCasted } from "./module/types/voting/aggregate_votes_cast
 import { AggregateVotesReceived } from "./module/types/voting/aggregate_votes_received"
 import { Credibility } from "./module/types/voting/credibility"
 import { AppliedX } from "./module/types/voting/credibility"
+import { VotingPacketData } from "./module/types/voting/packet"
+import { NoData } from "./module/types/voting/packet"
 import { Params } from "./module/types/voting/params"
 import { VoteBook } from "./module/types/voting/vote_book"
 
 
-export { AggregateVotesCasted, AggregateVotesReceived, Credibility, AppliedX, Params, VoteBook };
+export { AggregateVotesCasted, AggregateVotesReceived, Credibility, AppliedX, VotingPacketData, NoData, Params, VoteBook };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -60,6 +62,8 @@ const getDefaultState = () => {
 						AggregateVotesReceived: getStructure(AggregateVotesReceived.fromPartial({})),
 						Credibility: getStructure(Credibility.fromPartial({})),
 						AppliedX: getStructure(AppliedX.fromPartial({})),
+						VotingPacketData: getStructure(VotingPacketData.fromPartial({})),
+						NoData: getStructure(NoData.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						VoteBook: getStructure(VoteBook.fromPartial({})),
 						

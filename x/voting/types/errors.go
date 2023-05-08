@@ -16,4 +16,7 @@ var (
 	ErrNotEnoughMand            = sdkerrors.Register(ModuleName, 7, "not enough MAND to use for voting")
 	ErrZeroVoteCount            = sdkerrors.Register(ModuleName, 8, "invalid vote count, cannot be zero")
 	ErrReceiverIsNotAValidator  = sdkerrors.Register(ModuleName, 9, "validator not found, receiver is not a validator")
+	ErrSample                   = sdkerrors.Register(ModuleName, 10, "sample error")
+	ErrInvalidPacketTimeout     = sdkerrors.Register(ModuleName, 11, "invalid packet timeout")
+	ErrInvalidVersion           = sdkerrors.Register(ModuleName, 12, "invalid version")
 )

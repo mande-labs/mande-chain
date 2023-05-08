@@ -14,9 +14,10 @@ option go_package = "mande-chain/x/voting/types";
 // GenesisState defines the voting module's genesis state.
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
-  repeated VoteBook voteBookList = 2 [(gogoproto.nullable) = false];
-  repeated AggregateVotesCasted aggregateVotesCastedList = 3 [(gogoproto.nullable) = false];
-  repeated AggregateVotesReceived aggregateVotesReceivedList = 4 [(gogoproto.nullable) = false];
-  repeated Credibility credibilityList = 5 [(gogoproto.nullable) = false];
+  string port_id = 2;
+  repeated VoteBook voteBookList = 3 [(gogoproto.nullable) = false];
+  repeated AggregateVotesCasted aggregateVotesCastedList = 4 [(gogoproto.nullable) = false];
+  repeated AggregateVotesReceived aggregateVotesReceivedList = 5 [(gogoproto.nullable) = false];
+  repeated Credibility credibilityList = 6 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }
